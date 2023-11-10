@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\DashboardController;
+use App\Http\Controllers\Auth\PostController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TaskController; // Import your TaskController
 /*
@@ -22,3 +23,4 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('auth/dashboard', [DashboardController::class, 'dashboard'])->name('auth.dashboard')->middleware('auth');
+Route::resource('auth/posts', PostController::class);
