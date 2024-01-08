@@ -37,7 +37,7 @@
                 <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
                     <span class="mdi mdi-menu"></span>
                 </button>
-                <div class="search-field d-none d-md-block">
+                {{-- <div class="search-field d-none d-md-block">
                     <form class="d-flex align-items-center h-100" action="#">
                         <div class="input-group">
                             <div class="input-group-prepend bg-transparent">
@@ -47,27 +47,9 @@
                                 placeholder="Search projects">
                         </div>
                     </form>
-                </div>
+                </div> --}}
                 <ul class="navbar-nav navbar-nav-right">
-                    <li class="nav-item nav-profile dropdown">
-                        <a class="nav-link dropdown-toggle" id="profileDropdown" href="#"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            <div class="nav-profile-img">
-                                <img src="{{ asset('assets/auth/images/faces/face1.jpg') }}" alt="image">
-                                <span class="availability-status online"></span>
-                            </div>
-                            <div class="nav-profile-text">
-                                <p class="mb-1 text-black">David Greymaax</p>
-                            </div>
-                        </a>
-                        <div class="dropdown-menu navbar-dropdown" aria-labelledby="profileDropdown">
-                            <a class="dropdown-item" href="#">
-                                <i class="mdi mdi-cached me-2 text-success"></i> Activity Log </a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">
-                                <i class="mdi mdi-logout me-2 text-primary"></i> Signout </a>
-                        </div>
-                    </li>
+                    
                     <li class="nav-item d-none d-lg-block full-screen-link">
                         <a class="nav-link">
                             <i class="mdi mdi-fullscreen" id="fullscreen-button"></i>
@@ -178,18 +160,30 @@
                             <h6 class="p-3 mb-0 text-center">See all notifications</h6>
                         </div>
                     </li>
-                    <li class="nav-item nav-logout d-none d-lg-block">
-                        <form id="logout-form" method="post" action="{{ route('logout') }}">
-                            @csrf
-                            <a id="logout-button" class="nav-link" href="#">
-                                <i class="mdi mdi-power"></i>
-                            </a>
-                        </form>
-                    </li>
-                    <li class="nav-item nav-settings d-none d-lg-block">
-                        <a class="nav-link" href="#">
-                            <i class="mdi mdi-format-line-spacing"></i>
+                    <li class="nav-item nav-profile dropdown">
+                        <a class="nav-link dropdown-toggle" id="profileDropdown" href="#"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <div class="nav-profile-img">
+                                <img src="{{ asset('assets/auth/images/faces/face1.jpg') }}" alt="image">
+                                <span class="availability-status online"></span>
+                            </div>
+                            <div class="nav-profile-text">
+                                <p class="mb-1 text-black">David Greymaax</p>
+                            </div>
                         </a>
+                        <div class="dropdown-menu navbar-dropdown" aria-labelledby="profileDropdown">
+                            {{-- <a class="dropdown-item" href="#">
+                                <i class="mdi mdi-cached me-2 text-success"></i> Activity Log </a> --}}
+                            <div class="dropdown-divider"></div>
+                            <a id="logout-button" class="dropdown-item" href="#">
+                                <i class="mdi mdi-logout me-2 text-primary"></i> Signout
+                                <form id="logout-form" method="post" action="{{ route('logout') }}">
+                                    @csrf
+                                    {{-- <a id="logout-button" class="nav-link" href="#">
+                                        <i class="mdi mdi-power"></i>
+                                    </a> --}}
+                                </form> </a>
+                        </div>
                     </li>
                 </ul>
                 <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
@@ -223,7 +217,7 @@
                             <i class="mdi mdi-home menu-icon"></i>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    {{-- <li class="nav-item">
                         <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false"
                             aria-controls="ui-basic">
                             <span class="menu-title">Basic UI Elements</span>
@@ -238,14 +232,14 @@
                                         href="pages/ui-features/typography.html">Typography</a></li>
                             </ul>
                         </div>
-                    </li>
+                    </li> --}}
                     <li class="nav-item">
                         <a class="nav-link" href="pages/icons/mdi.html">
-                            <span class="menu-title">Icons</span>
+                            <span class="menu-title">Tracking</span>
                             <i class="mdi mdi-contacts menu-icon"></i>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    {{-- <li class="nav-item">
                         <a class="nav-link" href="pages/forms/basic_elements.html">
                             <span class="menu-title">Forms</span>
                             <i class="mdi mdi-format-list-bulleted menu-icon"></i>
@@ -262,7 +256,7 @@
                             <span class="menu-title">Tables</span>
                             <i class="mdi mdi-table-large menu-icon"></i>
                         </a>
-                    </li>
+                    </li> --}}
                     <li class="nav-item">
                         <a class="nav-link" data-bs-toggle="collapse" href="#general-pages" aria-expanded="false"
                             aria-controls="general-pages">
@@ -285,7 +279,7 @@
                             </ul>
                         </div>
                     </li>
-                    <li class="nav-item sidebar-actions">
+                    {{-- <li class="nav-item sidebar-actions">
                         <span class="nav-link">
                             <div class="border-bottom">
                                 <h6 class="font-weight-normal mb-3">Projects</h6>
@@ -301,7 +295,7 @@
                                 </ul>
                             </div>
                         </span>
-                    </li>
+                    </li> --}}
                 </ul>
             </nav>
 
@@ -344,12 +338,11 @@
     @yield('scripts')
 
     <script>
-        $(document).ready(function(){
-            $('#logout-button').click(function(){
+        $(document).ready(function() {
+            $('#logout-button').click(function() {
                 $('#logout-form').submit();
             });
         });
-        
     </script>
 </body>
 
