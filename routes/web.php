@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\DashboardController;
 use App\Http\Controllers\Auth\PostController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DashboarTechController;
 use App\Http\Controllers\TaskController; // Import your TaskController
 /*
 |--------------------------------------------------------------------------
@@ -24,3 +25,10 @@ Auth::routes();
 
 Route::get('auth/dashboard', [DashboardController::class, 'dashboard'])->name('auth.dashboard')->middleware('auth');
 Route::resource('auth/posts', PostController::class);
+
+
+Route::resource('dashboard-tech', DashboarTechController::class);
+Route::get('/detail_ticket', [DashboarTechController::class, 'show'])->name('detail_ticket');
+
+// Route::resource('dashboard-tech', DashboarTechController::class);
+
