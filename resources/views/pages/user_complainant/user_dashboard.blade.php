@@ -449,7 +449,7 @@ body {font-family: Arial;}
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">My History Tickets
-                            <button type="button" class="btn btm-primary mdi mdi-plus mdi-24px float-end" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <button type="button" class="btn btn-sm btn-primary mdi mdi-plus mdi-24px float-end" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                 New Ticket
                             </button>
                             </h4>
