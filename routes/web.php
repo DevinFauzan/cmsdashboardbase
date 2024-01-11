@@ -35,5 +35,7 @@ Route::get('/detail_ticket', [DashboarTechController::class, 'show'])->name('det
 
 //User
 Route::resource('dashboard-user',DashboardUserController::class);
-Route::get('/new_ticket', [DashboardUserController::class, 'show'])->name('new_ticket');
- Route::get('/my_ticket', [DashboardUserController::class, 'create'])->name('my_ticket');
+Route::get('/detail_ticket_user', [DashboardUserController::class, 'show'])->name('detail_ticket_user');
+Route::get('/my_ticket', [DashboardUserController::class, 'create'])->name('my_ticket');
+
+//Route::get('/new_ticket', [DashboardUserController::class, 'show'])->name('new_ticket');

@@ -457,11 +457,12 @@ body {font-family: Arial;}
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th> Assigned </th>
+                                            <th> Tech Person </th>
                                             <th> Subject </th>
                                             <th> Status </th>
                                             <th> Last Update </th>
                                             <th> Tracking ID </th>
+                                            <th> Detail Ticket </th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -477,6 +478,11 @@ body {font-family: Arial;}
                                             </td>
                                             <td> Dec 5, 2017 </td>
                                             <td> WD-12345 </td>
+                                            <td>
+                                                <a href="{{ route('detail_ticket_user') }}"
+                                                    class="btn btn-info mdi mdi-information-variant">                                                  
+                                                </a>
+                                             </td>   
                                         </tr>
                                         <tr>
                                             <td>
@@ -490,6 +496,11 @@ body {font-family: Arial;}
                                             </td>
                                             <td> Dec 12, 2017 </td>
                                             <td> WD-12346 </td>
+                                            <td>
+                                                <a href="{{ route('detail_ticket_user') }}"
+                                                    class="btn btn-info mdi mdi-information-variant">                                                  
+                                                </a>
+                                             </td>   
                                         </tr>
                                         <tr>
                                             <td>
@@ -503,6 +514,11 @@ body {font-family: Arial;}
                                             </td>
                                             <td> Dec 16, 2017 </td>
                                             <td> WD-12347 </td>
+                                            <td>
+                                                <a href="{{ route('detail_ticket_user') }}"
+                                                    class="btn btn-info mdi mdi-information-variant">                                                  
+                                                </a>
+                                             </td>   
                                         </tr>
                                         <tr>
                                             <td>
@@ -516,6 +532,11 @@ body {font-family: Arial;}
                                             </td>
                                             <td> Dec 3, 2017 </td>
                                             <td> WD-12348 </td>
+                                            <td>
+                                                <a href="{{ route('detail_ticket_user') }}"
+                                                    class="btn btn-info mdi mdi-information-variant">                                                  
+                                                </a>
+                                             </td>   
                                         </tr>
                                     </tbody>
                                 </table>
