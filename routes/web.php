@@ -18,7 +18,7 @@ use App\Http\Controllers\TaskController; // Import your TaskController
 
 Route::get('/', function () {
     auth()->logout();
-    return 'landing page';
+    return view('auth.login');
 });
 
 Auth::routes();

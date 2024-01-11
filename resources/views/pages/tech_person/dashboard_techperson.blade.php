@@ -12,55 +12,6 @@
                 </h3>
             </div>
             <div class="row">
-                {{-- <div class="col-md-3 stretch-card grid-margin">
-                    <div class="card bg-info card-img-holder text-white text-center">
-                        <div class="card-body">
-                            <img src="{{ asset('assets/auth/images/dashboard/circle.svg') }}" class="card-img-absolute"
-                                alt="circle-image" />
-                            <h4 class="font-weight-high mb-3">Ticket Open <i
-                                    class="mdi mdi-ticket-percent mdi-24px float-right"></i>
-                            </h4>
-                            <h1 class="mb-5">1</h1>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 stretch-card grid-margin">
-                    <div class="card bg-warning card-img-holder text-white text-center">
-                        <div class="card-body">
-                            <img src="{{ asset('assets/auth/images/dashboard/circle.svg') }}" class="card-img-absolute"
-                                alt="circle-image" />
-                            <h4 class="font-weight-normal mb-3">progress <i
-                                    class="mdi mdi-progress-clock mdi-24px float-right"></i>
-                            </h4>
-                            <h1 class="mb-5">5</h1>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 stretch-card grid-margin">
-                    <div class="card bg-danger card-img-holder text-white text-center">
-                        <div class="card-body">
-                            <img src="{{ asset('assets/auth/images/dashboard/circle.svg') }}" class="card-img-absolute"
-                                alt="circle-image" />
-                            <h4 class="font-weight-normal mb-3">Pending <i
-                                    class="mdi mdi-account-clock-outline mdi-24px float-right"></i>
-                            </h4>
-                            <h1 class="mb-5">4</h1>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 stretch-card grid-margin">
-                    <div class="card bg-success card-img-holder text-white text-center">
-                        <div class="card-body">
-                            <img src="{{ asset('assets/auth/images/dashboard/circle.svg') }}" class="card-img-absolute"
-                                alt="circle-image" />
-                            <h4 class="font-weight-normal mb-3">Solved <i class="mdi mdi-check mdi-24px float-right"></i>
-                            </h4>
-                            <h1 class="mb-5">4</h1>
-                        </div>
-                    </div>
-                </div> --}}
-            </div>
-            <div class="row">
                 <div class="col-12 grid-margin">
                     <div class="card">
                         <div class="card-body">
@@ -86,11 +37,12 @@
                                             <td> Dec 5, 2017 </td>
                                             <td> ID093209831 </td>
                                             <td>
-                                                <a href="{{ route('detail_ticket') }}" class="btn btn-info bg-gradient-info">
+                                                <a href="{{ route('detail_ticket') }}"
+                                                    class="btn btn-info bg-gradient-info">
                                                     <span class="mdi mdi-details"></span>
                                                 </a>
                                             </td>
-                                            
+
                                         </tr>
                                     </tbody>
                                 </table>

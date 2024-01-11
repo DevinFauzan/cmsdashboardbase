@@ -46,8 +46,8 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">Ticket #ID093209831</h4>
-                            <p class="card-description">Once you assigned this ticket problem, this ticked is belong to you
-                                untill you solved it, want to assigend this ticket?</p>
+                            <p class="card-description">Once you assigned this ticket problem, this ticket is belong to you
+                                until you solved it, want to assigend this ticket?</p>
                             <form class="forms-sample">
                                 <div class="form-group">
                                     <label for="exampleSelectGender">Assign</label>
