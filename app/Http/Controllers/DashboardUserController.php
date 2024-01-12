@@ -49,6 +49,7 @@ class DashboardUserController extends Controller
      */
     public function show()
     {
+        return view('pages.user_complainant.detail_ticket_user');
         return view('pages.user_complainant.new_ticket');
     }
 
