@@ -19,18 +19,33 @@
                                         readonly>
                                 </div>
                                 <div class="form-group">
+                                    <label for="exampleInputName1">Subject</label>
+                                    <input type="text" class="form-control" id="exampleInputSubject" placeholder="Subject"
+                                        readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleTextarea1">Description</label>
+                                    <textarea class="form-control" id="exampleTextarea1" rows="4" readonly></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputName1">Product</label>
+                                    <input type="text" class="form-control" id="exampleInputSubject" placeholder="Product"
+                                        readonly>
+                                </div>
+                                <div class="form-group">
                                     <label for="exampleInputEmail3">Email address</label>
                                     <input type="email" class="form-control" id="exampleInputEmail3" placeholder="Email"
+                                        readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputName1">Telephone</label>
+                                    <input type="text" class="form-control" id="exampleInputSubject" placeholder="Telephone"
                                         readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputName1">Complained date</label>
                                     <input type="date" class="form-control" id="exampleInputName1" placeholder="date"
                                         readonly>
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleTextarea1">Description</label>
-                                    <textarea class="form-control" id="exampleTextarea1" rows="4" readonly></textarea>
                                 </div>
                             </form>
                         </div>
