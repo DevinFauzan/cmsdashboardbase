@@ -13,7 +13,7 @@
                 </nav>
             </div>
             <div class="row">
-                <div class="col-9 grid-margin stretch-card">
+                <div class="col-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">Ticket #ID093209831</h4>
@@ -25,8 +25,27 @@
                                         readonly>
                                 </div>
                                 <div class="form-group">
+                                    <label for="exampleInputName1">Subject</label>
+                                    <input type="text" class="form-control" id="exampleInputSubject" placeholder="Subject"
+                                        readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleTextarea1">Description</label>
+                                    <textarea class="form-control" id="exampleTextarea1" rows="4" readonly></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputName1">Product</label>
+                                    <input type="text" class="form-control" id="exampleInputSubject" placeholder="Product"
+                                        readonly>
+                                </div>
+                                <div class="form-group">
                                     <label for="exampleInputEmail3">Email address</label>
                                     <input type="email" class="form-control" id="exampleInputEmail3" placeholder="Email"
+                                        readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputName1">Telephone</label>
+                                    <input type="text" class="form-control" id="exampleInputSubject" placeholder="Telephone"
                                         readonly>
                                 </div>
                                 <div class="form-group">
@@ -34,15 +53,11 @@
                                     <input type="date" class="form-control" id="exampleInputName1" placeholder="date"
                                         readonly>
                                 </div>
-                                <div class="form-group">
-                                    <label for="exampleTextarea1">Description</label>
-                                    <textarea class="form-control" id="exampleTextarea1" rows="4" readonly></textarea>
-                                </div>
                             </form>
                         </div>
                     </div>
                 </div>
-                <div class="col-3 grid-margin stretch-card">
+                {{-- <div class="col-3 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">Ticket #ID093209831</h4>
@@ -63,7 +78,7 @@
                             </form>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
 

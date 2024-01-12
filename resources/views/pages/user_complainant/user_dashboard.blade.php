@@ -771,6 +771,7 @@ body {font-family: Arial;}
                                 <div class="form-group">
                                     <label for="exampleSelectProduct">Product</label>
                                     <select class="form-control" id="exampleSelectProduct">  
+                                    <option disabled selected>select product type</option>
                                     <option>Tableau Server</option>
                                     <option>Tableau Online</option>
                                     <option>Tableau Desktop</option>
