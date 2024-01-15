@@ -103,7 +103,7 @@
                 <h3 class="page-title">
                     <button class="page-title-icon bg-gradient-primary text-white me-2">
                         <i class="mdi mdi-home"></i>
-                    </button> class="text-black"> Dashboard
+                    </button class="text-black"> Dashboard
                 </h3>
             </div>
             <div class="row">
