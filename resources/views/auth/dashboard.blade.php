@@ -44,6 +44,54 @@
         border: 1px solid #ccc;
         border-top: none;
     }
+
+    .card-img-holder-open:hover {
+         background: #54B4D3;
+    }
+
+    .card-img-holder-progress:hover {
+         background: #E4A11B;
+    }
+
+    .card-img-holder-pending:hover {
+         background: #DC4C64;
+    }
+
+    .card-img-holder-solved:hover {
+         background: #14A44D;
+    }
+
+    .card-img-holder-open:hover h4{
+         color: white;  
+    }
+
+    .card-img-holder-open:hover h1{
+         color: white;
+    }
+
+    .card-img-holder-progress:hover h4{
+         color: white;
+    }
+
+    .card-img-holder-progress:hover h1{
+         color: white;
+    }
+
+    .card-img-holder-pending:hover h4{
+         color: white;
+    }
+
+    .card-img-holder-pending:hover h1{
+         color: white;
+    }
+
+    .card-img-holder-solved:hover h4{
+         color: white;
+    }
+
+    .card-img-holder-solved:hover h1{
+         color: white;
+    }
 </style>
 
 
@@ -53,30 +101,29 @@
         <div class="content-wrapper">
             <div class="page-header">
                 <h3 class="page-title">
-                    <span class="page-title-icon bg-gradient-primary text-white me-2">
+                    <button class="page-title-icon bg-gradient-primary text-white me-2">
                         <i class="mdi mdi-home"></i>
-                    </span> Dashboard
+                    </button> class="text-black"> Dashboard
                 </h3>
             </div>
             <div class="row">
                 <div class="col-md-3 stretch-card grid-margin">
-                    <div class="card bg-info card-img-holder text-white text-center">
-                        <div class="card-body btn btn-sm mdi-24px text-white tablinks" onclick="openCity(event, 'open')">
+                    <div class="card card-img-holder-open text-center">
+                        <div class="card-body btn btn-sm mdi-24px tablinks" onclick="openCity(event, 'open')">
                             {{-- <img src="{{ asset('assets/auth/images/dashboard/circle.svg') }}" class="card-img-absolute"
                                 alt="circle-image" /> --}}
-                            <h4 class="font-weight-high mb-3">Open <i
+                            <h4 class="font-weight-normal mb-3">Open <i
                                     class="mdi mdi-ticket-percent mdi-24px float-right"></i>
                             </h4>
-                            <h1 class="mb-5">1
-                            </h1>
+                            <h1 class="mb-5">1</h1>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-3 stretch-card grid-margin">
-                    <div class="card bg-warning card-img-holder text-white text-center">
-                        <div class="card-body btn btn-sm mdi-24px text-white tablinks"
+                    <div class="card card-img-holder-progress text-center">
+                        <div class="card-body btn btn-sm mdi-24px tablinks"
                             onclick="openCity(event, 'progress')">
-                            <h4 class="font-weight-normal mb-3">progress <i
+                            <h4 class="font-weight-normal mb-3">Progress <i
                                     class="mdi mdi-progress-clock mdi-24px float-right"></i>
                             </h4>
                             <h1 class="mb-5">5</h1>
@@ -84,10 +131,10 @@
                     </div>
                 </div>
                 <div class="col-md-3 stretch-card grid-margin">
-                    <div class="card bg-danger card-img-holder text-white text-center">
-                        <div class="card-body btn btn-sm mdi-24px text-white tablinks" onclick="openCity(event, 'pending')">
-                            <img src="{{ asset('assets/auth/images/dashboard/circle.svg') }}" class="card-img-absolute"
-                                alt="circle-image" />
+                    <div class="card card-img-holder-pending text-center">
+                        <div class="card-body btn btn-sm mdi-24px tablinks" onclick="openCity(event, 'pending')">
+                            {{-- <img src="{{ asset('assets/auth/images/dashboard/circle.svg') }}" class="card-img-absolute"
+                                alt="circle-image" /> --}}
                             <h4 class="font-weight-normal mb-3">Pending <i
                                     class="mdi mdi-account-clock-outline mdi-24px float-right"></i>
                             </h4>
@@ -96,10 +143,10 @@
                     </div>
                 </div>
                 <div class="col-md-3 stretch-card grid-margin">
-                    <div class="card bg-success card-img-holder text-white text-center">
-                        <div class="card-body btn btn-sm mdi-24px text-white tablinks" onclick="openCity(event, 'solved')">
-                            <img src="{{ asset('assets/auth/images/dashboard/circle.svg') }}" class="card-img-absolute"
-                                alt="circle-image" />
+                    <div class="card card-img-holder-solved text-center">
+                        <div class="card-body btn btn-sm mdi-24px tablinks" onclick="openCity(event, 'solved')">
+                            {{-- <img src="{{ asset('assets/auth/images/dashboard/circle.svg') }}" class="card-img-absolute"
+                                alt="circle-image" /> --}}
                             <h4 class="font-weight-normal mb-3">Solved <i class="mdi mdi-check mdi-24px float-right"></i>
                             </h4>
                             <h1 class="mb-5">4</h1>
