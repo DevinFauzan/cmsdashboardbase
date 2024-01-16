@@ -39,3 +39,8 @@ Route::get('/detail_ticket_user', [DashboardUserController::class, 'show'])->nam
 Route::get('/my_ticket', [DashboardUserController::class, 'create'])->name('my_ticket');
 
 //Route::get('/new_ticket', [DashboardUserController::class, 'show'])->name('new_ticket');
+
+// routes/web.php
+
+Route::put('/tickets/{ticket}/assign/{user}', 'TicketController@assign')->name('tickets.assign');
+Route::get('/tickets/{id}/details', 'TicketController@getDetails');

@@ -46,51 +46,51 @@
     }
 
     .card-img-holder-open:hover {
-         background: #54B4D3;
+        background: #54B4D3;
     }
 
     .card-img-holder-progress:hover {
-         background: #E4A11B;
+        background: #E4A11B;
     }
 
     .card-img-holder-pending:hover {
-         background: #DC4C64;
+        background: #DC4C64;
     }
 
     .card-img-holder-solved:hover {
-         background: #14A44D;
+        background: #14A44D;
     }
 
-    .card-img-holder-open:hover h4{
-         color: white;  
+    .card-img-holder-open:hover h4 {
+        color: white;
     }
 
-    .card-img-holder-open:hover h1{
-         color: white;
+    .card-img-holder-open:hover h1 {
+        color: white;
     }
 
-    .card-img-holder-progress:hover h4{
-         color: white;
+    .card-img-holder-progress:hover h4 {
+        color: white;
     }
 
-    .card-img-holder-progress:hover h1{
-         color: white;
+    .card-img-holder-progress:hover h1 {
+        color: white;
     }
 
-    .card-img-holder-pending:hover h4{
-         color: white;
+    .card-img-holder-pending:hover h4 {
+        color: white;
     }
 
-    .card-img-holder-pending:hover h1{
-         color: white;
+    .card-img-holder-pending:hover h1 {
+        color: white;
     }
 
-    .card-img-holder-solved:hover h4{
-         color: white;
+    .card-img-holder-solved:hover h4 {
+        color: white;
     }
 
-    .card-img-holder-solved:hover h1{
-         color: white;
+    .card-img-holder-solved:hover h1 {
+        color: white;
     }
 </style>
 
@@ -121,8 +121,7 @@
                 </div>
                 <div class="col-md-3 stretch-card grid-margin">
                     <div class="card card-img-holder-progress text-center">
-                        <div class="card-body btn btn-sm mdi-24px tablinks"
-                            onclick="openCity(event, 'progress')">
+                        <div class="card-body btn btn-sm mdi-24px tablinks" onclick="openCity(event, 'progress')">
                             <h4 class="font-weight-normal mb-3">Progress <i
                                     class="mdi mdi-progress-clock mdi-24px float-right"></i>
                             </h4>
@@ -172,46 +171,29 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>
-                                            <img src="{{ asset('assets/auth/images/faces/face4.jpg') }}" class="me-2"
-                                                alt="image"> John
-                                            Doe
-                                        </td>
-                                        <td> Loosing control on server </td>
-                                        <td>
-                                            <label class="badge badge-gradient-info">OPEN</label>
-                                        </td>
-                                        <td> Dec 3, 2017 </td>
-                                        <td> WD-12348 </td>
-                                        <td>
-                                            <button class="btn btn-primary btn-sm mdi-24px text-white"
-                                                data-bs-toggle="modal" data-bs-target="#modalOpen">
-                                                assign
-                                            </button>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>
-                                            <img src="{{ asset('assets/auth/images/faces/face4.jpg') }}" class="me-2"
-                                                alt="image"> John
-                                            Doe
-                                        </td>
-                                        <td> Loosing control on server </td>
-                                        <td>
-                                            <label class="badge badge-gradient-info">OPEN</label>
-                                        </td>
-                                        <td> Dec 3, 2017 </td>
-                                        <td> WD-12348 </td>
-                                        <td>
-                                            <button class="btn btn-primary btn-sm mdi-24px text-white"
-                                                data-bs-toggle="modal" data-bs-target="#modalOpen">
-                                                assign
-                                            </button>
-                                        </td>
-                                    </tr>
+                                    @foreach ($ticket as $t)
+                                        <tr>
+                                            <td>
+                                                {{-- <img src="{{ asset('assets/auth/images/faces/face4.jpg') }}" class="me-2" alt="image"> --}}
+                                                {{ $t->name_user }}
+                                            </td>
+                                            <td>{{ $t->subject }}</td>
+                                            <td>
+                                                <label class="badge badge-gradient-info">{{ $t->status }}</label>
+                                            </td>
+                                            <td>{{ $t->ticket_id }}</td>
+                                            <td>{{ $t->created_at }}</td>
+                                            <td>
+                                                <button class="btn btn-primary btn-sm mdi-24px text-white"
+                                                    data-bs-toggle="modal" data-bs-target="#modalOpen"
+                                                    data-ticket-id="{{ $t->id }}">
+                                                    assign
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
+
                             </table>
                         </div>
                     </div>
@@ -334,206 +316,6 @@
                     </div>
                 </div>
             </div>
-            {{-- <div class="row">
-                <div class="col-12 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">Recent Updates</h4>
-                            <div class="d-flex">
-                                <div class="d-flex align-items-center me-4 text-muted font-weight-light">
-                                    <i class="mdi mdi-account-outline icon-sm me-2"></i>
-                                    <span>jack Menqu</span>
-                                </div>
-                                <div class="d-flex align-items-center text-muted font-weight-light">
-                                    <i class="mdi mdi-clock icon-sm me-2"></i>
-                                    <span>October 3rd, 2018</span>
-                                </div>
-                            </div>
-                            <div class="row mt-3">
-                                <div class="col-6 pe-1">
-                                    <img src="{{ asset('assets/auth/images/dashboard/img_1.jpg') }}" class="mb-2 mw-100 w-100 rounded"
-                                        alt="image">
-                                    <img src="{{ asset('assets/auth/images/dashboard/img_4.jpg') }}" class="mw-100 w-100 rounded"
-                                        alt="image">
-                                </div>
-                                <div class="col-6 ps-1">
-                                    <img src="{{ asset('assets/auth/images/dashboard/img_2.jpg') }}" class="mb-2 mw-100 w-100 rounded"
-                                        alt="image">
-                                    <img src="{{ asset('assets/auth/images/dashboard/img_3.jpg') }}" class="mw-100 w-100 rounded"
-                                        alt="image">
-                                </div>
-                            </div>
-                            <div class="d-flex mt-5 align-items-top">
-                                <img src="{{ asset('assets/auth/images/faces/face3.jpg') }}" class="img-sm rounded-circle me-3"
-                                    alt="image">
-                                <div class="mb-0 flex-grow">
-                                    <h5 class="me-2 mb-2">School Website - Authentication Module.</h5>
-                                    <p class="mb-0 font-weight-light">It is a long established fact that a reader will be
-                                        distracted by the readable content of a page.</p>
-                                </div>
-                                <div class="ms-auto">
-                                    <i class="mdi mdi-heart-outline text-muted"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> --}}
-            {{-- <div class="row">
-                <div class="col-md-7 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">Project Status</h4>
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th> # </th>
-                                            <th> Name </th>
-                                            <th> Due Date </th>
-                                            <th> Progress </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td> 1 </td>
-                                            <td> Herman Beck </td>
-                                            <td> May 15, 2015 </td>
-                                            <td>
-                                                <div class="progress">
-                                                    <div class="progress-bar bg-gradient-success" role="progressbar"
-                                                        style="width: 25%" aria-valuenow="25" aria-valuemin="0"
-                                                        aria-valuemax="100"></div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td> 2 </td>
-                                            <td> Messsy Adam </td>
-                                            <td> Jul 01, 2015 </td>
-                                            <td>
-                                                <div class="progress">
-                                                    <div class="progress-bar bg-gradient-danger" role="progressbar"
-                                                        style="width: 75%" aria-valuenow="75" aria-valuemin="0"
-                                                        aria-valuemax="100"></div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td> 3 </td>
-                                            <td> John Richards </td>
-                                            <td> Apr 12, 2015 </td>
-                                            <td>
-                                                <div class="progress">
-                                                    <div class="progress-bar bg-gradient-warning" role="progressbar"
-                                                        style="width: 90%" aria-valuenow="90" aria-valuemin="0"
-                                                        aria-valuemax="100"></div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td> 4 </td>
-                                            <td> Peter Meggik </td>
-                                            <td> May 15, 2015 </td>
-                                            <td>
-                                                <div class="progress">
-                                                    <div class="progress-bar bg-gradient-primary" role="progressbar"
-                                                        style="width: 50%" aria-valuenow="50" aria-valuemin="0"
-                                                        aria-valuemax="100"></div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td> 5 </td>
-                                            <td> Edward </td>
-                                            <td> May 03, 2015 </td>
-                                            <td>
-                                                <div class="progress">
-                                                    <div class="progress-bar bg-gradient-danger" role="progressbar"
-                                                        style="width: 35%" aria-valuenow="35" aria-valuemin="0"
-                                                        aria-valuemax="100"></div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td> 5 </td>
-                                            <td> Ronald </td>
-                                            <td> Jun 05, 2015 </td>
-                                            <td>
-                                                <div class="progress">
-                                                    <div class="progress-bar bg-gradient-info" role="progressbar"
-                                                        style="width: 65%" aria-valuenow="65" aria-valuemin="0"
-                                                        aria-valuemax="100"></div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-5 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title text-white">Todo</h4>
-                            <div class="add-items d-flex">
-                                <input type="text" class="form-control todo-list-input"
-                                    placeholder="What do you need to do today?">
-                                <button class="add btn btn-gradient-primary font-weight-bold todo-list-add-btn"
-                                    id="add-task">Add</button>
-                            </div>
-                            <div class="list-wrapper">
-                                <ul class="d-flex flex-column-reverse todo-list todo-list-custom">
-                                    <li>
-                                        <div class="form-check">
-                                            <label class="form-check-label">
-                                                <input class="checkbox" type="checkbox"> Meeting with Alisa </label>
-                                        </div>
-                                        <i class="remove mdi mdi-close-circle-outline"></i>
-                                    </li>
-                                    <li class="completed">
-                                        <div class="form-check">
-                                            <label class="form-check-label">
-                                                <input class="checkbox" type="checkbox" checked> Call John </label>
-                                        </div>
-                                        <i class="remove mdi mdi-close-circle-outline"></i>
-                                    </li>
-                                    <li>
-                                        <div class="form-check">
-                                            <label class="form-check-label">
-                                                <input class="checkbox" type="checkbox"> Create invoice </label>
-                                        </div>
-                                        <i class="remove mdi mdi-close-circle-outline"></i>
-                                    </li>
-                                    <li>
-                                        <div class="form-check">
-                                            <label class="form-check-label">
-                                                <input class="checkbox" type="checkbox"> Print Statements </label>
-                                        </div>
-                                        <i class="remove mdi mdi-close-circle-outline"></i>
-                                    </li>
-                                    <li class="completed">
-                                        <div class="form-check">
-                                            <label class="form-check-label">
-                                                <input class="checkbox" type="checkbox" checked> Prepare for presentation
-                                            </label>
-                                        </div>
-                                        <i class="remove mdi mdi-close-circle-outline"></i>
-                                    </li>
-                                    <li>
-                                        <div class="form-check">
-                                            <label class="form-check-label">
-                                                <input class="checkbox" type="checkbox"> Pick up kids from school </label>
-                                        </div>
-                                        <i class="remove mdi mdi-close-circle-outline"></i>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> --}}
             <div class="modal" id="modalOpen" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-xl row">
                     <div class="modal-content ">
@@ -574,7 +356,7 @@
                                             <div class="form-group">
                                                 <label for="exampleInputTelp">Telephone</label>
                                                 <input type="number_format" class="form-control" id="exampleInputTelp"
-                                                    placeholder="08xxxxx" readonly>
+                                                    placeholder="08xxxxx" value="{{ $ticket->phone }}" readonly>
                                             </div>
                                             <div class="form-group">
                                                 <label for="exampleInputName1">Complained date</label>
@@ -588,55 +370,52 @@
                             <div class="col-6 grid-margin stretch-card ">
                                 <div class="card">
                                     <div class="card-body">
-                                        <h4 class="card-title">Ticket #ID093209831</h4>
-                                        <p class="card-description">Select Technical person to solve this ticket</p>
-                                        <div class="table-responsive">
-                                            <table class="table text-center">
-                                                <thead>
-                                                    <tr>
-                                                        <th> Name </th>
-                                                        <th> Case Total </th>
-                                                        <th> Status </th>
-                                                        <th> Action </th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td> Doditdadsadsada </td>
-                                                        <td> 0 </td>
-                                                        <td>
-                                                            <label class="badge badge-gradient-success">Free</label>
-                                                        </td>
-                                                        <td> 
-                                                            <Button class="btn btn-sm btn-primary">
-                                                                Assign
-                                                            </Button> 
-                                                        </td>
-                                                    </tr>
-
-                                                </tbody>
-                                            </table>
-                                        </div>
-
-                                        {{-- <form class="forms-sample">
-                                            <div class="form-group">
-                                                <label for="exampleSelectGender">Assign</label>
-                                                <select class="form-control" id="exampleSelectGender">
-                                                    <option selected disabled>Select</option>
-                                                    <option>Nanda | 3 Case ongoing</option>
-                                                    <option>Pertuk | 1 Case ongoing</option>
-                                                    <option>Noval | Free</option>
-                                                </select>
+                                        @foreach ($ticket as $ticket)
+                                            <h4 class="card-title">Ticket #{{ $ticket->ticket_id }}</h4>
+                                            <p class="card-description">Select Technical person to solve this ticket</p>
+                                            <div class="table-responsive">
+                                                <table class="table text-center">
+                                                    <thead>
+                                                        <tr>
+                                                            <th> Name </th>
+                                                            <th> Case Total </th>
+                                                            <th> Status </th>
+                                                            <th> Action </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($Users as $user)
+                                                            <tr>
+                                                                <td>{{ $user->name }}</td>
+                                                                <td>0</td>
+                                                                <td>
+                                                                    <label
+                                                                        class="badge badge-gradient-success">Free</label>
+                                                                </td>
+                                                                <td>
+                                                                    <form
+                                                                        action="{{ route('tickets.assign', ['ticket' => $ticket->ticket_id, 'user' => $user->id]) }}"
+                                                                        method="post">
+                                                                        @csrf
+                                                                        @method('PUT')
+                                                                        <button type="submit"
+                                                                            class="btn btn-sm btn-primary">
+                                                                            Assign
+                                                                        </button>
+                                                                    </form>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
                                             </div>
-                                            <div class="justify-content-center center">
-                                                <button class="btn btn-light btn-sm mr-4">Cancel</button>
-                                                <button type="submit"
-                                                    class="btn btn-gradient-primary btn-sm">Submit</button>
-                                            </div>
-                                        </form> --}}
+                                        @endforeach
                                     </div>
+
                                 </div>
+
                             </div>
+
                         </div>
 
                     </div>
@@ -665,5 +444,29 @@
             evt.currentTarget.className += " active";
         }
     </script>
+
+    <script>
+        $(document).ready(function() {
+            // Handle the click event of the "Assign" button
+            $('.assign-button').on('click', function() {
+                // Get the ticket ID from the data attribute
+                var ticketId = $(this).data('ticket-id');
+
+                // AJAX request to fetch ticket details
+                $.ajax({
+                    url: '/tickets/' + ticketId + '/details', // Update the URL based on your routes
+                    type: 'GET',
+                    success: function(response) {
+                        // Update the modal content with the fetched details
+                        $('#modalOpen .modal-body').html(response);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            });
+        });
+    </script>
+
 
     <script src="https://cdn.datatables.net/v/bs5/dt-1.13.8/datatables.min.js"></script>
