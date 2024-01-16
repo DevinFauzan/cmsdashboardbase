@@ -181,12 +181,12 @@
                                             <td>
                                                 <label class="badge badge-gradient-info">{{ $t->status }}</label>
                                             </td>
-                                            <td>{{ $t->ticket_id }}</td>
                                             <td>{{ $t->created_at }}</td>
+                                            <td>{{ $t->ticket_id }}</td>
                                             <td>
-                                                <button class="btn btn-primary btn-sm mdi-24px text-white"
+                                                <button class="btn btn-primary btn-sm mdi-24px text-white btn-assign"
                                                     data-bs-toggle="modal" data-bs-target="#modalOpen"
-                                                    data-ticket-id="{{ $t->id }}">
+                                                    data-ticket-id="{{ $t->ticket_id }}">
                                                     assign
                                                 </button>
                                             </td>
@@ -356,7 +356,7 @@
                                             <div class="form-group">
                                                 <label for="exampleInputTelp">Telephone</label>
                                                 <input type="number_format" class="form-control" id="exampleInputTelp"
-                                                    placeholder="08xxxxx" value="{{ $ticket->phone }}" readonly>
+                                                    placeholder="08xxxxx" readonly>
                                             </div>
                                             <div class="form-group">
                                                 <label for="exampleInputName1">Complained date</label>
@@ -370,59 +370,47 @@
                             <div class="col-6 grid-margin stretch-card ">
                                 <div class="card">
                                     <div class="card-body">
-                                        @foreach ($ticket as $ticket)
-                                            <h4 class="card-title">Ticket #{{ $ticket->ticket_id }}</h4>
-                                            <p class="card-description">Select Technical person to solve this ticket</p>
-                                            <div class="table-responsive">
-                                                <table class="table text-center">
-                                                    <thead>
+                                        <h4 class="card-title">Ticket #{{ $t->ticket_id }}</h4>
+                                        <p class="card-description">Select Technical person to solve this ticket</p>
+                                        <div class="table-responsive">
+                                            <table class="table text-center">
+                                                <thead>
+                                                    <tr>
+                                                        <th> Name </th>
+                                                        <th> Case Total </th>
+                                                        <th> Status </th>
+                                                        <th> Action </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($Users as $user)
                                                         <tr>
-                                                            <th> Name </th>
-                                                            <th> Case Total </th>
-                                                            <th> Status </th>
-                                                            <th> Action </th>
+                                                            <td>{{ $user->name }}</td>
+                                                            <td>0</td>
+                                                            <td>
+                                                                <label class="badge badge-gradient-success">Free</label>
+                                                            </td>
+                                                            <td>
+                                                                <form
+                                                                    action="{{ route('tickets.assign', ['ticket' => $t->id, 'user' => $user->id]) }}"
+                                                                    method="post">
+                                                                    @csrf
+                                                                    @method('PUT')
+                                                                    <button type="submit" class="btn btn-sm btn-primary">
+                                                                        Assign
+                                                                    </button>
+                                                                </form>
+                                                            </td>
                                                         </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach ($Users as $user)
-                                                            <tr>
-                                                                <td>{{ $user->name }}</td>
-                                                                <td>0</td>
-                                                                <td>
-                                                                    <label
-                                                                        class="badge badge-gradient-success">Free</label>
-                                                                </td>
-                                                                <td>
-                                                                    <form
-                                                                        action="{{ route('tickets.assign', ['ticket' => $ticket->ticket_id, 'user' => $user->id]) }}"
-                                                                        method="post">
-                                                                        @csrf
-                                                                        @method('PUT')
-                                                                        <button type="submit"
-                                                                            class="btn btn-sm btn-primary">
-                                                                            Assign
-                                                                        </button>
-                                                                    </form>
-                                                                </td>
-                                                            </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        @endforeach
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
-
                                 </div>
-
                             </div>
-
                         </div>
-
                     </div>
-                    {{-- <div class="modal-footer">
-                        <button type="button" class="btn btn-primary">Submit</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div> --}}
                 </div>
             </div>
         </div>
@@ -445,28 +433,31 @@
         }
     </script>
 
-    <script>
-        $(document).ready(function() {
-            // Handle the click event of the "Assign" button
-            $('.assign-button').on('click', function() {
-                // Get the ticket ID from the data attribute
-                var ticketId = $(this).data('ticket-id');
+    <script src="https://cdn.datatables.net/v/bs5/dt-1.13.8/datatables.min.js"></script>
 
-                // AJAX request to fetch ticket details
-                $.ajax({
-                    url: '/tickets/' + ticketId + '/details', // Update the URL based on your routes
-                    type: 'GET',
-                    success: function(response) {
-                        // Update the modal content with the fetched details
-                        $('#modalOpen .modal-body').html(response);
-                    },
-                    error: function(error) {
-                        console.log(error);
-                    }
-                });
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('.btn-assign').click(function() {
+            var ticketId = $(this).data('ticket-id');
+
+            $.ajax({
+                url: '/auth/get-ticket-details/' + ticketId, // Update the URL based on your route
+                method: 'GET',
+                success: function(response) {
+                    $('#modalContent').html(response);
+                    $('#modalOpen').modal('show');
+                },
+                error: function(error) {
+                    console.error(error);
+                }
             });
         });
-    </script>
+    });
+</script>
 
-
-    <script src="https://cdn.datatables.net/v/bs5/dt-1.13.8/datatables.min.js"></script>

@@ -40,7 +40,13 @@ Route::get('/my_ticket', [DashboardUserController::class, 'create'])->name('my_t
 
 //Route::get('/new_ticket', [DashboardUserController::class, 'show'])->name('new_ticket');
 
-// routes/web.php
+//Admin
+Route::resource('detail_ticket-admin', DashboardController::class);
+
 
 Route::put('/tickets/{ticket}/assign/{user}', 'TicketController@assign')->name('tickets.assign');
 Route::get('/tickets/{id}/details', 'TicketController@getDetails');
+// Route::get('/auth/dashboard/{id}', 'DashboardController@showTicketDetails');
+Route::get('/auth/get-ticket-details/{id}', 'TicketController@getTicketDetails');
+
+
