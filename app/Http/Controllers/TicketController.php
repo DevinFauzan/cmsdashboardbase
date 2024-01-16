@@ -18,19 +18,23 @@ class TicketController extends Controller
     {
         //
     }
-    public function assign(Request $request, Ticket $ticket, User $user)
+    public function assign(Request $request, Ticket $ticket)
     {
-        // Add validation if needed
-        $ticket->update(['assigned_to' => $user->id]);
-
-        return redirect()->route('tickets.index')->with('success', 'Ticket assigned successfully');
+        $ticketId = $request->input('ticket_id');
+        $userId = $request->input('user_id');
+    
+        $ticket = Ticket::findOrFail($ticketId);
+        $user = User::findOrFail($userId);
+    
+        // Update the ticket's name_tech with the user's name
+        $ticket->update(['name_tech' => $user->name]);
+    
+        return redirect()->route('auth.dashboard')->with('success', 'Ticket assigned successfully');
     }
+    
 
-    public function getDetails($id)
-{
-    $ticket = Ticket::find($id);
-    return view('auth.ticket_details', compact('ticket'));
-}
+    
+
 
     /**
      * Show the form for creating a new resource.

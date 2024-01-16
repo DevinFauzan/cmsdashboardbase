@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\Auth\DashboardController;
+// use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\PostController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TicketController;
 use App\Http\Controllers\DashboarTechController;
 use App\Http\Controllers\DashboardUserController;
 use App\Http\Controllers\TaskController; // Import your TaskController
@@ -24,7 +26,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('auth/dashboard', [DashboardController::class, 'dashboard'])->name('auth.dashboard')->middleware('auth');
+// Route::get('auth/dashboard', [DashboardController::class, 'dashboard'])->name('auth.dashboard')->middleware('auth');
 Route::resource('auth/posts', PostController::class);
 
 //Tech Person
@@ -41,7 +43,16 @@ Route::get('/my_ticket', [DashboardUserController::class, 'create'])->name('my_t
 //Route::get('/new_ticket', [DashboardUserController::class, 'show'])->name('new_ticket');
 
 //Admin
+// Route::get('auth/dashboard', [DashboardController::class, 'index'])->name('auth.dashboard')->middleware('auth');
+// Route::resource('detail_ticket-admin', DashboardController::class);
+
+Route::get('auth/dashboard', [DashboardController::class, 'index'])->name('auth.dashboard')->middleware('auth');
 Route::resource('detail_ticket-admin', DashboardController::class);
+Route::get('admin_ticket_detail/{id}/edit', [DashboardController::class, 'edit'])->name('admin_ticket_detail.edit');
+Route::put('/assign-ticket/{ticket}', [TicketController::class, 'assign'])->name('assign.ticket');
+
+
+
 
 
 Route::put('/tickets/{ticket}/assign/{user}', 'TicketController@assign')->name('tickets.assign');

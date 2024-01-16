@@ -184,11 +184,11 @@
                                             <td>{{ $t->created_at }}</td>
                                             <td>{{ $t->ticket_id }}</td>
                                             <td>
-                                                <button class="btn btn-primary btn-sm mdi-24px text-white btn-assign"
-                                                    data-bs-toggle="modal" data-bs-target="#modalOpen"
-                                                    data-ticket-id="{{ $t->ticket_id }}">
+                                                <button class="btn btn-primary btn-sm mdi-24px text-white"
+                                                    onclick="window.location.href='{{ route('admin_ticket_detail.edit', ['id' => $t->id]) }}'">
                                                     assign
                                                 </button>
+
                                             </td>
                                         </tr>
                                     @endforeach
@@ -316,103 +316,6 @@
                     </div>
                 </div>
             </div>
-            <div class="modal" id="modalOpen" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-xl row">
-                    <div class="modal-content ">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Ticket #ID093209831</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body row">
-                            <div class="col-6 grid-margin stretch-card ">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <form class="forms-sample">
-                                            <div class="form-group">
-                                                <label for="exampleInputName1">Subject</label>
-                                                <input type="text" class="form-control" id="exampleInputName1"
-                                                    placeholder="subject" readonly>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="exampleTextarea1">Description</label>
-                                                <textarea class="form-control" id="exampleTextarea1" rows="4" readonly></textarea>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="exampleSelectProduct">Product</label>
-                                                <select class="form-control" id="exampleSelectProduct" disabled>
-                                                    <option disabled selected>select product type</option>
-                                                    <option>Tableau Server</option>
-                                                    <option>Tableau Online</option>
-                                                    <option>Tableau Desktop</option>
-                                                    <option>Tableau Prep Builder</option>
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="exampleInputEmail3">Email address</label>
-                                                <input type="email" class="form-control" id="exampleInputEmail3"
-                                                    placeholder="Email" readonly>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="exampleInputTelp">Telephone</label>
-                                                <input type="number_format" class="form-control" id="exampleInputTelp"
-                                                    placeholder="08xxxxx" readonly>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="exampleInputName1">Complained date</label>
-                                                <input type="date" class="form-control" id="exampleInputName1"
-                                                    placeholder="date" readonly>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6 grid-margin stretch-card ">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h4 class="card-title">Ticket #{{ $t->ticket_id }}</h4>
-                                        <p class="card-description">Select Technical person to solve this ticket</p>
-                                        <div class="table-responsive">
-                                            <table class="table text-center">
-                                                <thead>
-                                                    <tr>
-                                                        <th> Name </th>
-                                                        <th> Case Total </th>
-                                                        <th> Status </th>
-                                                        <th> Action </th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach ($Users as $user)
-                                                        <tr>
-                                                            <td>{{ $user->name }}</td>
-                                                            <td>0</td>
-                                                            <td>
-                                                                <label class="badge badge-gradient-success">Free</label>
-                                                            </td>
-                                                            <td>
-                                                                <form
-                                                                    action="{{ route('tickets.assign', ['ticket' => $t->id, 'user' => $user->id]) }}"
-                                                                    method="post">
-                                                                    @csrf
-                                                                    @method('PUT')
-                                                                    <button type="submit" class="btn btn-sm btn-primary">
-                                                                        Assign
-                                                                    </button>
-                                                                </form>
-                                                            </td>
-                                                        </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
         <!-- content-wrapper ends -->
     @endsection
@@ -439,25 +342,25 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- Include jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<script>
-    $(document).ready(function() {
-        $('.btn-assign').click(function() {
-            var ticketId = $(this).data('ticket-id');
+    <script>
+        $(document).ready(function() {
+            $('.btn-assign').click(function() {
+                var ticketId = $(this).data('ticket-id');
 
-            $.ajax({
-                url: '/auth/get-ticket-details/' + ticketId, // Update the URL based on your route
-                method: 'GET',
-                success: function(response) {
-                    $('#modalContent').html(response);
-                    $('#modalOpen').modal('show');
-                },
-                error: function(error) {
-                    console.error(error);
-                }
+                $.ajax({
+                    url: '/auth/get-ticket-details/' +
+                        ticketId, // Update the URL based on your route
+                    method: 'GET',
+                    success: function(response) {
+                        $('#modalContent').html(response);
+                        $('#modalOpen').modal('show');
+                    },
+                    error: function(error) {
+                        console.error(error);
+                    }
+                });
             });
         });
-    });
-</script>
-
+    </script>

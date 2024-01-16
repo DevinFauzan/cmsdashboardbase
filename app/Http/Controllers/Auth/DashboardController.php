@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    public function dashboard()
+    public function index()
     {
         $ticket = Ticket::all();
         $user = User::all();
@@ -16,15 +16,16 @@ class DashboardController extends Controller
         return view('auth.dashboard',["ticket"=> $ticket, "Users" => $user]);
     }
 
-    public function edit(Request $request, int $id)
-    {
-     $ticket = Ticket::find($id);
-     
-     if ($record) {
-        abort(404, "Reoprd not found");
-     }   
-     $users = User::all();
-     return view('auth.edit', compact('ticket', 'users'));
+    public function edit($id)
+{
+    $ticket = Ticket::find($id);
 
+    if (!$ticket) {
+        abort(404, "Record not found");
     }
+
+    $users = User::all();
+    return view('pages.admin.admin_ticket_detail', compact('ticket', 'users'));
+}
+
 }
