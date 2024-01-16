@@ -8,7 +8,7 @@
                     <a href="javascript:history.back()" class="page-title-icon bg-gradient-primary text-white me-2">
                         <i class="mdi mdi-arrow-left"></i>
                     </a>                    
-                    {{ $ticket->ticket_id }} | {{ $ticket->name_user }} | {{ $ticket-> }}
+                    {{ $ticket->ticket_id }} | {{ $ticket->name_user }} | {{ $ticket->name_tech }}
                 </h2>
             </div>
             <div class="row">

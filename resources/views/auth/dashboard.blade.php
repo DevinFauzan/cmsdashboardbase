@@ -167,31 +167,34 @@
                                         <th> Status </th>
                                         <th> Submited </th>
                                         <th> Tracking ID </th>
-                                        <th>Assign Ticket</th>
+                                        <th> Info Ticket</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($ticket as $t)
+                                    @if ($t->name_tech == "")                                                                
                                         <tr>
                                             <td>
                                                 {{-- <img src="{{ asset('assets/auth/images/faces/face4.jpg') }}" class="me-2" alt="image"> --}}
                                                 {{ $t->name_user }}
                                             </td>
                                             <td>{{ $t->subject }}</td>
-                                            <td>
-                                                <label class="badge badge-gradient-info">{{ $t->status }}</label>
+                                            <td>                                                
+                                                <label class="badge badge-gradient-info">{{ $t->status }}</label>                                                
                                             </td>
                                             <td>{{ $t->created_at }}</td>
                                             <td>{{ $t->ticket_id }}</td>
                                             <td>
                                                 <button class="btn btn-primary btn-sm mdi-24px text-white"
                                                     onclick="window.location.href='{{ route('admin_ticket_detail.edit', ['id' => $t->id]) }}'">
-                                                    assign
+                                                    Info
                                                 </button>
-
                                             </td>
-                                        </tr>
-                                    @endforeach
+                                        </tr> 
+                                        @else
+                                        
+                                        @endif                                                                              
+                                    @endforeach                                    
                                 </tbody>
 
                             </table>
@@ -200,120 +203,132 @@
                 </div>
                 <div class="card tabcontent" id="progress">
                     <div class="card-body">
-                        <h4 class="card-title">progress Ticket</h4>
+                        <h4 class="card-title">Progress Ticket</h4>
                         <div class="table-responsive">
-                            <table class="table">
+                            <table id="example" class="table table-striped" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th> Assignee </th>
-                                        <th> Assigned By </th>
                                         <th> Subject </th>
                                         <th> Status </th>
-                                        <th> Last Update </th>
+                                        <th> Submited </th>
                                         <th> Tracking ID </th>
+                                        {{-- <th> Assign Ticket </th> --}}
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>
-                                            <img src="{{ asset('assets/auth/images/faces/face1.jpg') }}" class="me-2"
-                                                alt="image">
-                                            Davcccccc
-                                        </td>
-                                        <td>
-                                            <img src="{{ asset('assets/auth/images/faces/face1.jpg') }}" class="me-2"
-                                                alt="image">
-                                            RudiRudiRudiRudi
-                                        </td>
-                                        <td> Fund is not recieved </td>
-                                        <td>
-                                            <label class="badge badge-gradient-warning">Progress</label>
-                                        </td>
-                                        <td> Dec 5, 2017 </td>
-                                        <td> WD-12345 </td>
-                                    </tr>
+                                    @foreach ($ticket as $t)
+                                        @if ($t->status === 'progress')
+                                            <tr>
+                                                <td>
+                                                    {{-- <img src="{{ asset('assets/auth/images/faces/face4.jpg') }}" class="me-2" alt="image"> --}}
+                                                    {{ $t->name_user }}
+                                                </td>
+                                                <td>{{ $t->subject }}</td>
+                                                <td>
+                                                    <label class="badge badge-gradient-warning">{{ $t->status }}</label>
+                                                </td>
+                                                <td>{{ $t->created_at }}</td>
+                                                <td>{{ $t->ticket_id }}</td>
+                                                {{-- <td>
+                                                    <button class="btn btn-primary btn-sm mdi-24px text-white"
+                                                        onclick="window.location.href='{{ route('admin_ticket_detail.edit', ['id' => $t->id]) }}'">
+                                                        assign
+                                                    </button>
+                                                </td> --}}
+                                            </tr>
+                                        @endif
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
-                    </div>
+                    </div>
                 </div>
                 <div class="card tabcontent" id="pending">
                     <div class="card-body">
                         <h4 class="card-title">Pending Ticket</h4>
                         <div class="table-responsive">
-                            <table class="table">
+                            <table id="example" class="table table-striped" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th> Assignee </th>
-                                        <th> Assigned By </th>
                                         <th> Subject </th>
                                         <th> Status </th>
-                                        <th> Last Update </th>
+                                        <th> Submited </th>
                                         <th> Tracking ID </th>
+                                        {{-- <th> Assign Ticket </th> --}}
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>
-                                            <img src="{{ asset('assets/auth/images/faces/face2.jpg') }}" class="me-2"
-                                                alt="image">
-                                            Stella Johnson
-                                        </td>
-                                        <td>
-                                            <img src="{{ asset('assets/auth/images/faces/face2.jpg') }}" class="me-2"
-                                                alt="image">
-                                            Johnson
-                                        </td>
-                                        <td> High loading time </td>
-                                        <td>
-                                            <label class="badge badge-gradient-danger">Pending</label>
-                                        </td>
-                                        <td> Dec 12, 2017 </td>
-                                        <td> WD-12346 </td>
-                                    </tr>
+                                    @foreach ($ticket as $t)
+                                        @if ($t->status === 'pending')
+                                            <tr>
+                                                <td>
+                                                    {{-- <img src="{{ asset('assets/auth/images/faces/face4.jpg') }}" class="me-2" alt="image"> --}}
+                                                    {{ $t->name_user }}
+                                                </td>
+                                                <td>{{ $t->subject }}</td>
+                                                <td>
+                                                    <label class="badge badge-gradient-danger">{{ $t->status }}</label>
+                                                </td>
+                                                <td>{{ $t->created_at }}</td>
+                                                <td>{{ $t->ticket_id }}</td>
+                                                {{-- <td>
+                                                    <button class="btn btn-primary btn-sm mdi-24px text-white"
+                                                        onclick="window.location.href='{{ route('admin_ticket_detail.edit', ['id' => $t->id]) }}'">
+                                                        assign
+                                                    </button>
+                                                </td> --}}
+                                            </tr>
+                                        @endif
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
-                    </div>
+                    </div>
                 </div>
                 <div class="card tabcontent" id="solved">
                     <div class="card-body">
                         <h4 class="card-title">Solved Ticket</h4>
                         <div class="table-responsive">
-                            <table class="table">
+                            <table id="example" class="table table-striped" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th> Assignee </th>
-                                        <th> Assigned By </th>
                                         <th> Subject </th>
                                         <th> Status </th>
-                                        <th> Last Update </th>
+                                        <th> Submited </th>
                                         <th> Tracking ID </th>
+                                        {{-- <th> Assign Ticket </th> --}}
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>
-                                            <img src="{{ asset('assets/auth/images/faces/face3.jpg') }}" class="me-2"
-                                                alt="image">
-                                            Marina Michel
-                                        </td>
-                                        <td>
-                                            <img src="{{ asset('assets/auth/images/faces/face3.jpg') }}" class="me-2"
-                                                alt="image">
-                                            Marina Michel
-                                        </td>
-                                        <td> Website down for one week </td>
-                                        <td>
-                                            <label class="badge badge-gradient-success">Solved</label>
-                                        </td>
-                                        <td> Dec 16, 2017 </td>
-                                        <td> WD-12347 </td>
-                                    </tr>
+                                    @foreach ($ticket as $t)
+                                        @if ($t->status === 'solved')
+                                            <tr>
+                                                <td>
+                                                    {{-- <img src="{{ asset('assets/auth/images/faces/face4.jpg') }}" class="me-2" alt="image"> --}}
+                                                    {{ $t->name_user }}
+                                                </td>
+                                                <td>{{ $t->subject }}</td>
+                                                <td>
+                                                    <label class="badge badge-gradient-success">{{ $t->status }}</label>
+                                                </td>
+                                                <td>{{ $t->created_at }}</td>
+                                                <td>{{ $t->ticket_id }}</td>
+                                                {{-- <td>
+                                                    <button class="btn btn-primary btn-sm mdi-24px text-white"
+                                                        onclick="window.location.href='{{ route('admin_ticket_detail.edit', ['id' => $t->id]) }}'">
+                                                        assign
+                                                    </button>
+                                                </td> --}}
+                                            </tr>
+                                        @endif
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
-                    </div>
+                    </div>
                 </div>
             </div>
         </div>
