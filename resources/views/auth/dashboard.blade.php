@@ -115,7 +115,7 @@
                             <h4 class="font-weight-normal mb-3">Open <i
                                     class="mdi mdi-ticket-percent mdi-24px float-right"></i>
                             </h4>
-                            <h1 class="mb-5">1</h1>
+                            <h1 class="mb-5">{{ $openTickets }}</h1>
                         </div>
                     </div>
                 </div>
@@ -125,7 +125,7 @@
                             <h4 class="font-weight-normal mb-3">Progress <i
                                     class="mdi mdi-progress-clock mdi-24px float-right"></i>
                             </h4>
-                            <h1 class="mb-5">5</h1>
+                            <h1 class="mb-5">{{ $progressTickets }}</h1>
                         </div>
                     </div>
                 </div>
@@ -137,7 +137,7 @@
                             <h4 class="font-weight-normal mb-3">Pending <i
                                     class="mdi mdi-account-clock-outline mdi-24px float-right"></i>
                             </h4>
-                            <h1 class="mb-5">4</h1>
+                            <h1 class="mb-5">{{ $pendingTickets }}</h1>
                         </div>
                     </div>
                 </div>
@@ -148,7 +148,7 @@
                                 alt="circle-image" /> --}}
                             <h4 class="font-weight-normal mb-3">Solved <i class="mdi mdi-check mdi-24px float-right"></i>
                             </h4>
-                            <h1 class="mb-5">4</h1>
+                            <h1 class="mb-5">{{ $solvedTickets }}</h1>
                         </div>
                     </div>
                 </div>
@@ -158,177 +158,207 @@
                 <div class="card tabcontent" id="open">
                     <div class="card-body">
                         <h4 class="card-title">Open Ticket</h4>
-                        <div class="table-responsive">
-                            <table id="example" class="table table-striped" style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <th> Assignee </th>
-                                        <th> Subject </th>
-                                        <th> Status </th>
-                                        <th> Submited </th>
-                                        <th> Tracking ID </th>
-                                        <th> Info Ticket</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($ticket as $t)
-                                    @if ($t->name_tech == "")                                                                
+                        @if ($ticket->where('status', 'open')->isEmpty())
+                            <p class="text-center">There is no data</p>
+                        @else
+                            <div class="table-responsive">
+                                <table id="example" class="table table-striped" style="width:100%">
+                                    <thead>
                                         <tr>
-                                            <td>
-                                                {{-- <img src="{{ asset('assets/auth/images/faces/face4.jpg') }}" class="me-2" alt="image"> --}}
-                                                {{ $t->name_user }}
-                                            </td>
-                                            <td>{{ $t->subject }}</td>
-                                            <td>                                                
-                                                <label class="badge badge-gradient-info">{{ $t->status }}</label>                                                
-                                            </td>
-                                            <td>{{ $t->created_at }}</td>
-                                            <td>{{ $t->ticket_id }}</td>
-                                            <td>
-                                                <button class="btn btn-primary btn-sm mdi-24px text-white"
-                                                    onclick="window.location.href='{{ route('admin_ticket_detail.edit', ['id' => $t->id]) }}'">
-                                                    Info
-                                                </button>
-                                            </td>
-                                        </tr> 
-                                        @else
-                                        
-                                        @endif                                                                              
-                                    @endforeach                                    
-                                </tbody>
+                                            <th> Assignee </th>
+                                            <th> Subject </th>
+                                            <th> Status </th>
+                                            <th> Submited </th>
+                                            <th> Tracking ID </th>
+                                            <th> Info Ticket</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($ticket as $t)
+                                            @if ($t->name_tech == '')
+                                                <tr>
+                                                    <td>
+                                                        {{-- <img src="{{ asset('assets/auth/images/faces/face4.jpg') }}" class="me-2" alt="image"> --}}
+                                                        {{ $t->name_user }}
+                                                    </td>
+                                                    <td>{{ $t->subject }}</td>
+                                                    <td>
+                                                        <label class="badge badge-gradient-info">{{ $t->status }}</label>
+                                                    </td>
+                                                    <td>{{ $t->created_at }}</td>
+                                                    <td>{{ $t->ticket_id }}</td>
+                                                    <td>
+                                                        <button class="btn btn-primary btn-sm mdi-24px text-white"
+                                                            onclick="window.location.href='{{ route('admin_ticket_detail.edit', ['id' => $t->id]) }}'">
+                                                            Info
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            @else
+                                            @endif
+                                        @endforeach
+                                    </tbody>
 
-                            </table>
-                        </div>
+                                </table>
+                            </div>
+                        @endif
                     </div>
                 </div>
                 <div class="card tabcontent" id="progress">
                     <div class="card-body">
                         <h4 class="card-title">Progress Ticket</h4>
-                        <div class="table-responsive">
-                            <table id="example" class="table table-striped" style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <th> Assignee </th>
-                                        <th> Subject </th>
-                                        <th> Status </th>
-                                        <th> Submited </th>
-                                        <th> Tracking ID </th>
-                                        {{-- <th> Assign Ticket </th> --}}
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($ticket as $t)
-                                        @if ($t->status === 'progress')
-                                            <tr>
-                                                <td>
-                                                    {{-- <img src="{{ asset('assets/auth/images/faces/face4.jpg') }}" class="me-2" alt="image"> --}}
-                                                    {{ $t->name_user }}
-                                                </td>
-                                                <td>{{ $t->subject }}</td>
-                                                <td>
-                                                    <label class="badge badge-gradient-warning">{{ $t->status }}</label>
-                                                </td>
-                                                <td>{{ $t->created_at }}</td>
-                                                <td>{{ $t->ticket_id }}</td>
-                                                {{-- <td>
+                        @if ($ticket->where('status', 'progress')->isEmpty())
+                            <p class="text-center">There is no data</p>
+                        @else
+                            <div class="table-responsive">
+                                <table id="example" class="table table-striped" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th> Assignee </th>
+                                            <th> Assigned To </th>
+                                            <th> Subject </th>
+                                            <th> Status </th>
+                                            <th> Submited </th>
+                                            <th> Tracking ID </th>
+                                            {{-- <th> Assign Ticket </th> --}}
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($ticket as $t)
+                                            @if ($t->status === 'progress')
+                                                <tr>
+                                                    <td>
+                                                        {{-- <img src="{{ asset('assets/auth/images/faces/face4.jpg') }}" class="me-2" alt="image"> --}}
+                                                        {{ $t->name_user }}
+                                                    </td>
+                                                    <td>
+                                                        {{ $t->name_tech }}
+                                                    </td>
+                                                    <td>{{ $t->subject }}</td>
+                                                    <td>
+                                                        <label
+                                                            class="badge badge-gradient-warning text-black">{{ $t->status }}</label>
+                                                    </td>
+                                                    <td>{{ $t->created_at }}</td>
+                                                    <td>{{ $t->ticket_id }}</td>
+                                                    {{-- <td>
                                                     <button class="btn btn-primary btn-sm mdi-24px text-white"
                                                         onclick="window.location.href='{{ route('admin_ticket_detail.edit', ['id' => $t->id]) }}'">
                                                         assign
                                                     </button>
                                                 </td> --}}
-                                            </tr>
-                                        @endif
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                                                </tr>
+                                            @endif
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        @endif
+                    </div>
                 </div>
                 <div class="card tabcontent" id="pending">
                     <div class="card-body">
                         <h4 class="card-title">Pending Ticket</h4>
-                        <div class="table-responsive">
-                            <table id="example" class="table table-striped" style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <th> Assignee </th>
-                                        <th> Subject </th>
-                                        <th> Status </th>
-                                        <th> Submited </th>
-                                        <th> Tracking ID </th>
-                                        {{-- <th> Assign Ticket </th> --}}
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($ticket as $t)
-                                        @if ($t->status === 'pending')
-                                            <tr>
-                                                <td>
-                                                    {{-- <img src="{{ asset('assets/auth/images/faces/face4.jpg') }}" class="me-2" alt="image"> --}}
-                                                    {{ $t->name_user }}
-                                                </td>
-                                                <td>{{ $t->subject }}</td>
-                                                <td>
-                                                    <label class="badge badge-gradient-danger">{{ $t->status }}</label>
-                                                </td>
-                                                <td>{{ $t->created_at }}</td>
-                                                <td>{{ $t->ticket_id }}</td>
-                                                {{-- <td>
+                        @if ($ticket->where('status', 'pending')->isEmpty())
+                            <p class="text-center">There is no data</p>
+                        @else
+                            <div class="table-responsive">
+                                <table id="example" class="table table-striped" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th> Assignee </th>
+                                            <th> Assigned To </th>
+                                            <th> Subject </th>
+                                            <th> Status </th>
+                                            <th> Submited </th>
+                                            <th> Tracking ID </th>
+                                            {{-- <th> Assign Ticket </th> --}}
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($ticket as $t)
+                                            @if ($t->status === 'pending')
+                                                <tr>
+                                                    <td>
+                                                        {{-- <img src="{{ asset('assets/auth/images/faces/face4.jpg') }}" class="me-2" alt="image"> --}}
+                                                        {{ $t->name_user }}
+                                                    </td>
+                                                    <td>
+                                                        {{ $t->name_tech }}
+                                                    </td>
+                                                    <td>{{ $t->subject }}</td>
+                                                    <td>
+                                                        <label
+                                                            class="badge badge-gradient-danger">{{ $t->status }}</label>
+                                                    </td>
+                                                    <td>{{ $t->created_at }}</td>
+                                                    <td>{{ $t->ticket_id }}</td>
+                                                    {{-- <td>
                                                     <button class="btn btn-primary btn-sm mdi-24px text-white"
                                                         onclick="window.location.href='{{ route('admin_ticket_detail.edit', ['id' => $t->id]) }}'">
                                                         assign
                                                     </button>
                                                 </td> --}}
-                                            </tr>
-                                        @endif
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                                                </tr>
+                                            @endif
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        @endif
+                    </div>
                 </div>
                 <div class="card tabcontent" id="solved">
-                    <div class="card-body">
+                    <div class="card-body ">
                         <h4 class="card-title">Solved Ticket</h4>
-                        <div class="table-responsive">
-                            <table id="example" class="table table-striped" style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <th> Assignee </th>
-                                        <th> Subject </th>
-                                        <th> Status </th>
-                                        <th> Submited </th>
-                                        <th> Tracking ID </th>
-                                        {{-- <th> Assign Ticket </th> --}}
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($ticket as $t)
-                                        @if ($t->status === 'solved')
-                                            <tr>
-                                                <td>
-                                                    {{-- <img src="{{ asset('assets/auth/images/faces/face4.jpg') }}" class="me-2" alt="image"> --}}
-                                                    {{ $t->name_user }}
-                                                </td>
-                                                <td>{{ $t->subject }}</td>
-                                                <td>
-                                                    <label class="badge badge-gradient-success">{{ $t->status }}</label>
-                                                </td>
-                                                <td>{{ $t->created_at }}</td>
-                                                <td>{{ $t->ticket_id }}</td>
-                                                {{-- <td>
+                        @if ($ticket->where('status', 'solved')->isEmpty())
+                            <p class="text-center">There is no data</p>
+                        @else
+                            <div class="table-responsive">
+                                <table id="example" class="table table-striped" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th> Assignee </th>
+                                            <th> Assigned To </th>
+                                            <th> Subject </th>
+                                            <th> Status </th>
+                                            <th> Submited </th>
+                                            <th> Tracking ID </th>
+                                            {{-- <th> Assign Ticket </th> --}}
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($ticket as $t)
+                                            @if ($t->status === 'solved')
+                                                <tr>
+                                                    <td>
+                                                        {{-- <img src="{{ asset('assets/auth/images/faces/face4.jpg') }}" class="me-2" alt="image"> --}}
+                                                        {{ $t->name_user }}
+                                                    </td>
+                                                    <td>
+                                                        {{ $t->name_tech }}
+                                                    </td>
+                                                    <td>{{ $t->subject }}</td>
+                                                    <td>
+                                                        <label
+                                                            class="badge badge-gradient-success">{{ $t->status }}</label>
+                                                    </td>
+                                                    <td>{{ $t->created_at }}</td>
+                                                    <td>{{ $t->ticket_id }}</td>
+                                                    {{-- <td>
                                                     <button class="btn btn-primary btn-sm mdi-24px text-white"
                                                         onclick="window.location.href='{{ route('admin_ticket_detail.edit', ['id' => $t->id]) }}'">
                                                         assign
                                                     </button>
                                                 </td> --}}
-                                            </tr>
-                                        @endif
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                                                </tr>
+                                            @endif
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
@@ -358,24 +388,3 @@
 
     <!-- Include jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <script>
-        $(document).ready(function() {
-            $('.btn-assign').click(function() {
-                var ticketId = $(this).data('ticket-id');
-
-                $.ajax({
-                    url: '/auth/get-ticket-details/' +
-                        ticketId, // Update the URL based on your route
-                    method: 'GET',
-                    success: function(response) {
-                        $('#modalContent').html(response);
-                        $('#modalOpen').modal('show');
-                    },
-                    error: function(error) {
-                        console.error(error);
-                    }
-                });
-            });
-        });
-    </script>
