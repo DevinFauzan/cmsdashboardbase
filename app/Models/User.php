@@ -21,8 +21,10 @@ class User extends Authenticatable
         'name',
         'email',
         'status',
+        'is_admin',
         'case_total',
         'password',
+        'role'
     ];
 
     /**
@@ -77,4 +79,10 @@ class User extends Authenticatable
         return $statusColors[$this->status] ?? 'badge-secondary';
     }
 
+    // UserModel
+
+    public function isTechPerson()
+    {
+        return $this->role === 'tech_person';
+    }
 }

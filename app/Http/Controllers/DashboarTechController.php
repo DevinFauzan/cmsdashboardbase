@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Ticket;
@@ -18,10 +18,21 @@ class DashboarTechController extends Controller
     {
         $tickets = Ticket::all();
         $users = User::all();
+        $user = Auth::user();
+        $tickets = Ticket::where('name_tech', $user->name)->get();
 
         return view('pages.tech_person.dashboard_techperson',["ticket"=> $tickets], compact('tickets', 'users'));
     }
+    public function updateStatus(Request $request, Ticket $ticket)
+    {
+        $request->validate([
+            'status' => 'required|in:Progress,Pending,Solved',
+        ]);
 
+        $ticket->update(['status' => $request->input('status')]);
+
+        return redirect()->back()->with('success', 'Ticket status updated successfully');
+    }
 
 
     /**

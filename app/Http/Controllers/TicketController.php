@@ -18,36 +18,41 @@ class TicketController extends Controller
     {
         //
     }
+
+    public function updateStatus(Request $request, Ticket $ticket)
+    {
+        $request->validate([
+            'status' => 'required|in:progress,Pending,Solved',
+        ]);
+
+        $ticket->update(['status' => $request->input('status')]);
+
+        return redirect()->back()->with('success', 'Ticket status updated successfully');
+    }
+
     public function assign(Request $request, Ticket $ticket)
     {
-    $ticketId = $request->input('ticket_id');
-    $userId = $request->input('user_id');
+        $ticketId = $request->input('ticket_id');
+        $userId = $request->input('user_id');
 
-    $ticket = Ticket::findOrFail($ticketId);
-    $user = User::findOrFail($userId);
-
-    
- 
-    // Increment the case_total attribute for the user by 1
-    $user->increment('case_total');
-
-    // Update the status based on the new case_total value
-    $user->updateStatus();
-
-   // Update the ticket's name_tech with the user's name
-   $ticket->update(['name_tech' => $user->name]);
-   $ticket->update(['status'=> 'progress']);
+        $ticket = Ticket::findOrFail($ticketId);
+        $user = User::findOrFail($userId);
 
 
-    return redirect()->route('auth.dashboard')->with('success', 'Ticket assigned successfully');
-}
 
-    
-    
-    
+        // Increment the case_total attribute for the user by 1
+        $user->increment('case_total');
 
-    
+        // Update the status based on the new case_total value
+        $user->updateStatus();
 
+        // Update the ticket's name_tech with the user's name
+        $ticket->update(['name_tech' => $user->name]);
+        $ticket->update(['status' => 'progress']);
+
+
+        return redirect()->route('auth.dashboard')->with('success', 'Ticket assigned successfully');
+    }
 
     /**
      * Show the form for creating a new resource.

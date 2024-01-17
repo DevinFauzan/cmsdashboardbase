@@ -71,6 +71,7 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($users as $user)
+                                        @if ($user->role === 'tech_person')
                                         <tr>
                                             <td>{{ $user->name }}</td>
                                             <td>{{ $user->case_total }}</td>
@@ -105,6 +106,7 @@
                                                 
                                             </td>
                                         </tr>
+                                        @endif
                                         @endforeach
                                     </tbody>
                                 </table>

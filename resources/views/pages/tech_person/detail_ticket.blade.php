@@ -5,7 +5,7 @@
         <div class="content-wrapper">
             <div class="page-header">
                 <h2 class="page-title">
-                    <a href="javascript:history.back()" class="page-title-icon bg-gradient-primary text-white me-2">
+                    <a href="/dashboard-tech" class="page-title-icon bg-gradient-primary text-white me-2">
                         <i class="mdi mdi-arrow-left"></i>
                     </a>
                     Ticket Details
@@ -18,27 +18,34 @@
                 </nav>
             </div>
             <div class="row">
-                <div class="col-12 grid-margin stretch-card">
+                <div class="col-8 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <h2 class="card-title">{{ $ticket->name_user }}</h2>
-                            <p class="card-description badge badge- text-black"> 
-                                @switch($ticket->status)
-                                @case("open")
-                                    <label class="badge badge-info">open</label>
-                                    @break
-                                @case("progress")
-                                    <label class="badge badge-warning">progress</label>
-                                    @break
-                                @case("pending")
-                                    <label class="badge badge-warning">Pending</label>
-                                    @break
-                                @case("solved")
-                                    <label class="badge badge-danger">Solved</label>
-                                    @break
-                                @default
-                                    <label class="badge badge-secondary">Unknown</label>
-                            @endswitch</p>
+                            <h2 class="card-title">{{ $ticket->name_user }} | {{ $ticket->ticket_id }} |
+                                <p class="card-description badge badge- text-black">
+                                    @switch($ticket->status)
+                                        @case('Open')
+                                            <label class="badge badge-info">Open</label>
+                                        @break
+
+                                        @case('Progress')
+                                            <label class="badge badge-warning">Progress</label>
+                                        @break
+
+                                        @case('Pending')
+                                            <label class="badge badge-danger">Pending</label>
+                                        @break
+
+                                        @case('Solved')
+                                            <label class="badge badge-success">Solved</label>
+                                        @break
+
+                                        @default
+                                            <label class="badge badge-secondary">Unknown</label>
+                                    @endswitch
+                                </p>
+                            </h2>
+
                             <form class="forms-sample">
                                 <div class="form-group">
                                     <label for="exampleInputName1">Complainant Name</label>
@@ -87,28 +94,30 @@
                         </div>
                     </div>
                 </div>
-                {{-- <div class="col-3 grid-margin stretch-card">
+                <div class="col-4 grid-margin stretch-card ">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Ticket #ID093209831</h4>
-                            <p class="card-description">Once you assigned this ticket problem, this ticket is belong to you
-                                until you solved it, want to assigend this ticket?</p>
-                            <form class="forms-sample">
+                            <h4 class="card-title">Ticket </h4>
+                            <p class="card-description">How was the ticket that you handling?</p>
+                            <form action="{{ route('update.ticket.status', ['ticket' => $ticket->id]) }}" method="post">
+                                @csrf
+                                @method('put')
                                 <div class="form-group">
-                                    <label for="exampleSelectGender">Assign</label>
-                                    <select class="form-control" id="exampleSelectGender">
-                                        <option>Assign this ticket</option>
-                                        <option>Pending this ticket</option>
+                                    <label for="exampleSelectStatus">Status</label>
+                                    <select class="form-control" id="exampleSelectStatus" name="status">
+                                        <option selected disabled>select product type</option>
+                                        <option value="Progress" {{ $ticket->status == "Progress" ? 'selected' : '' }}>Progress</option>
+                                        <option value="Pending" {{ $ticket->status == "Pending" ? 'selected' : '' }}>Pending</option>
+                                        <option value="Solved" {{ $ticket->status == "Solved" ? 'selected' : '' }}>Solved</option>
                                     </select>
                                 </div>
-                                <div class="justify-content-center center">
-                                    <button class="btn btn-light btn-sm mr-4">Cancel</button>
-                                    <button type="submit" class="btn btn-gradient-primary btn-sm">Submit</button>
-                                </div>
+                                <button type="submit" class="btn btn-sm btn-primary">
+                                    Submit
+                                </button>
                             </form>
                         </div>
                     </div>
-                </div> --}}
+                </div>
             </div>
         </div>
 

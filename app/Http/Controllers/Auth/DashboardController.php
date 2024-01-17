@@ -13,10 +13,10 @@ class DashboardController extends Controller
         $ticket = Ticket::all();
         $user = User::all();
 
-        $openTickets = $ticket->where('status', 'open')->count();
-        $pendingTickets = $ticket->where('status', 'pending')->count();
-        $progressTickets = $ticket->where('status', 'progress')->count();
-        $solvedTickets = $ticket->where('status', 'solved')->count();
+        $openTickets = $ticket->where('status', 'Open')->count();
+        $pendingTickets = $ticket->where('status', 'Pending')->count();
+        $progressTickets = $ticket->where('status', 'Progress')->count();
+        $solvedTickets = $ticket->where('status', 'Solved')->count();
         return view('auth.dashboard',["ticket"=> $ticket, "Users" => $user,
          "openTickets" => $openTickets,"pendingTickets" => $pendingTickets,
          "progressTickets" => $progressTickets,"solvedTickets" => $solvedTickets]);

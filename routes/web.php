@@ -30,12 +30,25 @@ Auth::routes();
 Route::resource('auth/posts', PostController::class);
 
 //Tech Person
-Route::resource('dashboard-tech', DashboarTechController::class);
-Route::get('/dashboard-tech/detail_ticket/{id}/edit', [DashboarTechController::class, 'edit'])->name('detail_ticket.edit');
-//Route::get('/detail_ticket', [DashboarTechController::class, 'show'])->name('detail_ticket');
+Route::group(['middleware' => 'tech_person'], function () {
+    // Routes for tech persons
+    Route::resource('dashboard-tech', DashboarTechController::class);
+    Route::get('/dashboard-tech/detail_ticket/{id}/edit', [DashboarTechController::class, 'edit'])->name('detail_ticket.edit');
+    Route::put('/update-ticket-status/{ticket}', [DashboarTechController::class, 'updateStatus'])->name('update.ticket.status');
+});
 
 
-// Route::resource('dashboard-tech', DashboarTechController::class);
+
+//Admin
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('auth/dashboard', [DashboardController::class, 'index'])->name('auth.dashboard');
+    Route::resource('detail_ticket-admin', DashboardController::class);
+    Route::get('admin_ticket_detail/{id}/edit', [DashboardController::class, 'edit'])->name('admin_ticket_detail.edit');
+    Route::put('/assign-ticket/{ticket}', [TicketController::class, 'assign'])->name('assign.ticket');
+});
+
+
+
 
 //User
 Route::resource('dashboard-user',DashboardUserController::class);
@@ -45,8 +58,6 @@ Route::get('/my_ticket', [DashboardUserController::class, 'create'])->name('my_t
 //Route::get('/new_ticket', [DashboardUserController::class, 'show'])->name('new_ticket');
 
 //Admin
-// Route::get('auth/dashboard', [DashboardController::class, 'index'])->name('auth.dashboard')->middleware('auth');
-// Route::resource('detail_ticket-admin', DashboardController::class);
 
 Route::get('auth/dashboard', [DashboardController::class, 'index'])->name('auth.dashboard')->middleware('auth');
 Route::resource('detail_ticket-admin', DashboardController::class);

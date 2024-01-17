@@ -158,9 +158,9 @@
                 <div class="card tabcontent" id="open">
                     <div class="card-body">
                         <h4 class="card-title">Open Ticket</h4>
-                        @if ($ticket->where('status', 'open')->isEmpty())
-                            <p class="text-center">There is no data</p>
-                        @else
+                        @if ($ticket->where('status', 'Open')->isEmpty())
+                        <p class="text-center">There is no data</p>
+                    @else
                             <div class="table-responsive">
                                 <table id="example" class="table table-striped" style="width:100%">
                                     <thead>
@@ -207,7 +207,7 @@
                 <div class="card tabcontent" id="progress">
                     <div class="card-body">
                         <h4 class="card-title">Progress Ticket</h4>
-                        @if ($ticket->where('status', 'progress')->isEmpty())
+                        @if ($ticket->where('status', 'Progress')->isEmpty())
                             <p class="text-center">There is no data</p>
                         @else
                             <div class="table-responsive">
@@ -225,7 +225,7 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($ticket as $t)
-                                            @if ($t->status === 'progress')
+                                            @if ($t->status === 'Progress')
                                                 <tr>
                                                     <td>
                                                         {{-- <img src="{{ asset('assets/auth/images/faces/face4.jpg') }}" class="me-2" alt="image"> --}}
@@ -259,7 +259,7 @@
                 <div class="card tabcontent" id="pending">
                     <div class="card-body">
                         <h4 class="card-title">Pending Ticket</h4>
-                        @if ($ticket->where('status', 'pending')->isEmpty())
+                        @if ($ticket->where('status', 'Pending')->isEmpty())
                             <p class="text-center">There is no data</p>
                         @else
                             <div class="table-responsive">
@@ -277,7 +277,7 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($ticket as $t)
-                                            @if ($t->status === 'pending')
+                                            @if ($t->status === 'Pending')
                                                 <tr>
                                                     <td>
                                                         {{-- <img src="{{ asset('assets/auth/images/faces/face4.jpg') }}" class="me-2" alt="image"> --}}
@@ -311,7 +311,7 @@
                 <div class="card tabcontent" id="solved">
                     <div class="card-body ">
                         <h4 class="card-title">Solved Ticket</h4>
-                        @if ($ticket->where('status', 'solved')->isEmpty())
+                        @if ($ticket->where('status', 'Solved')->isEmpty())
                             <p class="text-center">There is no data</p>
                         @else
                             <div class="table-responsive">
@@ -329,7 +329,7 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($ticket as $t)
-                                            @if ($t->status === 'solved')
+                                            @if ($t->status === 'Solved')
                                                 <tr>
                                                     <td>
                                                         {{-- <img src="{{ asset('assets/auth/images/faces/face4.jpg') }}" class="me-2" alt="image"> --}}
