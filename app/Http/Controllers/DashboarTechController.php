@@ -92,9 +92,8 @@ class DashboarTechController extends Controller
 
     public function edit($id)
     {
-        $tickets = Ticket::all();
+        $ticket = Ticket::find($id);
 
         return view('pages.tech_person.detail_ticket', compact('ticket'));
     }
-
 }

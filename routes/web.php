@@ -31,7 +31,7 @@ Route::resource('auth/posts', PostController::class);
 
 //Tech Person
 Route::resource('dashboard-tech', DashboarTechController::class);
-Route::get('/dashboard-tech/detail_ticket/{id}', [DashboarTechController::class, 'edit'])->name('detail_ticket.edit');
+Route::get('/dashboard-tech/detail_ticket/{id}/edit', [DashboarTechController::class, 'edit'])->name('detail_ticket.edit');
 //Route::get('/detail_ticket', [DashboarTechController::class, 'show'])->name('detail_ticket');
 
 
