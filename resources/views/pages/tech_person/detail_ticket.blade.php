@@ -7,7 +7,7 @@
                 <h3 class="page-title">Ticket Details </h3>
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#">Tech Person</a></li>
+                        <li class="breadcrumb-item"><a href="#"> Tech Person </a></li>
                         <li class="breadcrumb-item active" aria-current="page">Detail Ticket</li>
                     </ol>
                 </nav>
@@ -16,7 +16,7 @@
                 <div class="col-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Ticket #ID093209831</h4>
+                            <h4 class="card-title">{{ $ticket->name_tech }}</h4>
                             <p class="card-description"> Open | Not Assigned Yet</p>
                             <form class="forms-sample">
                                 <div class="form-group">

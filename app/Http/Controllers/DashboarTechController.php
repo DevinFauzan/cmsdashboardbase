@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Ticket;
+use App\Models\User;
 
 class DashboarTechController extends Controller
 {
@@ -14,10 +16,13 @@ class DashboarTechController extends Controller
      */
     public function index()
     {
-        {
-            return view('pages.tech_person.dashboard_techperson');
-        }
+        $tickets = Ticket::all();
+        $users = User::all();
+
+        return view('pages.tech_person.dashboard_techperson',["ticket"=> $tickets], compact('tickets', 'users'));
     }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -57,10 +62,10 @@ class DashboarTechController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
-    }
+    // public function edit($id)
+    // {
+    //     //
+    // }
 
     /**
      * Update the specified resource in storage.
@@ -84,4 +89,12 @@ class DashboarTechController extends Controller
     {
         //
     }
+
+    public function edit($id)
+    {
+        $tickets = Ticket::all();
+
+        return view('pages.tech_person.detail_ticket', compact('ticket'));
+    }
+
 }

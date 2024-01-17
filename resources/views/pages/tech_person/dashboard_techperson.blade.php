@@ -20,31 +20,33 @@
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            {{-- <th> Assignee </th> --}}
+                                            <th> Assignee </th>
                                             <th> Subject </th>
                                             <th> Status </th>
                                             <th> Last Update </th>
                                             <th> Ticket ID </th>
-                                            <th> Detail </th>
+                                            <th> Detail </th>   
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td> Fund is not recieved </td>
-                                            <td>
-                                                <label class="badge badge-gradient-success">DONE</label>
-                                            </td>
-                                            <td> Dec 5, 2017 </td>
-                                            <td> ID093209831 </td>
-                                            <td>
-                                                <a href="{{ route('detail_ticket') }}"
-                                                    class="btn btn-info bg-gradient-info">
-                                                    <span class="mdi mdi-details"></span>
-                                                </a>
-                                            </td>
-
-                                        </tr>
+                                        @foreach ($tickets as $ticket)
+                                            <tr>
+                                                <td>{{ $ticket->name_user }}</td>
+                                                <td>{{ $ticket->subject }}</td>
+                                                <td>
+                                                    <label class="badge badge-gradient-warning text-black">{{ $ticket->status }}</label>
+                                                </td>
+                                                <td>{{ $ticket->updated_at }}</td>
+                                                <td>{{ $ticket->ticket_id }}</td>
+                                                <td>
+                                                    <a href="{{ route('detail_ticket.edit', ['id' => $ticket->id]) }}" class="btn btn-info bg-gradient-info">
+                                                        <span class="mdi mdi-details"></span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
+                                                                        
                                 </table>
                             </div>
                         </div>

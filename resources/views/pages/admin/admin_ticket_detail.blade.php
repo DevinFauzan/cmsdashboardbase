@@ -91,8 +91,7 @@
                                                     @default
                                                         <label class="badge badge-secondary">Unknown</label>
                                                 @endswitch
-                                            </td>
-                                            
+                                            </td>                                            
                                             <td>
                                                 <form action="{{ route('assign.ticket', ['ticket' => $ticket->id]) }}" method="post">
                                                     @csrf
