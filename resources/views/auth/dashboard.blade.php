@@ -199,7 +199,6 @@
                                         <th> Status </th>
                                         <th> Submitted </th>
                                         <th> Tracking ID </th>
-                                        <th> Info Ticket</th>
                                     </tr>
                                 </thead>
                                 @if ($ticket->where('status', 'Progress')->count() > 0)
@@ -228,7 +227,6 @@
                                         <th> Status </th>
                                         <th> Submitted </th>
                                         <th> Tracking ID </th>
-                                        <th> Info Ticket</th>
                                     </tr>
                                 </thead>
                                 @if ($ticket->where('status', 'Pending')->count() > 0)
@@ -257,7 +255,6 @@
                                         <th> Status </th>
                                         <th> Submitted </th>
                                         <th> Tracking ID </th>
-                                        <th> Info Ticket</th>
                                     </tr>
                                 </thead>
                                 @if ($ticket->where('status', 'solved')->count() > 0)
