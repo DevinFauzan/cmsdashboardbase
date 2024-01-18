@@ -42,6 +42,11 @@ Route::get('/refresh-table-progress', [DashboardController::class, 'refreshTable
 Route::get('/refresh-table-pending', [DashboardController::class, 'refreshTablePending'])->name('refresh.table_pending');
 Route::get('/refresh-table-solved', [DashboardController::class, 'refreshTableSolved'])->name('refresh.table_solved');
 
+Route::get('/refresh-card-open', [DashboardController::class, 'refreshCardOpen'])->name('refresh.card_open');
+Route::get('/refresh-card-progress', [DashboardController::class, 'refreshCardProgress'])->name('refresh.card_progress');
+Route::get('/refresh-card-pending', [DashboardController::class, 'refreshCardPending'])->name('refresh.card_pending');
+Route::get('/refresh-card-solved', [DashboardController::class, 'refreshCardSolved'])->name('refresh.card_solved');
+
 
 
 

@@ -42,8 +42,6 @@ class DashboardController extends Controller
     }
     
     // Similar methods for progress, pending, and solved tables
-    
-
 
     public function index()
     {
