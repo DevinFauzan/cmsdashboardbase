@@ -8,6 +8,43 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
+    public function refreshTable()
+    {
+        $ticket = Ticket::where('status', 'Open')->get();
+        $html = view('partials.table', compact('ticket'))->render();
+    
+        return response()->json(['html' => $html]);
+    }
+    
+
+    public function refreshTableSolved()
+    {
+        $ticket = Ticket::where('status', 'Solved')->get();
+        $html = view('partials.table_solved', compact('ticket'))->render();
+    
+        return response()->json(['html' => $html]);
+    }
+
+    public function refreshTablePending()
+    {
+        $ticket = Ticket::where('status', 'Pending')->get();
+        $html = view('partials.table_pending', compact('ticket'))->render();
+    
+        return response()->json(['html' => $html]);
+    }
+    
+    public function refreshTableProgress()
+    {
+        $ticket = Ticket::where('status', 'Progress')->get();
+        $html = view('partials.table_progress', compact('ticket'))->render();
+    
+        return response()->json(['html' => $html]);
+    }
+    
+    // Similar methods for progress, pending, and solved tables
+    
+
+
     public function index()
     {
         $ticket = Ticket::all();

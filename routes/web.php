@@ -37,6 +37,12 @@ Route::group(['middleware' => 'tech_person'], function () {
     Route::put('/update-ticket-status/{ticket}', [DashboarTechController::class, 'updateStatus'])->name('update.ticket.status');
 });
 
+Route::get('/refresh-table', [DashboardController::class, 'refreshTable'])->name('refresh.table');
+Route::get('/refresh-table-progress', [DashboardController::class, 'refreshTableProgress'])->name('refresh.table_progress');
+Route::get('/refresh-table-pending', [DashboardController::class, 'refreshTablePending'])->name('refresh.table_pending');
+Route::get('/refresh-table-solved', [DashboardController::class, 'refreshTableSolved'])->name('refresh.table_solved');
+
+
 
 
 //Admin
