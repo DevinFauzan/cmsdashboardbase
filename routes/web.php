@@ -43,6 +43,8 @@ Route::get('/refresh-table-pending', [DashboardController::class, 'refreshTableP
 Route::get('/refresh-table-solved', [DashboardController::class, 'refreshTableSolved'])->name('refresh.table_solved');
 Route::get('/refresh-table-tech-person', [DashboarTechController::class, 'refreshTableTechPerson'])
     ->name('refresh.table_tech_person');
+    Route::get('/refresh-ticket-counts', [DashboardController::class, 'refreshTicketCounts'])->name('refresh.ticket_counts');
+
 
 //Admin
 Route::middleware(['auth', 'admin'])->group(function () {

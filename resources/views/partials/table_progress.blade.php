@@ -11,7 +11,11 @@
     </thead> --}}
     <tbody>
         @if ($ticket->where('status', 'Progress')->isEmpty())
-            <p class="text-center">There is no data</p>
+        <tbody>
+            <tr>
+                <td colspan="6" class="text-center">There is no data</td>
+            </tr>
+        </tbody>
         @else
         @foreach ($ticket as $t)
             @if ($t->status == 'Progress')

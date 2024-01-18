@@ -17,20 +17,20 @@
                         <div class="card-body">
                             <h4 class="card-title">Tickets List</h4>
                             <div class="table-responsive">
-                                <thead>
-                                    <tr>
-                                        <th> Assignee </th>
-                                        <th> Subject </th>
-                                        <th> Status </th>
-                                        <th> Last Update </th>
-                                        <th> Ticket ID </th>
-                                        <th> Detail </th>
-                                    </tr>
-                                </thead>
+                                
                                 <table id="techPersonTable" class="table table-striped" style="width:100%">
-                                    <thead>
-                                        <!-- Your table headers -->
-                                    </thead>
+                                  
+                                        <thead>
+                                            <tr>
+                                                <th> Assignee </th>
+                                                <th> Subject </th>
+                                                <th> Status </th>
+                                                <th> Last Update </th>
+                                                <th> Ticket ID </th>
+                                                <th> Detail </th>
+                                            </tr>
+                                        </thead>
+                                    
                                     @if ($tickets->count() > 0)
                                         @include('partials.table_tech_person')
                                     @else

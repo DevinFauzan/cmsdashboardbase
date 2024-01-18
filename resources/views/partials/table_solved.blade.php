@@ -11,8 +11,12 @@
     </thead> --}}
     <tbody>
         @if ($ticket->where('status', 'Solved')->isEmpty())
-            <p class="text-center">There is no data</p>
-            @else
+        <tbody>
+            <tr>
+                <td colspan="6" class="text-center">There is no data</td>
+            </tr>
+        </tbody>
+        @else
             @foreach ($ticket as $t)
                 @if ($t->status == 'Solved')
                     <tr>
@@ -32,6 +36,6 @@
                     </tr>
                 @endif
             @endforeach
-        @endif
+            @endif
     </tbody>
 </table>

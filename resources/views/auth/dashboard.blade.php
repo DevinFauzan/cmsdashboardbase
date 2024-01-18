@@ -115,7 +115,7 @@
                             <h4 class="font-weight-normal mb-3">Open <i
                                     class="mdi mdi-ticket-percent mdi-24px float-right"></i>
                             </h4>
-                            <h1 class="mb-5">{{ $openTickets }}</h1>
+                            <h1 id="openTickets" class="mb-5">{{ $openTickets }}</h1>
                         </div>
                     </div>
                 </div>
@@ -136,7 +136,7 @@
                             <h4 class="font-weight-normal mb-3">Pending <i
                                     class="mdi mdi-account-clock-outline mdi-24px float-right"></i>
                             </h4>
-                            <h1 class="mb-5">{{ $pendingTickets }}</h1>
+                            <h1 id="pendingTickets" class="mb-5">{{ $pendingTickets }}</h1>
                         </div>
                     </div>
                 </div>
@@ -147,7 +147,7 @@
                                 alt="circle-image" /> --}}
                             <h4 class="font-weight-normal mb-3">Solved <i class="mdi mdi-check mdi-24px float-right"></i>
                             </h4>
-                            <h1 class="mb-5">{{ $solvedTickets }}</h1>
+                            <h1 id="solvedTickets" class="mb-5">{{ $solvedTickets }}</h1>
                         </div>
                     </div>
                 </div>
@@ -157,7 +157,17 @@
                 <div class="card tabcontent" id="open">
                     <div class="card-body">
                         <h4 class="card-title">Open Ticket</h4>
+                        @if ($ticket->where('status', 'Open')->count() > 0)
                         @include('partials.table')
+                    @else
+                    <table  class="table-responsive">
+                        <tbody>
+                            <tr>
+                                <td colspan="6" class="text-center">There is no data</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    @endif
                     </div>
                 </div>
                 <div class="card tabcontent" id="Progress">
@@ -175,7 +185,15 @@
                                         <th> Info Ticket</th>
                                     </tr>
                                 </thead>
+                                @if ($ticket->where('status', 'Progress')->count() > 0)
                                 @include('partials.table_progress')
+                            @else
+                                <tbody>
+                                    <tr>
+                                        <td colspan="6" class="text-center">There is no data</td>
+                                    </tr>
+                                </tbody>
+                            @endif
                             </table>
                         </div>
                     </div>
@@ -195,7 +213,15 @@
                                         <th> Info Ticket</th>
                                     </tr>
                                 </thead>
-                                @include('partials.table_pending')
+                                @if ($ticket->where('status', 'Pending')->count() > 0)
+                                        @include('partials.table_pending')
+                                    @else
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="6" class="text-center">There is no data</td>
+                                            </tr>
+                                        </tbody>
+                                    @endif
                             </table>
                         </div>
                     </div>
@@ -215,7 +241,15 @@
                                         <th> Info Ticket</th>
                                     </tr>
                                 </thead>
-                                @include('partials.table_solved')
+                                @if ($ticket->where('status', 'solved')->count() > 0)
+                                        @include('partials.table_solved')
+                                    @else
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="6" class="text-center">There is no data</td>
+                                            </tr>
+                                        </tbody>
+                                    @endif
                             </table>
                         </div>
                     </div>
@@ -271,4 +305,31 @@
         setInterval(function() {
             refreshTable("solvedTable", "{{ route('refresh.table_solved') }}");
         }, 1000);
+
+
+            // Function to update ticket counts
+    function updateTicketCounts() {
+        $.ajax({
+            url: "{{ route('refresh.ticket_counts') }}",
+            method: "GET",
+            dataType: 'json',
+            success: function (data) {
+                $('#openTickets').text(data.openTickets);
+                $('#pendingTickets').text(data.pendingTickets);
+                $('#progressTickets').text(data.progressTickets);
+                $('#solvedTickets').text(data.solvedTickets);
+            },
+            error: function (xhr, status, error) {
+                console.error("Error updating ticket counts: " + error);
+            }
+        });
+    }
+
+    // Refresh ticket counts every 60 seconds (adjust as needed)
+    setInterval(function () {
+        updateTicketCounts();
+    }, 1000);
+
+    // Initial update
+    updateTicketCounts();
     </script>
