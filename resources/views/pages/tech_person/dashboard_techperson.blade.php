@@ -17,64 +17,54 @@
                         <div class="card-body">
                             <h4 class="card-title">Tickets List</h4>
                             <div class="table-responsive">
-                                <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th> Assignee </th>
+                                        <th> Subject </th>
+                                        <th> Status </th>
+                                        <th> Last Update </th>
+                                        <th> Ticket ID </th>
+                                        <th> Detail </th>
+                                    </tr>
+                                </thead>
+                                <table id="techPersonTable" class="table table-striped" style="width:100%">
                                     <thead>
-                                        <tr>
-                                            <th> Assignee </th>
-                                            <th> Subject </th>
-                                            <th> Status </th>
-                                            <th> Last Update </th>
-                                            <th> Ticket ID </th>
-                                            <th> Detail </th>
-                                        </tr>
+                                        <!-- Your table headers -->
                                     </thead>
-                                    <tbody>
-                                        @foreach ($tickets as $ticket)
+                                    @if ($tickets->count() > 0)
+                                        @include('partials.table_tech_person')
+                                    @else
+                                        <tbody>
                                             <tr>
-                                                <td>{{ $ticket->name_user }}</td>
-                                                <td>{{ $ticket->subject }}</td>
-                                                <td>
-                                                    <label class="card-description badge badge- text-black">
-                                                        @switch($ticket->status)
-                                                            @case('Open')
-                                                                <label class="badge badge-info">Open</label>
-                                                            @break
-
-                                                            @case('Progress')
-                                                                <label class="badge badge-warning">Progress</label>
-                                                            @break
-
-                                                            @case('Pending')
-                                                                <label class="badge badge-danger">Pending</label>
-                                                            @break
-
-                                                            @case('Solved')
-                                                                <label class="badge badge-success">Solved</label>
-                                                            @break
-
-                                                            @default
-                                                                <label class="badge badge-secondary">Unknown</label>
-                                                        @endswitch
-                                                    </label>
-                                                </td>
-                                                <td>{{ $ticket->updated_at }}</td>
-                                                <td>{{ $ticket->ticket_id }}</td>
-                                                <td>
-                                                    <a href="{{ route('detail_ticket.edit', ['id' => $ticket->id]) }}"
-                                                        class="btn btn-info bg-gradient-info">
-                                                        <span class="mdi mdi-details"></span>
-                                                    </a>
-                                                </td>
+                                                <td colspan="6" class="text-center">There is no data</td>
                                             </tr>
-                                        @endforeach
-                                    </tbody>
-
+                                        </tbody>
+                                    @endif
                                 </table>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- content-wrapper ends -->
-    @endsection
+
+            <!-- content-wrapper ends -->
+        @endsection
+
+        <script>
+            function refreshTableTechPerson(tabId, routeName) {
+                $.ajax({
+                    url: routeName,
+                    method: "GET",
+                    success: function(data) {
+                        $("#" + tabId + " tbody").html(data.html);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error refreshing table: " + error);
+                    }
+                });
+            }
+
+            setInterval(function() {
+                refreshTableTechPerson("techPersonTable", "{{ route('refresh.table_tech_person') }}");
+            }, 1000);
+        </script>

@@ -1,5 +1,5 @@
 <table id="openTable" class="table table-striped" style="width:100%">
-    <thead>
+    {{-- <thead>
         <tr>
             <th> Assignee </th>
             <th> Subject </th>
@@ -8,7 +8,7 @@
             <th> Tracking ID </th>
             <th> Info Ticket</th>
         </tr>
-    </thead>
+    </thead> --}}
     <tbody>
         @foreach ($ticket as $t)
             @if ($t->status == 'Open')

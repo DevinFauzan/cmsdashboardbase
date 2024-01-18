@@ -41,6 +41,8 @@ Route::get('/refresh-table', [DashboardController::class, 'refreshTable'])->name
 Route::get('/refresh-table-progress', [DashboardController::class, 'refreshTableProgress'])->name('refresh.table_progress');
 Route::get('/refresh-table-pending', [DashboardController::class, 'refreshTablePending'])->name('refresh.table_pending');
 Route::get('/refresh-table-solved', [DashboardController::class, 'refreshTableSolved'])->name('refresh.table_solved');
+Route::get('/refresh-table-tech-person', [DashboarTechController::class, 'refreshTableTechPerson'])
+    ->name('refresh.table_tech_person');
 
 
 

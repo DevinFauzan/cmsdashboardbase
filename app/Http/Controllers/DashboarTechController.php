@@ -34,6 +34,16 @@ class DashboarTechController extends Controller
         return redirect()->back()->with('success', 'Ticket status updated successfully');
     }
 
+    public function refreshTableTechPerson()
+    {
+        $user = Auth::user(); // Assuming you're using Laravel's built-in authentication
+
+        // Filter tickets based on the authenticated user's name
+        $tickets = Ticket::where('name_tech', $user->name)->get();
+        $html = view('partials.table_tech_person', compact('tickets'))->render();
+
+        return response()->json(['html' => $html]);
+    }
 
     /**
      * Show the form for creating a new resource.
