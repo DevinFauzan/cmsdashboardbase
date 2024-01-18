@@ -44,9 +44,6 @@ Route::get('/refresh-table-solved', [DashboardController::class, 'refreshTableSo
 Route::get('/refresh-table-tech-person', [DashboarTechController::class, 'refreshTableTechPerson'])
     ->name('refresh.table_tech_person');
 
-
-
-
 //Admin
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('auth/dashboard', [DashboardController::class, 'index'])->name('auth.dashboard');

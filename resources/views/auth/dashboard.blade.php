@@ -109,7 +109,7 @@
             <div class="row">
                 <div class="col-md-3 stretch-card grid-margin">
                     <div class="card card-img-holder-open text-center">
-                        <div class="card-body btn btn-sm mdi-24px tablinks" onclick="openCity(event, 'open')">
+                        <div id="openCard" class="card-body btn btn-sm mdi-24px tablinks" onclick="openCity(event, 'open')">
                             {{-- <img src="{{ asset('assets/auth/images/dashboard/circle.svg') }}" class="card-img-absolute"
                                 alt="circle-image" /> --}}
                             <h4 class="font-weight-normal mb-3">Open <i
@@ -121,17 +121,16 @@
                 </div>
                 <div class="col-md-3 stretch-card grid-margin">
                     <div class="card card-img-holder-progress text-center">
-                        <div class="card-body btn btn-sm mdi-24px tablinks" onclick="openCity(event, 'progress')">
+                        <div id="progressCard" class="card-body btn btn-sm mdi-24px tablinks" onclick="openCity(event, 'Progress')">
                             <h4 class="font-weight-normal mb-3">Progress <i
-                                    class="mdi mdi-progress-clock mdi-24px float-right"></i>
-                            </h4>
-                            <h1 class="mb-5">{{ $progressTickets }}</h1>
+                                    class="mdi mdi-progress-clock mdi-24px float-right"></i></h4>
+                            <h1 id="progressTickets" class="mb-5">{{ $progressTickets }}</h1>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-3 stretch-card grid-margin">
                     <div class="card card-img-holder-pending text-center">
-                        <div class="card-body btn btn-sm mdi-24px tablinks" onclick="openCity(event, 'pending')">
+                        <div id="pendingCard" class="card-body btn btn-sm mdi-24px tablinks" onclick="openCity(event, 'pending')">
                             {{-- <img src="{{ asset('assets/auth/images/dashboard/circle.svg') }}" class="card-img-absolute"
                                 alt="circle-image" /> --}}
                             <h4 class="font-weight-normal mb-3">Pending <i
@@ -143,7 +142,7 @@
                 </div>
                 <div class="col-md-3 stretch-card grid-margin">
                     <div class="card card-img-holder-solved text-center">
-                        <div class="card-body btn btn-sm mdi-24px tablinks" onclick="openCity(event, 'solved')">
+                        <div id="solvedCard" class="card-body btn btn-sm mdi-24px tablinks" onclick="openCity(event, 'solved')">
                             {{-- <img src="{{ asset('assets/auth/images/dashboard/circle.svg') }}" class="card-img-absolute"
                                 alt="circle-image" /> --}}
                             <h4 class="font-weight-normal mb-3">Solved <i class="mdi mdi-check mdi-24px float-right"></i>
@@ -158,14 +157,10 @@
                 <div class="card tabcontent" id="open">
                     <div class="card-body">
                         <h4 class="card-title">Open Ticket</h4>
-                        @if ($ticket->where('status', 'Open')->isEmpty())
-                            <p class="text-center">There is no data</p>
-                        @else
-                            @include('partials.table')
-                        @endif
+                        @include('partials.table')
                     </div>
                 </div>
-                <div class="card tabcontent" id="progress">
+                <div class="card tabcontent" id="Progress">
                     <div class="card-body">
                         <h4 class="card-title">Progress Ticket</h4>
                         <div class="table-responsive">
@@ -180,11 +175,7 @@
                                         <th> Info Ticket</th>
                                     </tr>
                                 </thead>
-                                {{-- @if ($ticket->where('status', 'Progress')->isEmpty())
-                            <p class="text-center">There is no data</p>
-                        @else --}}
                                 @include('partials.table_progress')
-                                {{-- @endif --}}
                             </table>
                         </div>
                     </div>
@@ -204,11 +195,7 @@
                                         <th> Info Ticket</th>
                                     </tr>
                                 </thead>
-                                {{-- @if ($ticket->where('status', 'Progress')->isEmpty())
-                            <p class="text-center">There is no data</p>
-                        @else --}}
                                 @include('partials.table_pending')
-                                {{-- @endif --}}
                             </table>
                         </div>
                     </div>
@@ -228,11 +215,7 @@
                                         <th> Info Ticket</th>
                                     </tr>
                                 </thead>
-                                {{-- @if ($ticket->where('status', 'Progress')->isEmpty())
-                            <p class="text-center">There is no data</p>
-                        @else --}}
                                 @include('partials.table_solved')
-                                {{-- @endif --}}
                             </table>
                         </div>
                     </div>

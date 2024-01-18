@@ -10,13 +10,16 @@
         </tr>
     </thead> --}}
     <tbody>
+        @if ($ticket->where('status', 'Progress')->isEmpty())
+            <p class="text-center">There is no data</p>
+        @else
         @foreach ($ticket as $t)
             @if ($t->status == 'Progress')
                 <tr>
                     <td>{{ $t->name_user }}</td>
                     <td>{{ $t->subject }}</td>
                     <td>
-                        <label class="badge badge-gradient-info">{{ $t->status }}</label>
+                        <label class="badge badge-gradient-warning">{{ $t->status }}</label>
                     </td>
                     <td>{{ $t->created_at }}</td>
                     <td>{{ $t->ticket_id }}</td>
@@ -29,6 +32,7 @@
                 </tr>
             @endif
         @endforeach
+        @endif
     </tbody>
 </table>
 

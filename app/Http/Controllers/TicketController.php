@@ -22,7 +22,7 @@ class TicketController extends Controller
     public function updateStatus(Request $request, Ticket $ticket)
     {
         $request->validate([
-            'status' => 'required|in:progress,Pending,Solved',
+            'status' => 'required|in:Progress,Pending,Solved',
         ]);
 
         $ticket->update(['status' => $request->input('status')]);
@@ -48,7 +48,7 @@ class TicketController extends Controller
 
         // Update the ticket's name_tech with the user's name
         $ticket->update(['name_tech' => $user->name]);
-        $ticket->update(['status' => 'progress']);
+        $ticket->update(['status' => 'Progress']);
 
 
         return redirect()->route('auth.dashboard')->with('success', 'Ticket assigned successfully');
