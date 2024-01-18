@@ -52,6 +52,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('detail_ticket-admin', DashboardController::class);
     Route::get('admin_ticket_detail/{id}/edit', [DashboardController::class, 'edit'])->name('admin_ticket_detail.edit');
     Route::put('/assign-ticket/{ticket}', [TicketController::class, 'assign'])->name('assign.ticket');
+    Route::get('/refresh-assigned-table/{ticket}', [DashboardController::class, 'refreshAssignedTable'])->name('refresh.assigned.table');
 });
 
 

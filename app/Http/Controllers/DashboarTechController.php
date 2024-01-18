@@ -23,16 +23,59 @@ class DashboarTechController extends Controller
 
         return view('pages.tech_person.dashboard_techperson',["ticket"=> $tickets], compact('tickets', 'users'));
     }
+
+
     public function updateStatus(Request $request, Ticket $ticket)
     {
         $request->validate([
             'status' => 'required|in:Progress,Pending,Solved',
         ]);
-
-        $ticket->update(['status' => $request->input('status')]);
-
+    
+        $newStatus = $request->input('status');
+    
+        // If the status is changed to "Solved"
+        if ($newStatus == 'Solved') {
+            // Decrement the case_total in the User model
+            $user = User::where('name', $ticket->name_tech)->first();
+            if ($user) {
+                $user->decrement('case_total');
+    
+                // Update user status based on case_total
+                $this->updateUserStatus($user);
+            }
+        } else {
+            // If the status is changed from "Solved"
+            // Increment the case_total in the User model
+            $user = User::where('name', $ticket->name_tech)->first();
+            if ($user) {
+                $user->increment('case_total');
+    
+                // Update user status based on case_total
+                $this->updateUserStatus($user);
+            }
+        }
+    
+        // Update ticket status
+        $ticket->update(['status' => $newStatus]);
+    
         return redirect()->back()->with('success', 'Ticket status updated successfully');
     }
+    
+    private function updateUserStatus(User $user)
+    {
+        if ($user->case_total === 0) {
+            $user->status = 0; // Free
+        } elseif ($user->case_total >= 1 && $user->case_total <= 2) {
+            $user->status = 1; // Working
+        } elseif ($user->case_total >= 3 && $user->case_total <= 5) {
+            $user->status = 2; // Busy
+        } elseif ($user->case_total > 5) {
+            $user->status = 3; // Overload
+        }
+    
+        $user->save();
+    }
+    
 
     public function refreshTableTechPerson()
     {
