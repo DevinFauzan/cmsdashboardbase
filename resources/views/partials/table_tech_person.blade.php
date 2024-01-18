@@ -1,16 +1,11 @@
 <div class="table-responsive">
     <table class="table" id="techPersonTable">
-        {{-- <thead>
-            <tr>
-                <th> Assignee </th>
-                <th> Subject </th>
-                <th> Status </th>
-                <th> Last Update </th>
-                <th> Ticket ID </th>
-                <th> Detail </th>
-            </tr>
-        </thead> --}}
         <tbody>
+            <tbody>
+                <tr>
+                    <td colspan="6" class="text-center">There is no data</td>
+                </tr>
+            </tbody>
             @foreach ($tickets as $ticket)
                 <tr>
                     <td>{{ $ticket->name_user }}</td>

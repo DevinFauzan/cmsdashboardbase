@@ -111,8 +111,6 @@
                     <div class="card card-img-holder-open text-center">
                         <div id="openCard" class="card-body btn btn-sm mdi-24px tablinks"
                             onclick="openCity(event, 'open')">
-                            {{-- <img src="{{ asset('assets/auth/images/dashboard/circle.svg') }}" class="card-img-absolute"
-                                alt="circle-image" /> --}}
                             <h4 class="font-weight-normal mb-3">Open <i
                                     class="mdi mdi-ticket-percent mdi-24px float-right"></i>
                             </h4>
@@ -134,8 +132,6 @@
                     <div class="card card-img-holder-pending text-center">
                         <div id="pendingCard" class="card-body btn btn-sm mdi-24px tablinks"
                             onclick="openCity(event, 'pending')">
-                            {{-- <img src="{{ asset('assets/auth/images/dashboard/circle.svg') }}" class="card-img-absolute"
-                                alt="circle-image" /> --}}
                             <h4 class="font-weight-normal mb-3">Pending <i
                                     class="mdi mdi-account-clock-outline mdi-24px float-right"></i>
                             </h4>
@@ -147,8 +143,6 @@
                     <div class="card card-img-holder-solved text-center">
                         <div id="solvedCard" class="card-body btn btn-sm mdi-24px tablinks"
                             onclick="openCity(event, 'solved')">
-                            {{-- <img src="{{ asset('assets/auth/images/dashboard/circle.svg') }}" class="card-img-absolute"
-                                alt="circle-image" /> --}}
                             <h4 class="font-weight-normal mb-3">Solved <i class="mdi mdi-check mdi-24px float-right"></i>
                             </h4>
                             <h1 id="solvedTickets" class="mb-5">{{ $solvedTickets }}</h1>
@@ -161,29 +155,29 @@
                 <div class="card tabcontent" id="open">
                     <div class="card-body">
                         <h4 class="card-title">Open Ticket</h4>
-                        <table id="progressTable" class="table table-striped" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th> Assignee </th>
-                                    <th> Subject </th>
-                                    <th> Status </th>
-                                    <th> Submitted </th>
-                                    <th> Tracking ID </th>
-                                    <th> Info Ticket</th>
-                                </tr>
-                            </thead>
-                            @if ($ticket->where('status', 'Open')->count() > 0)
-                                @include('partials.table')
-                            @else
-                                <table class="table-responsive">
+                        <div class="table-responsive">
+                            <table id="openTable" class="table table-striped" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th> Assignee </th>
+                                        <th> Subject </th>
+                                        <th> Status </th>
+                                        <th> Submitted </th>
+                                        <th> Tracking ID </th>
+                                        <th> Info Ticket</th>
+                                    </tr>
+                                </thead>
+                                @if ($ticket->where('status', 'Open')->count() > 0)
+                                    @include('partials.table')
+                                @else
                                     <tbody>
                                         <tr>
                                             <td colspan="6" class="text-center">There is no data</td>
                                         </tr>
                                     </tbody>
-                                </table>
-                            @endif
-                        </table>
+                                @endif
+                            </table>
+                        </div>
                     </div>
                 </div>
                 <div class="card tabcontent" id="Progress">

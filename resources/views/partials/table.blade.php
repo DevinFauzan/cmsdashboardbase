@@ -1,14 +1,4 @@
 <table id="openTable" class="table table-striped" style="width:100%">
-    {{-- <thead>
-        <tr>
-            <th> Assignee </th>
-            <th> Subject </th>
-            <th> Status </th>
-            <th> Submitted </th>
-            <th> Tracking ID </th>
-            <th> Info Ticket</th>
-        </tr>
-    </thead> --}}
     <tbody>
         @if ($ticket->where('status', 'Open')->isEmpty())
         <tbody>
