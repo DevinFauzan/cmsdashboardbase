@@ -43,16 +43,16 @@ class DashboarTechController extends Controller
                 // Update user status based on case_total
                 $this->updateUserStatus($user);
             }
-        } else {
-            // If the status is changed from "Solved"
-            // Increment the case_total in the User model
-            $user = User::where('name', $ticket->name_tech)->first();
-            if ($user) {
-                $user->increment('case_total');
+        // } else {
+        //     // If the status is changed from "Solved"
+        //     // Increment the case_total in the User model
+        //     $user = User::where('name', $ticket->name_tech)->first();
+        //     if ($user) {
+        //         $user->increment('case_total');
     
-                // Update user status based on case_total
-                $this->updateUserStatus($user);
-            }
+        //         // Update user status based on case_total
+        //         $this->updateUserStatus($user);
+        //     }
         }
     
         // Update ticket status

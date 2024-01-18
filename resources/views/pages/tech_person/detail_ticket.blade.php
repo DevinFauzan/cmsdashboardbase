@@ -94,26 +94,29 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-4 grid-margin stretch-card ">
+                <div class="col-4 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Ticket </h4>
+                            <h4 class="card-title">Ticket</h4>
                             <p class="card-description">How was the ticket that you handling?</p>
-                            <form action="{{ route('update.ticket.status', ['ticket' => $ticket->id]) }}" method="post">
+                            <form action="{{ route('update.ticket.status', ['ticket' => $ticket->id]) }}" method="post"
+                                id="updateTicketForm">
                                 @csrf
                                 @method('put')
                                 <div class="form-group">
                                     <label for="exampleSelectStatus">Status</label>
-                                    <select class="form-control" id="exampleSelectStatus" name="status">
+                                    <select class="form-control" id="exampleSelectStatus" name="status"
+                                        onchange="updateSubmitButton(this.value)">
                                         <option selected disabled>select product type</option>
                                         <option value="Progress" {{ $ticket->status == "Progress" ? 'selected' : '' }}>Progress</option>
                                         <option value="Pending" {{ $ticket->status == "Pending" ? 'selected' : '' }}>Pending</option>
                                         <option value="Solved" {{ $ticket->status == "Solved" ? 'selected' : '' }}>Solved</option>
                                     </select>
                                 </div>
-                                <button type="submit" class="btn btn-sm btn-primary">
+                                <button type="submit" class="btn btn-sm btn-primary" id="submitButton" {{ $ticket->status == 'Solved' ? 'disabled' : '' }}>
                                     Submit
                                 </button>
+                                
                             </form>
                         </div>
                     </div>
@@ -513,3 +516,9 @@
             }
         }
     </style>
+{{-- <script>
+    function updateSubmitButton(selectedStatus) {
+        var submitButton = document.getElementById('submitButton');
+        submitButton.disabled = selectedStatus === 'Solved';
+    }
+</script> --}}
