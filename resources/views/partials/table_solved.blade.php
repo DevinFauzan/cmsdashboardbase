@@ -21,6 +21,7 @@
                 @if ($t->status == 'Solved')
                     <tr>
                         <td>{{ $t->name_user }}</td>
+                        <td>{{ $t->name_tech }}</td>
                         <td>{{ $t->subject }}</td>
                         <td>
                             <label class="badge badge-gradient-success">{{ $t->status }}</label>

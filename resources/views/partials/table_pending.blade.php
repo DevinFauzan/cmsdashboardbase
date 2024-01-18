@@ -11,6 +11,7 @@
                 @if ($t->status == 'Pending')
                     <tr>
                         <td>{{ $t->name_user }}</td>
+                        <td>{{ $t->name_tech }}</td>
                         <td>{{ $t->subject }}</td>
                         <td>
                             <label class="badge badge-gradient-danger">{{ $t->status }}</label>

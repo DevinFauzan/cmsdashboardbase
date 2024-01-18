@@ -109,7 +109,8 @@
             <div class="row">
                 <div class="col-md-3 stretch-card grid-margin">
                     <div class="card card-img-holder-open text-center">
-                        <div id="openCard" class="card-body btn btn-sm mdi-24px tablinks" onclick="openCity(event, 'open')">
+                        <div id="openCard" class="card-body btn btn-sm mdi-24px tablinks"
+                            onclick="openCity(event, 'open')">
                             {{-- <img src="{{ asset('assets/auth/images/dashboard/circle.svg') }}" class="card-img-absolute"
                                 alt="circle-image" /> --}}
                             <h4 class="font-weight-normal mb-3">Open <i
@@ -121,7 +122,8 @@
                 </div>
                 <div class="col-md-3 stretch-card grid-margin">
                     <div class="card card-img-holder-progress text-center">
-                        <div id="progressCard" class="card-body btn btn-sm mdi-24px tablinks" onclick="openCity(event, 'Progress')">
+                        <div id="progressCard" class="card-body btn btn-sm mdi-24px tablinks"
+                            onclick="openCity(event, 'Progress')">
                             <h4 class="font-weight-normal mb-3">Progress <i
                                     class="mdi mdi-progress-clock mdi-24px float-right"></i></h4>
                             <h1 id="progressTickets" class="mb-5">{{ $progressTickets }}</h1>
@@ -130,7 +132,8 @@
                 </div>
                 <div class="col-md-3 stretch-card grid-margin">
                     <div class="card card-img-holder-pending text-center">
-                        <div id="pendingCard" class="card-body btn btn-sm mdi-24px tablinks" onclick="openCity(event, 'pending')">
+                        <div id="pendingCard" class="card-body btn btn-sm mdi-24px tablinks"
+                            onclick="openCity(event, 'pending')">
                             {{-- <img src="{{ asset('assets/auth/images/dashboard/circle.svg') }}" class="card-img-absolute"
                                 alt="circle-image" /> --}}
                             <h4 class="font-weight-normal mb-3">Pending <i
@@ -142,7 +145,8 @@
                 </div>
                 <div class="col-md-3 stretch-card grid-margin">
                     <div class="card card-img-holder-solved text-center">
-                        <div id="solvedCard" class="card-body btn btn-sm mdi-24px tablinks" onclick="openCity(event, 'solved')">
+                        <div id="solvedCard" class="card-body btn btn-sm mdi-24px tablinks"
+                            onclick="openCity(event, 'solved')">
                             {{-- <img src="{{ asset('assets/auth/images/dashboard/circle.svg') }}" class="card-img-absolute"
                                 alt="circle-image" /> --}}
                             <h4 class="font-weight-normal mb-3">Solved <i class="mdi mdi-check mdi-24px float-right"></i>
@@ -157,17 +161,29 @@
                 <div class="card tabcontent" id="open">
                     <div class="card-body">
                         <h4 class="card-title">Open Ticket</h4>
-                        @if ($ticket->where('status', 'Open')->count() > 0)
-                        @include('partials.table')
-                    @else
-                    <table  class="table-responsive">
-                        <tbody>
-                            <tr>
-                                <td colspan="6" class="text-center">There is no data</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    @endif
+                        <table id="progressTable" class="table table-striped" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th> Assignee </th>
+                                    <th> Subject </th>
+                                    <th> Status </th>
+                                    <th> Submitted </th>
+                                    <th> Tracking ID </th>
+                                    <th> Info Ticket</th>
+                                </tr>
+                            </thead>
+                            @if ($ticket->where('status', 'Open')->count() > 0)
+                                @include('partials.table')
+                            @else
+                                <table class="table-responsive">
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="6" class="text-center">There is no data</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            @endif
+                        </table>
                     </div>
                 </div>
                 <div class="card tabcontent" id="Progress">
@@ -178,6 +194,7 @@
                                 <thead>
                                     <tr>
                                         <th> Assignee </th>
+                                        <th> Assigned To </th>
                                         <th> Subject </th>
                                         <th> Status </th>
                                         <th> Submitted </th>
@@ -186,14 +203,14 @@
                                     </tr>
                                 </thead>
                                 @if ($ticket->where('status', 'Progress')->count() > 0)
-                                @include('partials.table_progress')
-                            @else
-                                <tbody>
-                                    <tr>
-                                        <td colspan="6" class="text-center">There is no data</td>
-                                    </tr>
-                                </tbody>
-                            @endif
+                                    @include('partials.table_progress')
+                                @else
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="6" class="text-center">There is no data</td>
+                                        </tr>
+                                    </tbody>
+                                @endif
                             </table>
                         </div>
                     </div>
@@ -206,6 +223,7 @@
                                 <thead>
                                     <tr>
                                         <th> Assignee </th>
+                                        <th> Assigned To </th>
                                         <th> Subject </th>
                                         <th> Status </th>
                                         <th> Submitted </th>
@@ -214,14 +232,14 @@
                                     </tr>
                                 </thead>
                                 @if ($ticket->where('status', 'Pending')->count() > 0)
-                                        @include('partials.table_pending')
-                                    @else
-                                        <tbody>
-                                            <tr>
-                                                <td colspan="6" class="text-center">There is no data</td>
-                                            </tr>
-                                        </tbody>
-                                    @endif
+                                    @include('partials.table_pending')
+                                @else
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="6" class="text-center">There is no data</td>
+                                        </tr>
+                                    </tbody>
+                                @endif
                             </table>
                         </div>
                     </div>
@@ -234,6 +252,7 @@
                                 <thead>
                                     <tr>
                                         <th> Assignee </th>
+                                        <th> Assigned To </th>
                                         <th> Subject </th>
                                         <th> Status </th>
                                         <th> Submitted </th>
@@ -242,14 +261,14 @@
                                     </tr>
                                 </thead>
                                 @if ($ticket->where('status', 'solved')->count() > 0)
-                                        @include('partials.table_solved')
-                                    @else
-                                        <tbody>
-                                            <tr>
-                                                <td colspan="6" class="text-center">There is no data</td>
-                                            </tr>
-                                        </tbody>
-                                    @endif
+                                    @include('partials.table_solved')
+                                @else
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="6" class="text-center">There is no data</td>
+                                        </tr>
+                                    </tbody>
+                                @endif
                             </table>
                         </div>
                     </div>
@@ -307,29 +326,29 @@
         }, 1000);
 
 
-            // Function to update ticket counts
-    function updateTicketCounts() {
-        $.ajax({
-            url: "{{ route('refresh.ticket_counts') }}",
-            method: "GET",
-            dataType: 'json',
-            success: function (data) {
-                $('#openTickets').text(data.openTickets);
-                $('#pendingTickets').text(data.pendingTickets);
-                $('#progressTickets').text(data.progressTickets);
-                $('#solvedTickets').text(data.solvedTickets);
-            },
-            error: function (xhr, status, error) {
-                console.error("Error updating ticket counts: " + error);
-            }
-        });
-    }
+        // Function to update ticket counts
+        function updateTicketCounts() {
+            $.ajax({
+                url: "{{ route('refresh.ticket_counts') }}",
+                method: "GET",
+                dataType: 'json',
+                success: function(data) {
+                    $('#openTickets').text(data.openTickets);
+                    $('#pendingTickets').text(data.pendingTickets);
+                    $('#progressTickets').text(data.progressTickets);
+                    $('#solvedTickets').text(data.solvedTickets);
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error updating ticket counts: " + error);
+                }
+            });
+        }
 
-    // Refresh ticket counts every 60 seconds (adjust as needed)
-    setInterval(function () {
+        // Refresh ticket counts every 60 seconds (adjust as needed)
+        setInterval(function() {
+            updateTicketCounts();
+        }, 1000);
+
+        // Initial update
         updateTicketCounts();
-    }, 1000);
-
-    // Initial update
-    updateTicketCounts();
     </script>
