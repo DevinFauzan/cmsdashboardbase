@@ -1,4 +1,4 @@
-<!-- @extends('layouts.auth')
+@extends('layouts.user')
 
 @section('content')
     <div class="main-panel">
@@ -41,28 +41,4 @@
                         </div>
                     </div>
                 </div>
-                <!-- <div class="col-3 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">Ticket #ID093209831</h4>
-                            <p class="card-description">Once you assigned this ticket problem, this ticked is belong to you
-                                untill you solved it, want to assigend this ticket?</p>
-                            <form class="forms-sample">
-                                <div class="form-group">
-                                    <label for="exampleSelectGender">Assign</label>
-                                    <select class="form-control" id="exampleSelectGender">
-                                        <option>Assign this ticket</option>
-                                        <option>Pending this ticket</option>
-                                    </select>
-                                </div>
-                                <div class="justify-content-center center">
-                                    <button class="btn btn-light btn-sm mr-4">Cancel</button>
-                                    <button type="submit" class="btn btn-gradient-primary btn-sm">Submit</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> -->
     @endsection -->

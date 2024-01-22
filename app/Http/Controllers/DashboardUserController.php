@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Ticket;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class DashboardUserController extends Controller
 {
@@ -13,8 +15,7 @@ class DashboardUserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        {
+    { {
             return view('pages.user_complainant.user_dashboard');
         }
     }
@@ -38,8 +39,63 @@ class DashboardUserController extends Controller
      */
     public function store(Request $request)
     {
-        //
-            }
+        $request->validate([
+            'name_user' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'complained_date' => 'required|date',
+            'description' => 'required|string',
+            'subject' => 'required|string|max:255',
+            'product' => 'required|in:0,1,2,3',
+            'phone' => 'required|numeric',
+        ]);
+
+        $product = $request->input('product');
+        $productPrefix = ''; // Initialize an empty prefix
+
+        // Determine the prefix and counter based on the selected product
+        switch ($product) {
+            case 0:
+                $productPrefix = 'TS';
+                break;
+            case 1:
+                $productPrefix = 'TO';
+                break;
+            case 2:
+                $productPrefix = 'TD';
+                break;
+            case 3:
+                $productPrefix = 'TP';
+                break;
+        }
+
+        // Find the latest ticket with the same product prefix
+        $latestTicket = Ticket::where('ticket_id', 'like', $productPrefix . '%')->latest()->first();
+
+        // Generate the new ticket ID
+        if ($latestTicket) {
+            $ticketIdNumber = intval(substr($latestTicket->ticket_id, strlen($productPrefix))) + 1;
+        } else {
+            $ticketIdNumber = 1;
+        }
+
+        $newTicketId = $productPrefix . str_pad($ticketIdNumber, 5, '0', STR_PAD_LEFT);
+
+        // Create a new ticket using the Ticket model
+        Ticket::create([
+            'name_user' => $request->input('name_user'),
+            'email' => $request->input('email'),
+            'complained_date' => $request->input('complained_date'),
+            'description' => $request->input('description'),
+            'subject' => $request->input('subject'),
+            'product' => $product,
+            'phone' => $request->input('phone'),
+            'status' => 'Open',
+            'ticket_id' => $newTicketId,
+        ]);
+
+        $request->session()->flash('ticket_id', $newTicketId);
+        return redirect()->route('dashboard-user.index')->with('success', 'Ticket submitted successfully!');
+    }
 
     /**
      * Display the specified resource.

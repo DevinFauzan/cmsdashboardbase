@@ -36,7 +36,7 @@
                         @endswitch
                     </label>
                 </td>
-                <td>{{ $ticket->updated_at }}</td>
+                <td>{{ $ticket->updated_at->format('Y-m-d') }}</td>
                 <td>{{ $ticket->ticket_id }}</td>
                 <td>
                     <a href="{{ route('detail_ticket.edit', ['id' => $ticket->id]) }}"

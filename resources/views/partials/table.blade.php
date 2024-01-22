@@ -15,7 +15,7 @@
                         <td>
                             <label class="badge badge-gradient-info">{{ $t->status }}</label>
                         </td>
-                        <td>{{ $t->created_at }}</td>
+                        <td>{{ $t->created_at->format('Y-m-d') }}</td>
                         <td>{{ $t->ticket_id }}</td>
                         <td>
                             <button class="btn btn-primary btn-sm mdi-24px text-white"

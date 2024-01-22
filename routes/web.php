@@ -1,13 +1,14 @@
 <?php
 
 use App\Http\Controllers\Auth\DashboardController;
-// use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\PostController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\DashboarTechController;
 use App\Http\Controllers\DashboardUserController;
 use App\Http\Controllers\TaskController; // Import your TaskController
+use Illuminate\Support\Facades\Auth;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes

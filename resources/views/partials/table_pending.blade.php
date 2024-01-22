@@ -16,7 +16,7 @@
                         <td>
                             <label class="badge badge-gradient-danger">{{ $t->status }}</label>
                         </td>
-                        <td>{{ $t->created_at }}</td>
+                        <td>{{ $t->created_at->format('Y-m-d') }}</td>
                         <td>{{ $t->ticket_id }}</td>                        
                     </tr>
                 @endif
