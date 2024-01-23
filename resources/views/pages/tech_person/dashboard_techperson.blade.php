@@ -1,5 +1,10 @@
 @extends('layouts.auth')
 
+<head>
+    <link rel="stylesheet" href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+</head>
 @section('content')
     <!-- partial -->
     <div class="main-panel">
@@ -17,29 +22,20 @@
                         <div class="card-body">
                             <h4 class="card-title">Tickets List</h4>
                             <div class="table-responsive">
-                                
+
                                 <table id="techPersonTable" class="table table-striped" style="width:100%">
-                                  
-                                        <thead>
-                                            <tr>
-                                                <th> Assignee </th>
-                                                <th> Subject </th>
-                                                <th> Status </th>
-                                                <th> Last Update </th>
-                                                <th> Ticket ID </th>
-                                                <th> Detail </th>
-                                            </tr>
-                                        </thead>
-                                    
-                                    @if ($tickets->count() > 0)
-                                        @include('partials.table_tech_person')
-                                    @else
-                                        <tbody>
-                                            <tr>
-                                                <td colspan="6" class="text-center">There is no data</td>
-                                            </tr>
-                                        </tbody>
-                                    @endif
+
+                                    <thead>
+                                        <tr>
+                                            <th> Assignee </th>
+                                            <th> Subject </th>
+                                            <th> Status </th>
+                                            <th> Last Update </th>
+                                            <th> Ticket ID </th>
+                                            <th> Detail </th>
+                                        </tr>
+                                    </thead>
+                                    @include('partials.table_tech_person')
                                 </table>
                             </div>
                         </div>
@@ -66,5 +62,15 @@
 
             setInterval(function() {
                 refreshTableTechPerson("techPersonTable", "{{ route('refresh.table_tech_person') }}");
-            }, 1000);
+            }, 20000);
         </script>
+        @section('scripts')
+            <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+                integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+            <script src="//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+            <script>
+                $(document).ready(function() {
+                    $('#techPersonTable').DataTable();
+                });
+            </script>
+        @endsection

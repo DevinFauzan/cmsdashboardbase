@@ -40,6 +40,13 @@ class DashboardController extends Controller
     
         return response()->json(['html' => $html]);
     }
+    public function refreshAssignedTable(Ticket $ticket)
+    {
+        $users = User::where('role', 'tech_person')->get();
+        $html = view('partials.table_user_tech', compact('users', 'ticket'))->render();
+
+        return response()->json(['html' => $html]);
+    }
     
     // Similar methods for progress, pending, and solved tables
 
@@ -89,13 +96,7 @@ class DashboardController extends Controller
     return view('pages.admin.admin_ticket_detail', compact('ticket', 'users'));
 }
 
-    public function refreshAssignedTable(Ticket $ticket)
-    {
-        $users = User::where('role', 'tech_person')->get();
-        $html = view('partials.table_user_tech', compact('users', 'ticket'))->render();
-
-        return response()->json(['html' => $html]);
-    }
+  
 
 
 }

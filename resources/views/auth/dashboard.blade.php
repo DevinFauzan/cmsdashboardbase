@@ -1,8 +1,10 @@
 @extends('layouts.auth')
 
-
-<link href="https://cdn.datatables.net/v/bs5/dt-1.13.8/datatables.min.css" rel="stylesheet">
-
+<head>
+    <link rel="stylesheet" href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+</head>
 <style>
     body {
         font-family: Arial;
@@ -96,6 +98,7 @@
 
 
 @section('content')
+
     <!-- partial -->
     <div class="main-panel">
         <div class="content-wrapper">
@@ -167,17 +170,12 @@
                                         <th> Info Ticket</th>
                                     </tr>
                                 </thead>
-                                @if ($ticket->where('status', 'Open')->count() > 0)
+                                <tbody>
                                     @include('partials.table')
-                                @else
-                                    <tbody>
-                                        <tr>
-                                            <td colspan="6" class="text-center">There is no data</td>
-                                        </tr>
-                                    </tbody>
-                                @endif
+                                </tbody>
                             </table>
                         </div>
+                        
                     </div>
                 </div>
                 <div class="card tabcontent" id="Progress">
@@ -195,15 +193,7 @@
                                         <th> Tracking ID </th>
                                     </tr>
                                 </thead>
-                                @if ($ticket->where('status', 'Progress')->count() > 0)
                                     @include('partials.table_progress')
-                                @else
-                                    <tbody>
-                                        <tr>
-                                            <td colspan="6" class="text-center">There is no data</td>
-                                        </tr>
-                                    </tbody>
-                                @endif
                             </table>
                         </div>
                     </div>
@@ -223,15 +213,7 @@
                                         <th> Tracking ID </th>
                                     </tr>
                                 </thead>
-                                @if ($ticket->where('status', 'Pending')->count() > 0)
-                                    @include('partials.table_pending')
-                                @else
-                                    <tbody>
-                                        <tr>
-                                            <td colspan="6" class="text-center">There is no data</td>
-                                        </tr>
-                                    </tbody>
-                                @endif
+                                    @include('partials.table_pending')                              
                             </table>
                         </div>
                     </div>
@@ -251,15 +233,7 @@
                                         <th> Tracking ID </th>
                                     </tr>
                                 </thead>
-                                @if ($ticket->where('status', 'solved')->count() > 0)
                                     @include('partials.table_solved')
-                                @else
-                                    <tbody>
-                                        <tr>
-                                            <td colspan="6" class="text-center">There is no data</td>
-                                        </tr>
-                                    </tbody>
-                                @endif
                             </table>
                         </div>
                     </div>
@@ -269,8 +243,6 @@
         <!-- content-wrapper ends -->
     @endsection
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.datatables.net/v/bs5/dt-1.13.8/datatables.min.js"></script>
 
     <script>
         function openCity(evt, cityName) {
@@ -302,19 +274,19 @@
 
         setInterval(function() {
             refreshTable("openTable", "{{ route('refresh.table') }}");
-        }, 1000);
+        }, 20000);
 
         setInterval(function() {
             refreshTable("progressTable", "{{ route('refresh.table_progress') }}");
-        }, 1000);
+        }, 20000);
 
         setInterval(function() {
             refreshTable("pendingTable", "{{ route('refresh.table_pending') }}");
-        }, 1000);
+        }, 20000);
 
         setInterval(function() {
             refreshTable("solvedTable", "{{ route('refresh.table_solved') }}");
-        }, 1000);
+        }, 20000);
 
 
         // Function to update ticket counts
@@ -343,3 +315,28 @@
         // Initial update
         updateTicketCounts();
     </script>
+   
+   @section('scripts')
+   <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+   <script src="//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+   <script>
+       $(document).ready(function () {
+           $('#openTable').DataTable();
+       });
+   </script>
+   <script>
+    $(document).ready(function () {
+        $('#progressTable').DataTable();
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('#pendingTable').DataTable();
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('#solvedTable').DataTable();
+    });
+</script>
+@endsection

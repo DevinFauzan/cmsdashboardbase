@@ -1,5 +1,10 @@
 @extends('layouts.auth')
 
+<head>
+    <link rel="stylesheet" href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+</head>
 @section('content')
     <div class="main-panel">
         <div class="content-wrapper">
@@ -7,7 +12,7 @@
                 <h2 class="page-title text-center">
                     <a href="javascript:history.back()" class="page-title-icon bg-gradient-primary text-white me-2">
                         <i class="mdi mdi-arrow-left"></i>
-                    </a>                    
+                    </a>
                     {{ $ticket->ticket_id }} | {{ $ticket->name_user }} | {{ $ticket->name_tech }}
                 </h2>
             </div>
@@ -18,8 +23,8 @@
                             <form class="forms-sample">
                                 <div class="form-group">
                                     <label for="exampleInputName1">Subject</label>
-                                    <input type="text" class="form-control" value="{{ $ticket->subject }}" id="exampleInputName1" placeholder="subject"
-                                        readonly>
+                                    <input type="text" class="form-control" value="{{ $ticket->subject }}"
+                                        id="exampleInputName1" placeholder="subject" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleTextarea1">Description</label>
@@ -29,26 +34,30 @@
                                     <label for="exampleSelectProduct">Product</label>
                                     <select class="form-control" id="exampleSelectProduct" disabled>
                                         <option disabled selected>select product type</option>
-                                        <option value="0" {{ $ticket->product == 0 ? 'selected' : '' }}>Tableau Server</option>
-                                        <option value="1" {{ $ticket->product == 1 ? 'selected' : '' }}>Tableau Online</option>
-                                        <option value="2" {{ $ticket->product == 2 ? 'selected' : '' }}>Tableau Desktop</option>
-                                        <option value="3" {{ $ticket->product == 3 ? 'selected' : '' }}>Tableau Prep Builder</option>
+                                        <option value="0" {{ $ticket->product == 0 ? 'selected' : '' }}>Tableau Server
+                                        </option>
+                                        <option value="1" {{ $ticket->product == 1 ? 'selected' : '' }}>Tableau Online
+                                        </option>
+                                        <option value="2" {{ $ticket->product == 2 ? 'selected' : '' }}>Tableau Desktop
+                                        </option>
+                                        <option value="3" {{ $ticket->product == 3 ? 'selected' : '' }}>Tableau Prep
+                                            Builder</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputEmail3">Email address</label>
-                                    <input type="email" value="{{ $ticket->email }}" class="form-control" id="exampleInputEmail3" placeholder="Email"
-                                        readonly>
+                                    <input type="email" value="{{ $ticket->email }}" class="form-control"
+                                        id="exampleInputEmail3" placeholder="Email" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputTelp">Telephone</label>
-                                    <input type="number_format" value="{{ $ticket->phone }}" class="form-control" id="exampleInputTelp"
-                                        placeholder="08xxxxx" readonly>
+                                    <input type="number_format" value="{{ $ticket->phone }}" class="form-control"
+                                        id="exampleInputTelp" placeholder="08xxxxx" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputName1">Complained date</label>
-                                    <input type="date" value="{{ $ticket->created_at->format('Y-m-d') }}"  class="form-control" id="exampleInputName1" placeholder="date"
-                                        readonly>
+                                    <input type="date" value="{{ $ticket->created_at->format('Y-m-d') }}"
+                                        class="form-control" id="exampleInputName1" placeholder="date" readonly>
                                 </div>
                             </form>
                         </div>
@@ -60,7 +69,17 @@
                             <h4 class="card-title">Ticket {{ $ticket->ticket_id }}</h4>
                             <p class="card-description">Select Technical person to solve this ticket</p>
                             <div class="table-responsive">
-                                @include('partials.table_user_tech')
+                                <table id="assignedTable" class="table table-striped" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th> Name </th>
+                                            <th> Case Total </th>
+                                            <th> Status </th>
+                                            <th> Action </th>
+                                        </tr>
+                                    </thead>
+                                    @include('partials.table_user_tech')
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -69,24 +88,34 @@
         </div>
     @endsection
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<script>
-    function refreshAssignedTable(ticketId) {
-        $.ajax({
-            url: `/refresh-assigned-table/${ticketId}`,
-            method: "GET",
-            success: function (data) {
-                $("#assignedTable").html(data.html);
-            },
-            error: function (xhr, status, error) {
-                console.error("Error refreshing assigned table: " + error);
+    @section('scripts')
+        <script>
+            function refreshAssignedTable(ticketId) {
+                $.ajax({
+                    url: `/refresh-assigned-table/${ticketId}`,
+                    method: "GET",
+                    success: function(data) {
+                        $("#assignedTable").html(data.html);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error refreshing assigned table: " + error);
+                    }
+                });
             }
-        });
-    }
 
-    setInterval(function () {
-        refreshAssignedTable({{ $ticket->id }});
-    }, 1000);
-</script>
+            setInterval(function() {
+                refreshAssignedTable({{ $ticket->id }});
+            }, 10000);
+        </script>
 
+
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+        <script src="//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('#assignedTable').DataTable();
+            });
+        </script>
+    @endsection
