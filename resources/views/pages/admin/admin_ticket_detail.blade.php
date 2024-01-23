@@ -78,7 +78,9 @@
                                             <th> Action </th>
                                         </tr>
                                     </thead>
+                                    <tbody>
                                     @include('partials.table_user_tech')
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -87,27 +89,28 @@
             </div>
         </div>
     @endsection
+    <script>
+        function refreshAssignedTable(ticketId) {
+            $.ajax({
+                url: `/refresh-assigned-table/${ticketId}`,
+                method: "GET",
+                success: function(data) {
+                    $("#assignedTable tbody").html(data.html); // Use tbody selector
+                    $('#assignedTable').DataTable(); // Reinitialize DataTable
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error refreshing assigned table: " + error);
+                }
+            });
+        }
 
+        setInterval(function() {
+            refreshAssignedTable({{ $ticket->id }});
+        }, 20000);
+    </script>
 
     @section('scripts')
-        <script>
-            function refreshAssignedTable(ticketId) {
-                $.ajax({
-                    url: `/refresh-assigned-table/${ticketId}`,
-                    method: "GET",
-                    success: function(data) {
-                        $("#assignedTable").html(data.html);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error("Error refreshing assigned table: " + error);
-                    }
-                });
-            }
-
-            setInterval(function() {
-                refreshAssignedTable({{ $ticket->id }});
-            }, 10000);
-        </script>
+     
 
 
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"
