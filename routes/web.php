@@ -44,7 +44,7 @@ Route::get('/refresh-table-pending', [DashboardController::class, 'refreshTableP
 Route::get('/refresh-table-solved', [DashboardController::class, 'refreshTableSolved'])->name('refresh.table_solved');
 Route::get('/refresh-table-tech-person', [DashboarTechController::class, 'refreshTableTechPerson'])
     ->name('refresh.table_tech_person');
-    Route::get('/refresh-ticket-counts', [DashboardController::class, 'refreshTicketCounts'])->name('refresh.ticket_counts');
+Route::get('/refresh-ticket-counts', [DashboardController::class, 'refreshTicketCounts'])->name('refresh.ticket_counts');
 
 
 //Admin
@@ -57,12 +57,14 @@ Route::middleware(['auth', 'admin'])->group(function () {
 });
 
 
-
-
 //User
-Route::resource('dashboard-user',DashboardUserController::class);
-Route::get('/detail_ticket_user', [DashboardUserController::class, 'show'])->name('detail_ticket_user');
-Route::get('/my_ticket', [DashboardUserController::class, 'create'])->name('my_ticket');
+Route::resource('dashboard-user', DashboardUserController::class);
+Route::group(['middleware' => 'user'], function () {
+    // Your routes for users go here
+    Route::get('/my_ticket', [DashboardUserController::class, 'myTickets'])->name('my_ticket');
+    Route::get('/my_ticket/detail_ticket_user/{id}/edit', [DashboardUserController::class, 'edit'])->name('detail_ticket_user.edit');
+});
+
 
 //Route::get('/new_ticket', [DashboardUserController::class, 'show'])->name('new_ticket');
 
@@ -74,12 +76,7 @@ Route::get('admin_ticket_detail/{id}/edit', [DashboardController::class, 'edit']
 Route::put('/assign-ticket/{ticket}', [TicketController::class, 'assign'])->name('assign.ticket');
 
 
-
-
-
 Route::put('/tickets/{ticket}/assign/{user}', 'TicketController@assign')->name('tickets.assign');
 Route::get('/tickets/{id}/details', 'TicketController@getDetails');
 // Route::get('/auth/dashboard/{id}', 'DashboardController@showTicketDetails');
 Route::get('/auth/get-ticket-details/{id}', 'TicketController@getTicketDetails');
-
-

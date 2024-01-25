@@ -1,5 +1,6 @@
 @extends('layouts.user')
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 @section('content')
     <div class="main-panel">
         <div class="content-wrapper">
@@ -14,16 +15,6 @@
                 <div class="col-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            @if (session('success') || session('ticket_id'))
-                                <div class="alert alert-success">
-                                    @if (session('success'))
-                                        {{ session('success') }}<br>
-                                    @endif
-                                    @if (session('ticket_id'))
-                                        Ticket ID: {{ session('ticket_id') }}
-                                    @endif
-                                </div>
-                            @endif
                             <form class="forms-sample" action="{{ route('dashboard-user.store') }}" method="post">
                                 @csrf
                                 <div class="form-group">
@@ -59,7 +50,7 @@
                                         <option value="2">Tableau Desktop</option>
                                         <option value="3">Tableau Prep Builder</option>
                                     </select>
-                                </div>                                
+                                </div>
                                 <div class="form-group">
                                     <label for="exampleInputTelp">Telephone</label>
                                     <input type="text" class="form-control" id="exampleInputTelp" name="phone"
@@ -242,4 +233,36 @@
                 </div>
             </div>
         </div> --}}
+            @if (session('newTicketInfo'))
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        // Show SweetAlert when the page is loaded
+                        const sweetAlert = Swal.fire({
+                            icon: 'success',
+                            title: 'Ticket submitted successfully!',
+                            html: `
+                        <p>Ticket ID: {{ session('newTicketInfo')['ticket_id'] }}</p>
+                        <p>Name: {{ session('newTicketInfo')['name_user'] }}</p>
+                        <p>Email: {{ session('newTicketInfo')['email'] }}</p>
+                        <p>Password: {{ session('newTicketInfo')['password'] }}</p>
+                        <h5 id="goToLogin" class="btn btn-link"> <b> Click here to go to the Login Page</h5>
+                    `,
+                            showCancelButton: false,
+                            confirmButtonText: 'Close',
+                            closeOnClickOutside: false, // Do not close on click outside the alert
+                            allowOutsideClick: false, // Do not allow clicking outside the alert to close it
+                            reverseButtons: true, // Reverse the order of buttons (confirm/cancel)
+                        });
+
+                        // Add a click event listener to the specific text element
+                        const goToLoginText = document.getElementById('goToLogin');
+                        if (goToLoginText) {
+                            goToLoginText.addEventListener('click', function() {
+                                // Open the login page in a new tab using window.open()
+                                window.open('{{ route('login') }}');
+                            });
+                        }
+                    });
+                </script>
+            @endif
         @endsection
