@@ -26,6 +26,7 @@
                 @endswitch
             </label>
         </td>
+        <td>{{ $ticket->created_at->format('Y-m-d') }}</td>
         <td>{{ $ticket->updated_at->format('Y-m-d') }}</td>
         <td>{{ $ticket->ticket_id }}</td>
         <td>

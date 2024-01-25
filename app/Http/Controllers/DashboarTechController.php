@@ -16,12 +16,15 @@ class DashboarTechController extends Controller
      */
     public function index()
     {
+        $orderBy = 'created_at'; // default order by created_at
+        $orderDirection = 'desc'; // default order direction
         $tickets = Ticket::all();
         $users = User::all();
         $user = Auth::user();
         $tickets = Ticket::where('name_tech', $user->name)->get();
 
-        return view('pages.tech_person.dashboard_techperson',["ticket"=> $tickets], compact('tickets', 'users'));
+        return view('pages.tech_person.dashboard_techperson',["ticket"=> $tickets,"orderBy" => $orderBy,
+        "orderDirection" => $orderDirection,], compact('tickets', 'users'),);
     }
 
 

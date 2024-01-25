@@ -64,7 +64,10 @@ class DashboardController extends Controller
 
     public function index()
     {
-        $ticket = Ticket::all();
+        $orderBy = 'created_at'; // default order by created_at
+        $orderDirection = 'desc'; // default order direction
+    
+        $ticket = Ticket::orderBy($orderBy, $orderDirection)->get();
         $user = User::all();
     
         $openTickets = $ticket->where('status', 'Open')->count();
@@ -80,6 +83,8 @@ class DashboardController extends Controller
             "progressTickets" => $progressTickets,
             "solvedTickets" => $solvedTickets,
             "ticketCounts" => compact('openTickets', 'pendingTickets', 'progressTickets', 'solvedTickets'),
+            "orderBy" => $orderBy,
+            "orderDirection" => $orderDirection,
         ]);
     }
     

@@ -1,4 +1,9 @@
 
+@if ($ticket->where('status', 'Pending')->isEmpty())
+<tr>
+    <td colspan="6" class="text-center">There is no progress data</td>
+</tr>
+@else
     @foreach ($ticket as $t)
         @if ($t->status == 'Pending')
             <tr>
@@ -13,3 +18,4 @@
             </tr>
         @endif
     @endforeach
+    @endif

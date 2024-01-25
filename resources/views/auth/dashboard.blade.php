@@ -1,11 +1,17 @@
 @extends('layouts.auth')
 
 <head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <link rel="stylesheet" href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </head>
 <style>
+    .dataTables_filter {
+        display: none;
+    }
+
     body {
         font-family: Arial;
     }
@@ -98,7 +104,6 @@
 
 
 @section('content')
-
     <!-- partial -->
     <div class="main-panel">
         <div class="content-wrapper">
@@ -158,6 +163,11 @@
                 <div class="card tabcontent" id="open">
                     <div class="card-body">
                         <h4 class="card-title">Open Ticket</h4>
+                        <div class="d-flex justify-content-end mb-3">
+                            <div class="col-3">
+                                <input type="text" id="search-open" class="form-control" placeholder="Type to search...">
+                            </div>
+                        </div>
                         <div class="table-responsive">
                             <table id="openTable" class="table table-striped" style="width:100%">
                                 <thead>
@@ -175,12 +185,18 @@
                                 </tbody>
                             </table>
                         </div>
-                        
+
                     </div>
                 </div>
                 <div class="card tabcontent" id="Progress">
                     <div class="card-body">
                         <h4 class="card-title">Progress Ticket</h4>
+                        <div class="d-flex justify-content-end mb-3">
+                            <div class="col-3">
+                                <input type="text" id="search-progress" class="form-control"
+                                    placeholder="Type to search...">
+                            </div>
+                        </div>
                         <div class="table-responsive">
                             <table id="progressTable" class="table table-striped" style="width:100%">
                                 <thead>
@@ -193,7 +209,7 @@
                                         <th> Tracking ID </th>
                                     </tr>
                                 </thead>
-                                    @include('partials.table_progress')
+                                @include('partials.table_progress')
                             </table>
                         </div>
                     </div>
@@ -201,6 +217,12 @@
                 <div class="card tabcontent" id="pending">
                     <div class="card-body">
                         <h4 class="card-title">Pending Ticket</h4>
+                        <div class="d-flex justify-content-end mb-3">
+                            <div class="col-3">
+                                <input type="text" id="search-pending" class="form-control"
+                                    placeholder="Type to search...">
+                            </div>
+                        </div>
                         <div class="table-responsive">
                             <table id="pendingTable" class="table table-striped" style="width:100%">
                                 <thead>
@@ -213,7 +235,7 @@
                                         <th> Tracking ID </th>
                                     </tr>
                                 </thead>
-                                    @include('partials.table_pending')                              
+                                @include('partials.table_pending')
                             </table>
                         </div>
                     </div>
@@ -221,6 +243,12 @@
                 <div class="card tabcontent" id="solved">
                     <div class="card-body ">
                         <h4 class="card-title">Solved Ticket</h4>
+                        <div class="d-flex justify-content-end mb-3">
+                            <div class="col-3">
+                                <input type="text" id="search-solved" class="form-control"
+                                    placeholder="Type to search...">
+                            </div>
+                        </div>
                         <div class="table-responsive">
                             <table id="solvedTable" class="table table-striped" style="width:100%">
                                 <thead>
@@ -233,7 +261,7 @@
                                         <th> Tracking ID </th>
                                     </tr>
                                 </thead>
-                                    @include('partials.table_solved')
+                                @include('partials.table_solved')
                             </table>
                         </div>
                     </div>
@@ -258,11 +286,20 @@
             document.getElementById(cityName).style.display = "block";
             evt.currentTarget.className += " active";
         }
+        var orderBy = '{{ $orderBy }}';
+        var orderDirection = '{{ $orderDirection }}';
+        var searchValue = '';
+        var intervalId = null; // Store interval ID
 
-        function refreshTable(tabId, routeName) {
+        function refreshTable(tabId, routeName, search) {
             $.ajax({
                 url: routeName,
                 method: "GET",
+                data: {
+                    search: search,
+                    orderBy: orderBy,
+                    orderDirection: orderDirection,
+                }, // Pass search value to the server
                 success: function(data) {
                     $("#" + tabId + " tbody").html(data.html);
                 },
@@ -273,20 +310,30 @@
         }
 
         setInterval(function() {
-            refreshTable("openTable", "{{ route('refresh.table') }}");
-        }, 20000);
+            if (searchValue === '') {
+                refreshTable("openTable", "{{ route('refresh.table') }}", searchValue);
+            }
+        }, 10000);
 
         setInterval(function() {
-            refreshTable("progressTable", "{{ route('refresh.table_progress') }}");
-        }, 20000);
+            // Only refresh if there's no active search
+            if (searchValue === '') {
+                refreshTable("progressTable", "{{ route('refresh.table_progress') }}", searchValue);
+            }
+        }, 10000);
+
 
         setInterval(function() {
-            refreshTable("pendingTable", "{{ route('refresh.table_pending') }}");
-        }, 20000);
+            if (searchValue === '') {
+                refreshTable("pendingTable", "{{ route('refresh.table_pending') }}", searchValue);
+            }
+        }, 10000);
 
         setInterval(function() {
-            refreshTable("solvedTable", "{{ route('refresh.table_solved') }}");
-        }, 20000);
+            if (searchValue === '') {
+                refreshTable("solvedTable", "{{ route('refresh.table_solved') }}", searchValue);
+            }
+        }, 10000);
 
 
         // Function to update ticket counts
@@ -315,28 +362,145 @@
         // Initial update
         updateTicketCounts();
     </script>
-   
-   @section('scripts')
-   <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-   <script src="//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-   <script>
-       $(document).ready(function () {
-           $('#openTable').DataTable();
-       });
-   </script>
-   <script>
-    $(document).ready(function () {
-        $('#progressTable').DataTable();
-    });
-</script>
-<script>
-    $(document).ready(function () {
-        $('#pendingTable').DataTable();
-    });
-</script>
-<script>
-    $(document).ready(function () {
-        $('#solvedTable').DataTable();
-    });
-</script>
-@endsection
+
+    @section('scripts')
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+        <script src="//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    @endsection
+
+    <script>
+        $(document).ready(function() {
+            // Initialize DataTable
+            var table = $('#openTable').DataTable({
+                "order": [
+                    [4, "desc"]
+                ] // Assuming 'created_at' is the fifth column (index 4)
+            });
+
+            // Add search functionality
+            $('#search-open').on('input', function() {
+                searchValue = this.value;
+                table.search(searchValue).draw();
+
+                // Clear the interval if searchValue is not empty
+                if (searchValue !== '' && intervalId !== null) {
+                    clearInterval(intervalId);
+                    intervalId = null;
+                }
+
+                // Start the interval if searchValue is empty and interval is not already running
+                if (searchValue === '' && intervalId === null) {
+                    intervalId = setInterval(function() {
+                        refreshTable("openTable", "{{ route('refresh.table') }}", searchValue);
+                    }, 10000);
+                }
+            });
+
+            // Initial refresh
+            refreshTable("openTable", "{{ route('refresh.table') }}", searchValue);
+        });
+    </script>
+
+
+    <script>
+        $(document).ready(function() {
+            // Initialize DataTable
+            var table = $('#progressTable').DataTable({
+                "order": [
+                    [5, "desc"]
+                ] // Assuming 'created_at' is the fifth column (index 4)
+            });
+
+            // Add search functionality
+            $('#search-progress').on('input', function() {
+                searchValue = this.value;
+                table.search(searchValue).draw();
+
+                // Clear the interval if searchValue is not empty
+                if (searchValue !== '' && intervalId !== null) {
+                    clearInterval(intervalId);
+                    intervalId = null;
+                }
+
+                // Start the interval if searchValue is empty and interval is not already running
+                if (searchValue === '' && intervalId === null) {
+                    intervalId = setInterval(function() {
+                        refreshTable("progressTable", "{{ route('refresh.table_progress') }}",
+                            searchValue);
+                    }, 10000);
+                }
+            });
+
+            // Initial refresh
+            refreshTable("progressTable", "{{ route('refresh.table_progress') }}", searchValue);
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            // Initialize DataTable
+            var table = $('#pendingTable').DataTable({
+                "order": [
+                    [5, "desc"]
+                ] // Assuming 'created_at' is the fifth column (index 4)
+            });
+
+            // Add search functionality
+            $('#search-pending').on('input', function() {
+                searchValue = this.value;
+                table.search(searchValue).draw();
+
+                // Clear the interval if searchValue is not empty
+                if (searchValue !== '' && intervalId !== null) {
+                    clearInterval(intervalId);
+                    intervalId = null;
+                }
+
+                // Start the interval if searchValue is empty and interval is not already running
+                if (searchValue === '' && intervalId === null) {
+                    intervalId = setInterval(function() {
+                        refreshTable("pendingTable", "{{ route('refresh.table_pending') }}",
+                            searchValue);
+                    }, 10000);
+                }
+            });
+
+            // Initial refresh
+            refreshTable("pendingTable", "{{ route('refresh.table_pending') }}", searchValue);
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            // Initialize DataTable
+            var table = $('#solvedTable').DataTable({
+                "order": [
+                    [5, "desc"]
+                ] // Assuming 'created_at' is the fifth column (index 4)
+            });
+
+            // Add search functionality
+            $('#search-solved').on('input', function() {
+                searchValue = this.value;
+                table.search(searchValue).draw();
+
+                // Clear the interval if searchValue is not empty
+                if (searchValue !== '' && intervalId !== null) {
+                    clearInterval(intervalId);
+                    intervalId = null;
+                }
+
+                // Start the interval if searchValue is empty and interval is not already running
+                if (searchValue === '' && intervalId === null) {
+                    intervalId = setInterval(function() {
+                        refreshTable("solvedTable", "{{ route('refresh.table_solved') }}",
+                            searchValue);
+                    }, 10000);
+                }
+            });
+
+            // Initial refresh
+            refreshTable("solvedTable", "{{ route('refresh.table_solved') }}", searchValue);
+        });
+    </script>

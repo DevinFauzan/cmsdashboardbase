@@ -44,7 +44,9 @@ Route::get('/refresh-table-pending', [DashboardController::class, 'refreshTableP
 Route::get('/refresh-table-solved', [DashboardController::class, 'refreshTableSolved'])->name('refresh.table_solved');
 Route::get('/refresh-table-tech-person', [DashboarTechController::class, 'refreshTableTechPerson'])
     ->name('refresh.table_tech_person');
-    Route::get('/refresh-ticket-counts', [DashboardController::class, 'refreshTicketCounts'])->name('refresh.ticket_counts');
+Route::get('/refresh-ticket-counts', [DashboardController::class, 'refreshTicketCounts'])->name('refresh.ticket_counts');
+Route::get('/refresh-table-user-tech', 'DashboardController@refreshTableUserTech')->name('refresh.table_user_tech');
+
 
 
 //Admin
@@ -60,7 +62,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
 
 //User
-Route::resource('dashboard-user',DashboardUserController::class);
+Route::resource('dashboard-user', DashboardUserController::class);
 Route::get('/detail_ticket_user', [DashboardUserController::class, 'show'])->name('detail_ticket_user');
 Route::get('/my_ticket', [DashboardUserController::class, 'create'])->name('my_ticket');
 
@@ -81,5 +83,3 @@ Route::put('/tickets/{ticket}/assign/{user}', 'TicketController@assign')->name('
 Route::get('/tickets/{id}/details', 'TicketController@getDetails');
 // Route::get('/auth/dashboard/{id}', 'DashboardController@showTicketDetails');
 Route::get('/auth/get-ticket-details/{id}', 'TicketController@getTicketDetails');
-
-

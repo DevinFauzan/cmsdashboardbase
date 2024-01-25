@@ -1,5 +1,9 @@
 @extends('layouts.auth')
-
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+</style>
 <head>
     <link rel="stylesheet" href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -68,6 +72,12 @@
                         <div class="card-body">
                             <h4 class="card-title">Ticket {{ $ticket->ticket_id }}</h4>
                             <p class="card-description">Select Technical person to solve this ticket</p>
+                            <div class="d-flex justify-content-end mb-3">
+                                <div class="col-12">
+                                    <input type="text" id="search-assigned" class="form-control"
+                                        placeholder="Type to search...">
+                                </div>
+                            </div>
                             <div class="table-responsive">
                                 <table id="assignedTable" class="table table-striped" style="width:100%">
                                     <thead>
@@ -90,10 +100,13 @@
         </div>
     @endsection
     <script>
-        function refreshAssignedTable(ticketId) {
+        function refreshAssignedTable(ticketId, search) {
             $.ajax({
                 url: `/refresh-assigned-table/${ticketId}`,
                 method: "GET",
+                data: {
+                    search: search,
+                }, // Pass search value to the server
                 success: function(data) {
                     $("#assignedTable tbody").html(data.html); // Use tbody selector
                     $('#assignedTable').DataTable(); // Reinitialize DataTable
@@ -105,20 +118,43 @@
         }
 
         setInterval(function() {
-            refreshAssignedTable({{ $ticket->id }});
-        }, 20000);
+            if (searchValue === '') {
+            refreshAssignedTable({{ $ticket->id }}, searchValue);
+            }
+        }, 10000);
     </script>
 
     @section('scripts')
-     
-
-
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"
             integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
         <script src="//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
         <script>
             $(document).ready(function() {
-                $('#assignedTable').DataTable();
+                // Initialize DataTable
+                var table = $('#assignedTable').DataTable();
+    
+                // Add search functionality
+                $('#search-assigned').on('input', function() {
+                    searchValue = this.value;
+                    table.search(searchValue).draw();
+    
+                    // Clear the interval if searchValue is not empty
+                    if (searchValue !== '' && intervalId !== null) {
+                        clearInterval(intervalId);
+                        intervalId = null;
+                    }
+    
+                    // Start the interval if searchValue is empty and interval is not already running
+                    if (searchValue === '' && intervalId === null) {
+                        intervalId = setInterval(function() {
+                            refreshTable("assignedTable", "{{ route('refresh.table_user_tech') }}",
+                                searchValue);
+                        }, 10000);
+                    }
+                });
+    
+                // Initial refresh
+                refreshTable("assignedTable", "{{ route('refresh.table_user_tech') }}", searchValue);
             });
         </script>
     @endsection

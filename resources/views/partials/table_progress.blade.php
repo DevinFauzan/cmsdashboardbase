@@ -1,16 +1,20 @@
-
-    @foreach ($ticket as $t)
-        @if ($t->status == 'Progress')
+@if ($ticket->where('status', 'Progress')->isEmpty())
+    <tr>
+        <td colspan="6" class="text-center">There is no progress data</td>
+    </tr>
+@else
+    @foreach ($ticket as $ticket)
+        @if ($ticket->status == 'Progress')
             <tr>
-                <td>{{ $t->name_user }}</td>
-                <td>{{ $t->name_tech }}</td>
-                <td>{{ $t->subject }}</td>
+                <td>{{ $ticket->name_user }}</td>
+                <td>{{ $ticket->name_tech }}</td>
+                <td>{{ $ticket->subject }}</td>
                 <td>
-                    <label class="badge badge-gradient-warning">{{ $t->status }}</label>
+                    <label class="badge badge-gradient-warning">{{ $ticket->status }}</label>
                 </td>
-                <td>{{ $t->created_at->format('Y-m-d') }}</td>
-                <td>{{ $t->ticket_id }}</td>
+                <td>{{ $ticket->created_at->format('Y-m-d') }}</td>
+                <td>{{ $ticket->ticket_id }}</td>
             </tr>
         @endif
     @endforeach
-
+@endif
