@@ -1,21 +1,25 @@
- @extends('layouts.user')
+@extends('layouts.auth')
 
 @section('content')
-    <!-- partial -->
     <div class="main-panel">
         <div class="content-wrapper">
             <div class="page-header">
                 <h3 class="page-title">
-                    <span class="page-title-icon bg-gradient-primary text-white me-2">
-                        <i class="mdi mdi-arrow-left"></i>
-                    </span> My Ticket
+                     My Ticket
                 </h3>
             </div>
             <div class="row">
                 <div class="col-12 grid-margin">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Recent Tickets</h4>
+                            <h4 class="card-title">
+                                History Tickets
+                             <button type="button"
+                                    class="btn btn-sm btn-primary mdi mdi-plus mdi-18px float-end text-center "
+                                    data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                    New Ticket
+                                </button>
+                            </h4>                           
                             <div class="table-responsive">
                                 <table class="table">
                                     <thead>
@@ -25,61 +29,49 @@
                                             <th> Status </th>
                                             <th> Last Update </th>
                                             <th> Tracking ID </th>
+                                            <th> Detail </th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>
-                                                <img src="{{ asset('assets/auth/images/faces/face1.jpg') }}" class="me-2"
-                                                    alt="image">
-                                                Davcccccc
-                                            </td>
-                                            <td> Fund is not recieved </td>
-                                            <td>
-                                                <label class="badge badge-gradient-success">DONE</label>
-                                            </td>
-                                            <td> Dec 5, 2017 </td>
-                                            <td> WD-12345 </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img src="{{ asset('assets/auth/images/faces/face2.jpg') }}" class="me-2"
-                                                    alt="image">
-                                                Stella Johnson
-                                            </td>
-                                            <td> High loading time </td>
-                                            <td>
-                                                <label class="badge badge-gradient-warning">PROGRESS</label>
-                                            </td>
-                                            <td> Dec 12, 2017 </td>
-                                            <td> WD-12346 </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img src="{{ asset('assets/auth/images/faces/face3.jpg') }}" class="me-2"
-                                                    alt="image">
-                                                Marina Michel
-                                            </td>
-                                            <td> Website down for one week </td>
-                                            <td>
-                                                <label class="badge badge-gradient-info">ON HOLD</label>
-                                            </td>
-                                            <td> Dec 16, 2017 </td>
-                                            <td> WD-12347 </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img src="{{ asset('assets/auth/images/faces/face4.jpg') }}" class="me-2"
-                                                    alt="image"> John
-                                                Doe
-                                            </td>
-                                            <td> Loosing control on server </td>
-                                            <td>
-                                                <label class="badge badge-gradient-danger">REJECTED</label>
-                                            </td>
-                                            <td> Dec 3, 2017 </td>
-                                            <td> WD-12348 </td>
-                                        </tr>
+                                        @foreach ($allTickets as $ticket)
+                                            <tr>
+                                                <td>
+                                                    {{ $ticket->name_tech }}
+                                                </td>
+                                                <td>{{ $ticket->subject }}</td>
+                                                <td>
+                                                    <label class="card-description badge badge- text-black">
+                                                        @switch($ticket->status)
+                                                            @case('Open')
+                                                                <label class="badge badge-info">Open</label>
+                                                            @break
+                                        
+                                                            @case('Progress')
+                                                                <label class="badge badge-warning">Progress</label>
+                                                            @break
+                                        
+                                                            @case('Pending')
+                                                                <label class="badge badge-danger">Pending</label>
+                                                            @break
+                                        
+                                                            @case('Solved')
+                                                                <label class="badge badge-success">Solved</label>
+                                                            @break
+                                        
+                                                            @default
+                                                                <label class="badge badge-secondary">Unknown</label>
+                                                        @endswitch
+                                                    </label>
+                                                </td>
+                                                <td>{{ $ticket->created_at }}</td>
+                                                <td>{{ $ticket->ticket_id }}</td>
+                                                <td>
+                                                    <a href="{{ route('detail_ticket_user.edit', ['id' => $ticket->id]) }}" class="btn btn-info bg-gradient-info">
+                                                        <span class="mdi mdi-details"></span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -87,5 +79,5 @@
                     </div>
                 </div>
             </div>
-        </div
-    @endsection -->
+        </div>
+    @endsection

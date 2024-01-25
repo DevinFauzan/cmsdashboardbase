@@ -44,7 +44,12 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-    ];
+    ];    
+
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class);
+    }
 
     public function updateCaseTotal()
     {
@@ -84,5 +89,11 @@ class User extends Authenticatable
     public function isTechPerson()
     {
         return $this->role === 'tech_person';
+    }
+
+    public function isUser()
+    {
+        // Assuming you have a 'role' column in your users table
+        return $this->role === 'user';
     }
 }

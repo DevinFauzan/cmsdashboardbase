@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class DashboardUserController extends Controller
 {
@@ -15,7 +17,7 @@ class DashboardUserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    { {
+    { {        
             return view('pages.user_complainant.user_dashboard');
         }
     }
@@ -93,8 +95,37 @@ class DashboardUserController extends Controller
             'ticket_id' => $newTicketId,
         ]);
 
-        $request->session()->flash('ticket_id', $newTicketId);
+        $password = Str::random(8);
+
+        // Create a new user
+        $user = User::create([
+            'name' => $request->input('name_user'),
+            'email' => $request->input('email'),
+            'password' => bcrypt($password),
+            'role' => 'user',
+        ]);
+
+        $request->session()->flash('newTicketInfo', [
+            'ticket_id' => $newTicketId,
+            'name_user' => $request->input('name_user'),
+            'email' => $request->input('email'),
+            'password' => $password,
+        ]);
+
         return redirect()->route('dashboard-user.index')->with('success', 'Ticket submitted successfully!');
+    }
+
+    public function myTickets()
+    {
+        // Retrieve the authenticated user's email
+        $userEmail = Auth::user()->email;
+
+        // Fetch tickets associated with the user's email
+        $userTickets = Ticket::where('email', $userEmail)->latest()->get();
+
+        return view('pages.user_complainant.my_ticket', [
+            'allTickets' => $userTickets,
+        ]);
     }
 
     /**
@@ -117,7 +148,9 @@ class DashboardUserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $ticket = Ticket::find($id);
+
+        return view('pages.user_complainant.detail_ticket_user', compact('ticket'));
     }
 
     /**

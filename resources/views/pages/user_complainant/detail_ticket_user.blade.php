@@ -1,59 +1,104 @@
-@extends('layouts.user')
+@extends('layouts.auth')
 
 @section('content')
     <div class="main-panel">
         <div class="content-wrapper">
             <div class="page-header">
-                <h3 class="page-title">Ticket Details Information </h3>              
+                <h2 class="page-title">
+                    <a href="/dashboard-tech" class="page-title-icon bg-gradient-primary text-white me-2">
+                        <i class="mdi mdi-arrow-left"></i>
+                    </a>
+                    Ticket Details
+                </h2>
+                <nav aria-label="breadcrumb">
+                    {{-- <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#"> Tech Person </a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Detail Ticket</li>
+                    </ol> --}}
+                </nav>
             </div>
             <div class="row">
                 <div class="col-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Ticket #ID093209831</h4>
-                            <p class="card-description"> Assigned by Tech Person Name</p>
+                            <h2 class="card-title">{{ $ticket->name_user }} | {{ $ticket->ticket_id }} | 
+                                <p class="card-description badge badge- text-black">
+                                    @switch($ticket->status)
+                                        @case('Open')
+                                            <label class="badge badge-info">Open</label>
+                                        @break
+
+                                        @case('Progress')
+                                            <label class="badge badge-warning">Progress</label>
+                                        @break
+
+                                        @case('Pending')
+                                            <label class="badge badge-danger">Pending</label>
+                                        @break
+
+                                        @case('Solved')
+                                            <label class="badge badge-success">Solved</label>
+                                        @break
+
+                                        @default
+                                            <label class="badge badge-secondary">Unknown</label>
+                                    @endswitch
+                                </p>
+                               | {{ $ticket->name_tech }}
+                            </h2>
+
                             <form class="forms-sample">
                                 <div class="form-group">
                                     <label for="exampleInputName1">Complainant Name</label>
-                                    <input type="text" class="form-control" id="exampleInputName1" placeholder="Name"
-                                        readonly>
+                                    <input type="text" value="{{ $ticket->name_user }}" class="form-control"
+                                        id="exampleInputName1" placeholder="Name" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputName1">Subject</label>
-                                    <input type="text" class="form-control" id="exampleInputSubject" placeholder="Subject"
-                                        readonly>
+                                    <input type="text" value="{{ $ticket->subject }}" class="form-control"
+                                        id="exampleInputSubject" placeholder="Subject" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleTextarea1">Description</label>
-                                    <textarea class="form-control" id="exampleTextarea1" rows="4" readonly></textarea>
+                                    <textarea class="form-control" id="exampleTextarea1" rows="4" readonly> {{ $ticket->description }}</textarea>
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleInputName1">Product</label>
-                                    <input type="text" class="form-control" id="exampleInputSubject" placeholder="Product"
-                                        readonly>
+                                    <label for="exampleSelectProduct">Product</label>
+                                    <select class="form-control" id="exampleSelectProduct" disabled>
+                                        <option disabled selected>select product type</option>
+                                        <option value="0" {{ $ticket->product == 0 ? 'selected' : '' }}>Tableau Server
+                                        </option>
+                                        <option value="1" {{ $ticket->product == 1 ? 'selected' : '' }}>Tableau Online
+                                        </option>
+                                        <option value="2" {{ $ticket->product == 2 ? 'selected' : '' }}>Tableau Desktop
+                                        </option>
+                                        <option value="3" {{ $ticket->product == 3 ? 'selected' : '' }}>Tableau Prep
+                                            Builder</option>
+                                    </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputEmail3">Email address</label>
-                                    <input type="email" class="form-control" id="exampleInputEmail3" placeholder="Email"
-                                        readonly>
+                                    <input type="email" value="{{ $ticket->email }}" class="form-control"
+                                        id="exampleInputEmail3" placeholder="Email" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputName1">Telephone</label>
-                                    <input type="text" class="form-control" id="exampleInputSubject" placeholder="Telephone"
-                                        readonly>
+                                    <input type="text" value="{{ $ticket->phone }}" class="form-control"
+                                        id="exampleInputSubject" placeholder="Telephone" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputName1">Complained date</label>
-                                    <input type="date" class="form-control" id="exampleInputName1" placeholder="date"
-                                        readonly>
+                                    <input type="date" value="{{ $ticket->created_at->format('Y-m-d') }}"
+                                        class="form-control" id="exampleInputName1" placeholder="date" readonly>
                                 </div>
                             </form>
                         </div>
                     </div>
-                </div>
+                </div>                
             </div>
         </div>
-        <div class="content-wrapper ">
+
+        <div class="content-wrapper">
             <div class="page-header">
                 <h3 class="page-title">Message </h3>
             </div>
@@ -61,8 +106,8 @@
                 <div class="col-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Ticket #ID093209831</h4>
-                            <p class="card-description"> Tech Person Name</p>
+                            <h4 class="card-title">{{ $ticket->ticket_id }}</h4>
+                            <p class="card-description"> {{ $ticket->name_tech }}</p>
                             <html>
 
                             <head>
@@ -81,9 +126,9 @@
                                             <div class="chats">
                                                 <!-- Message container -->
                                                 <div class="msg-page">
-                                                    <div class="outgoing-chats">
-                                                        <div class="outgoing-msg">
-                                                            <div class="outgoing-chats-msg">
+                                                    <div class="received-chats">
+                                                        <div class="received-msg">
+                                                            <div class="received-msg-inbox">
                                                                 <p>
                                                                     Hi !! This is message from Riya . Lorem ipsum, dolor sit
                                                                     amet consectetur adipisicing elit. Non quas nemo eum,
@@ -96,9 +141,9 @@
                                                         </div>
                                                     </div>
                                                     <!-- Outgoing messages -->
-                                                    <div class="received-chats">
-                                                        <div class="oreceived-msg">
-                                                            <div class="received-msg-inbox">
+                                                    <div class="outgoing-chats">
+                                                        <div class="outgoing-msg">
+                                                            <div class="outgoing-chats-msg">
                                                                 <p class="multi-msg">
                                                                     Hi riya , Lorem ipsum dolor sit amet consectetur
                                                                     adipisicing elit. Illo nobis deleniti earum magni
@@ -112,9 +157,9 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="outgoing-chats">
-                                                        <div class="outgoing-msg">
-                                                            <div class="outgoing-chats-msg">
+                                                    <div class="received-chats">
+                                                        <div class="received-msg">
+                                                            <div class="received-msg-inbox">
                                                                 <p class="single-msg">
                                                                     Hi !! This is message from John Lewis. Lorem ipsum,
                                                                     dolor
@@ -125,9 +170,9 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="received-chats">
-                                                        <div class="received-msg">
-                                                            <div class="received-msg-inbox">
+                                                    <div class="outgoing-chats">
+                                                        <div class="outgoing-msg">
+                                                            <div class="outgoing-chats-msg">
                                                                 <p>
                                                                     Lorem ipsum dolor sit amet consectetur adipisicing elit.
                                                                     Velit, sequi.
@@ -445,3 +490,9 @@
             }
         }
     </style>
+{{-- <script>
+    function updateSubmitButton(selectedStatus) {
+        var submitButton = document.getElementById('submitButton');
+        submitButton.disabled = selectedStatus === 'Solved';
+    }
+</script> --}}
