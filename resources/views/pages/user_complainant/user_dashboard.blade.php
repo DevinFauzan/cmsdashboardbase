@@ -58,12 +58,12 @@
                                 </div>
                                 <div>
                                     <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
                             </form>
                         </div>
                     </div>
                 </div>
-            </div>
-            {{-- <div class="main-panel">
+                {{-- <div class="main-panel">
         <div class="content-wrapper">
             <div class="page-header">
                 <h3 class="page-title">
@@ -233,36 +233,36 @@
                 </div>
             </div>
         </div> --}}
-            @if (session('newTicketInfo'))
-                <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        // Show SweetAlert when the page is loaded
-                        const sweetAlert = Swal.fire({
-                            icon: 'success',
-                            title: 'Ticket submitted successfully!',
-                            html: `
+                @if (session('newTicketInfo'))
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            // Show SweetAlert when the page is loaded
+                            const sweetAlert = Swal.fire({
+                                icon: 'success',
+                                title: 'Ticket submitted successfully!',
+                                html: `
                         <p>Ticket ID: {{ session('newTicketInfo')['ticket_id'] }}</p>
                         <p>Name: {{ session('newTicketInfo')['name_user'] }}</p>
                         <p>Email: {{ session('newTicketInfo')['email'] }}</p>
                         <p>Password: {{ session('newTicketInfo')['password'] }}</p>
                         <h5 id="goToLogin" class="btn btn-link"> <b> Click here to go to the Login Page</h5>
                     `,
-                            showCancelButton: false,
-                            confirmButtonText: 'Close',
-                            closeOnClickOutside: false, // Do not close on click outside the alert
-                            allowOutsideClick: false, // Do not allow clicking outside the alert to close it
-                            reverseButtons: true, // Reverse the order of buttons (confirm/cancel)
-                        });
-
-                        // Add a click event listener to the specific text element
-                        const goToLoginText = document.getElementById('goToLogin');
-                        if (goToLoginText) {
-                            goToLoginText.addEventListener('click', function() {
-                                // Open the login page in a new tab using window.open()
-                                window.open('{{ route('login') }}');
+                                showCancelButton: false,
+                                confirmButtonText: 'Close',
+                                closeOnClickOutside: false, // Do not close on click outside the alert
+                                allowOutsideClick: false, // Do not allow clicking outside the alert to close it
+                                reverseButtons: true, // Reverse the order of buttons (confirm/cancel)
                             });
-                        }
-                    });
-                </script>
-            @endif
-        @endsection
+
+                            // Add a click event listener to the specific text element
+                            const goToLoginText = document.getElementById('goToLogin');
+                            if (goToLoginText) {
+                                goToLoginText.addEventListener('click', function() {
+                                    // Open the login page in a new tab using window.open()
+                                    window.open('{{ route('login') }}');
+                                });
+                            }
+                        });
+                    </script>
+                @endif
+            @endsection

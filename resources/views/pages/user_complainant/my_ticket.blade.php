@@ -5,7 +5,7 @@
         <div class="content-wrapper">
             <div class="page-header">
                 <h3 class="page-title">
-                     My Ticket
+                    My Ticket
                 </h3>
             </div>
             <div class="row">
@@ -14,12 +14,11 @@
                         <div class="card-body">
                             <h4 class="card-title">
                                 History Tickets
-                             <button type="button"
-                                    class="btn btn-sm btn-primary mdi mdi-plus mdi-18px float-end text-center "
-                                    data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                <a href="{{ route('new_ticket', ['user' => Auth::user()->id]) }}"
+                                    class="btn btn-sm btn-primary mdi mdi-plus mdi-18px float-end text-center">
                                     New Ticket
-                                </button>
-                            </h4>                           
+                                </a>
+                            </h4>
                             <div class="table-responsive">
                                 <table class="table">
                                     <thead>
@@ -45,19 +44,19 @@
                                                             @case('Open')
                                                                 <label class="badge badge-info">Open</label>
                                                             @break
-                                        
+
                                                             @case('Progress')
                                                                 <label class="badge badge-warning">Progress</label>
                                                             @break
-                                        
+
                                                             @case('Pending')
                                                                 <label class="badge badge-danger">Pending</label>
                                                             @break
-                                        
+
                                                             @case('Solved')
                                                                 <label class="badge badge-success">Solved</label>
                                                             @break
-                                        
+
                                                             @default
                                                                 <label class="badge badge-secondary">Unknown</label>
                                                         @endswitch
@@ -66,7 +65,8 @@
                                                 <td>{{ $ticket->created_at }}</td>
                                                 <td>{{ $ticket->ticket_id }}</td>
                                                 <td>
-                                                    <a href="{{ route('detail_ticket_user.edit', ['id' => $ticket->id]) }}" class="btn btn-info bg-gradient-info">
+                                                    <a href="{{ route('detail_ticket_user.edit', ['id' => $ticket->id]) }}"
+                                                        class="btn btn-info bg-gradient-info">
                                                         <span class="mdi mdi-details"></span>
                                                     </a>
                                                 </td>

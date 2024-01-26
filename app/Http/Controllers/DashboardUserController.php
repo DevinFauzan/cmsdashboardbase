@@ -17,7 +17,7 @@ class DashboardUserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    { {        
+    { {
             return view('pages.user_complainant.user_dashboard');
         }
     }
@@ -30,7 +30,7 @@ class DashboardUserController extends Controller
     public function create()
     {
         //
-        return view('pages.user_complainant.my_ticket');
+        // return view('pages.user_complainant.my_ticket');
     }
 
     /**
@@ -128,6 +128,16 @@ class DashboardUserController extends Controller
         ]);
     }
 
+    public function showNewTicketForm($userEmail)
+    {
+        $user = User::find($userEmail);
+
+        return view('pages.user_complainant.new_ticket', [
+            'user' => $user,
+        ]);
+    }
+
+
     /**
      * Display the specified resource.
      *
@@ -136,8 +146,8 @@ class DashboardUserController extends Controller
      */
     public function show()
     {
-        return view('pages.user_complainant.detail_ticket_user');
-        return view('pages.user_complainant.new_ticket');
+        // return view('pages.user_complainant.detail_ticket_user');
+        // return view('pages.user_complainant.new_ticket');
     }
 
     /**
