@@ -31,7 +31,7 @@ class DashboarTechController extends Controller
     public function updateStatus(Request $request, Ticket $ticket)
     {
         $request->validate([
-            'status' => 'required|in:Progress,Pending,Solved',
+            'status' => 'required|in:Progress,Pending,Solved,onhold',
         ]);
     
         $newStatus = $request->input('status');

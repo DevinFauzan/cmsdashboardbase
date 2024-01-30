@@ -115,6 +115,39 @@ class DashboardUserController extends Controller
         return redirect()->route('dashboard-user.index')->with('success', 'Ticket submitted successfully!');
     }
 
+    public function submitTicket(Request $request)
+    {
+        $request->validate([
+            'complained_date' => 'required|date',
+            'description' => 'required|string',
+            'subject' => 'required|string|max:255',
+            'product' => 'required|in:0,1,2,3',
+        ]);
+
+        $user = Auth::user();
+
+        $newTicketId = $this->generateTicketId($request->input('product'));
+
+        Ticket::create([
+            'name_user' => $user->name,
+            'email' => $user->email,
+            'complained_date' => $request->input('complained_date'),
+            'description' => $request->input('description'),
+            'subject' => $request->input('subject'),
+            'product' => $request->input('product'),
+            'phone' => $user->phone,
+            'status' => 'Open',
+            'ticket_id' => $newTicketId,
+        ]);
+
+        $request->session()->flash('newTicketInfo', [
+            'ticket_id' => $newTicketId,
+        ]);
+
+        return redirect()->route('my_ticket')->with('success', 'Ticket submitted successfully!');
+    }
+
+
     public function myTickets()
     {
         // Retrieve the authenticated user's email
@@ -124,17 +157,29 @@ class DashboardUserController extends Controller
         $userTickets = Ticket::where('email', $userEmail)->latest()->get();
 
         return view('pages.user_complainant.my_ticket', [
-            'allTickets' => $userTickets,
+            'tickets' => $userTickets,
         ]);
     }
 
-    public function showNewTicketForm($userEmail)
+    public function showNewTicketForm(User $user)
     {
-        $user = User::find($userEmail);
+        $users = User::all();
+        $tickets = Ticket::all();
 
-        return view('pages.user_complainant.new_ticket', [
-            'user' => $user,
-        ]);
+        // Pass data to the view
+        return view('pages.user_complainant.new_ticket', compact('user', 'users', 'tickets'));
+    }
+
+
+    public function refreshTableUser()
+    {
+        $user = Auth::user(); // Assuming you're using Laravel's built-in authentication
+
+        // Filter tickets based on the authenticated user's name
+        $tickets = Ticket::where('name_user', $user->name)->get();
+        $html = view('partials.table_user', compact('tickets'))->render();
+
+        return response()->json(['html' => $html]);
     }
 
 

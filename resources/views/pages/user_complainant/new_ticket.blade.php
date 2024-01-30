@@ -15,7 +15,8 @@
                 <div class="col-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <form class="forms-sample">
+                            <form class="forms-sample" action="{{ route('submit_ticket') }}" method="post">
+                                @csrf
                                 <div class="form-group">
                                     <label for="exampleInputName1">Complainant Name</label>
                                     <input type="text" value="{{ $user->name }}" class="form-control"
@@ -23,8 +24,8 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputEmail3">Email address</label>
-                                    <input type="email" value="{{ $user->email }}" class="form-control" id="exampleInputEmail3" name="email"
-                                        placeholder="Email" readonly>
+                                    <input type="email" value="{{ $user->email }}" class="form-control"
+                                        id="exampleInputEmail3" name="email" placeholder="Email" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputName1">Complained date</label>
@@ -34,11 +35,11 @@
                                 <div class="form-group">
                                     <label for="exampleInputName1">Subject</label>
                                     <input type="text" class="form-control" id="exampleInputSubject"
-                                        placeholder="Subject">
+                                        placeholder="Subject" name="subject" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleTextarea1">Description</label>
-                                    <textarea class="form-control" id="exampleTextarea1" rows="4"></textarea>
+                                    <textarea class="form-control" id="exampleTextarea1" rows="4" name="description" required></textarea>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleSelectProduct">Product</label>
@@ -52,7 +53,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputName1">Telephone</label>
-                                    <input type="text" value="{{ $user->phone }}" class="form-control"
+                                    <input type="text" value="{{ $tickets->phone }}" class="form-control"
                                         id="exampleInputSubject" placeholder="08">
                                 </div>
                                 <div>

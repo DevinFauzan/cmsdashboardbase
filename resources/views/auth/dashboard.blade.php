@@ -69,6 +69,14 @@
         background: #14A44D;
     }
 
+    .card-img-holder-all:hover {
+        background: #605dad;
+    }
+
+    .card-img-holder-onhold:hover {
+        background: #ce52de;
+    }
+
     .card-img-holder-open:hover h4 {
         color: white;
     }
@@ -100,6 +108,22 @@
     .card-img-holder-solved:hover h1 {
         color: white;
     }
+
+    .card-img-holder-onhold:hover h4 {
+        color: white;
+    }
+
+    .card-img-holder-onhold:hover h1 {
+        color: white;
+    }
+
+    .card-img-holder-all:hover h4 {
+        color: white;
+    }
+
+    .card-img-holder-all:hover h1 {
+        color: white;
+    }
 </style>
 
 
@@ -115,7 +139,17 @@
                 </h3>
             </div>
             <div class="row">
-                <div class="col-md-3 stretch-card grid-margin">
+                <div class="col-md-4 stretch-card grid-margin">
+                    <div class="card card-img-holder-all text-center">
+                        <div id="allCard" class="card-body btn btn-sm mdi-24px tablinks" onclick="openCity(event, 'all')">
+                            <h4 class="font-weight-normal mb-3">All Tickets <i
+                                    class="mdi mdi-check mdi-24px float-right"></i>
+                            </h4>
+                            <h1 id="allTickets" class="mb-5">{{ $allTickets }}</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 stretch-card grid-margin">
                     <div class="card card-img-holder-open text-center">
                         <div id="openCard" class="card-body btn btn-sm mdi-24px tablinks"
                             onclick="openCity(event, 'open')">
@@ -126,17 +160,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3 stretch-card grid-margin">
-                    <div class="card card-img-holder-progress text-center">
-                        <div id="progressCard" class="card-body btn btn-sm mdi-24px tablinks"
-                            onclick="openCity(event, 'Progress')">
-                            <h4 class="font-weight-normal mb-3">Progress <i
-                                    class="mdi mdi-progress-clock mdi-24px float-right"></i></h4>
-                            <h1 id="progressTickets" class="mb-5">{{ $progressTickets }}</h1>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 stretch-card grid-margin">
+                <div class="col-md-4 stretch-card grid-margin">
                     <div class="card card-img-holder-pending text-center">
                         <div id="pendingCard" class="card-body btn btn-sm mdi-24px tablinks"
                             onclick="openCity(event, 'pending')">
@@ -147,7 +171,28 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3 stretch-card grid-margin">
+                <div class="col-md-4 stretch-card grid-margin">
+                    <div class="card card-img-holder-progress text-center">
+                        <div id="progressCard" class="card-body btn btn-sm mdi-24px tablinks"
+                            onclick="openCity(event, 'Progress')">
+                            <h4 class="font-weight-normal mb-3">Progress <i
+                                    class="mdi mdi-progress-clock mdi-24px float-right"></i></h4>
+                            <h1 id="progressTickets" class="mb-5">{{ $progressTickets }}</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 stretch-card grid-margin">
+                    <div class="card card-img-holder-onhold text-center">
+                        <div id="onholdCard" class="card-body btn btn-sm mdi-24px tablinks"
+                            onclick="openCity(event, 'onhold')">
+                            <h4 class="font-weight-normal mb-3">On Hold <i
+                                    class="mdi mdi-account-clock-outline mdi-24px float-right"></i>
+                            </h4>
+                            <h1 id="onholdTickets" class="mb-5">{{ $onholdTickets }}</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 stretch-card grid-margin">
                     <div class="card card-img-holder-solved text-center">
                         <div id="solvedCard" class="card-body btn btn-sm mdi-24px tablinks"
                             onclick="openCity(event, 'solved')">
@@ -185,7 +230,32 @@
                                 </tbody>
                             </table>
                         </div>
-
+                    </div>
+                </div>
+                <div class="card tabcontent" id="pending">
+                    <div class="card-body">
+                        <h4 class="card-title">Pending Ticket</h4>
+                        <div class="d-flex justify-content-end mb-3">
+                            <div class="col-3">
+                                <input type="text" id="search-pending" class="form-control"
+                                    placeholder="Type to search...">
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table id="pendingTable" class="table table-striped" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th> Assignee </th>
+                                        <th> Assigned To </th>
+                                        <th> Subject </th>
+                                        <th> Status </th>
+                                        <th> Submitted </th>
+                                        <th> Tracking ID </th>
+                                    </tr>
+                                </thead>
+                                @include('partials.table_pending')
+                            </table>
+                        </div>
                     </div>
                 </div>
                 <div class="card tabcontent" id="Progress">
@@ -214,17 +284,17 @@
                         </div>
                     </div>
                 </div>
-                <div class="card tabcontent" id="pending">
+                <div class="card tabcontent" id="onhold">
                     <div class="card-body">
-                        <h4 class="card-title">Pending Ticket</h4>
+                        <h4 class="card-title">On Hold Ticket</h4>
                         <div class="d-flex justify-content-end mb-3">
                             <div class="col-3">
-                                <input type="text" id="search-pending" class="form-control"
+                                <input type="text" id="search-onhold" class="form-control"
                                     placeholder="Type to search...">
                             </div>
                         </div>
                         <div class="table-responsive">
-                            <table id="pendingTable" class="table table-striped" style="width:100%">
+                            <table id="onholdTable" class="table table-striped" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th> Assignee </th>
@@ -235,7 +305,7 @@
                                         <th> Tracking ID </th>
                                     </tr>
                                 </thead>
-                                @include('partials.table_pending')
+                                @include('partials.table_onhold')
                             </table>
                         </div>
                     </div>
@@ -282,10 +352,38 @@
             tablinks = document.getElementsByClassName("tablinks");
             for (i = 0; i < tablinks.length; i++) {
                 tablinks[i].className = tablinks[i].className.replace(" active", "");
+                // Reset background color and text color for all tablinks
+                tablinks[i].style.background = "";
+                tablinks[i].style.color = "";
             }
-            document.getElementById(cityName).style.display = "block";
-            evt.currentTarget.className += " active";
+            if (cityName === 'all') {
+                // If 'All' is clicked, hide all tables and display the selected one
+                for (i = 0; i < tabcontent.length; i++) {
+                    tabcontent[i].style.display = "block";
+                }
+            } else {
+                // Display the selected table
+                document.getElementById(cityName).style.display = "block";
+            }
+
+            // Define a mapping of card types to background colors
+            var cardColors = {
+                'open': '#54B4D3',
+                'pending': '#DC4C64',
+                'Progress': '#E4A11B',
+                'onhold': '#ce52de',
+                'solved': '#14A44D',
+                'all': '#605dad'
+            };
+
+            // Set background color and text color for the clicked card based on its type
+            var clickedCard = evt.currentTarget;
+            clickedCard.style.background = cardColors[cityName];
+            clickedCard.style.color = "white";
+            clickedCard.className += " active";
         }
+
+
         var orderBy = '{{ $orderBy }}';
         var orderDirection = '{{ $orderDirection }}';
         var searchValue = '';
@@ -335,6 +433,13 @@
             }
         }, 10000);
 
+        setInterval(function() {
+            if (searchValue === '') {
+                refreshTable("onholdTable", "{{ route('refresh.table_onhold') }}", searchValue);
+            }
+        }, 10000);
+
+
 
         // Function to update ticket counts
         function updateTicketCounts() {
@@ -347,6 +452,8 @@
                     $('#pendingTickets').text(data.pendingTickets);
                     $('#progressTickets').text(data.progressTickets);
                     $('#solvedTickets').text(data.solvedTickets);
+                    $('#onholdTickets').text(data.onholdTickets);
+                    $('#allTickets').text(data.allTickets);
                 },
                 error: function(xhr, status, error) {
                     console.error("Error updating ticket counts: " + error);
@@ -502,5 +609,39 @@
 
             // Initial refresh
             refreshTable("solvedTable", "{{ route('refresh.table_solved') }}", searchValue);
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            // Initialize DataTable
+            var table = $('#onholdTable').DataTable({
+                "order": [
+                    [5, "desc"]
+                ] // Assuming 'created_at' is the fifth column (index 4)
+            });
+
+            // Add search functionality
+            $('#search-onhold').on('input', function() {
+                searchValue = this.value;
+                table.search(searchValue).draw();
+
+                // Clear the interval if searchValue is not empty
+                if (searchValue !== '' && intervalId !== null) {
+                    clearInterval(intervalId);
+                    intervalId = null;
+                }
+
+                // Start the interval if searchValue is empty and interval is not already running
+                if (searchValue === '' && intervalId === null) {
+                    intervalId = setInterval(function() {
+                        refreshTable("onholdTable", "{{ route('refresh.table_onhold') }}",
+                            searchValue);
+                    }, 10000);
+                }
+            });
+
+            // Initial refresh
+            refreshTable("onholdTable", "{{ route('refresh.table_onhold') }}", searchValue);
         });
     </script>

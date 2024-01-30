@@ -39,7 +39,9 @@
                                         @case('Solved')
                                             <label class="badge badge-success">Solved</label>
                                         @break
-
+                                        @case('onhold')
+                                            <label class="badge badge-danger">On Hold</label>
+                                        @break
                                         @default
                                             <label class="badge badge-secondary">Unknown</label>
                                     @endswitch
@@ -108,8 +110,9 @@
                                     <select class="form-control" id="exampleSelectStatus" name="status"
                                         onchange="updateSubmitButton(this.value)">
                                         <option selected disabled>select product type</option>
-                                        <option value="Progress" {{ $ticket->status == "Progress" ? 'selected' : '' }}>Progress</option>
                                         <option value="Pending" {{ $ticket->status == "Pending" ? 'selected' : '' }}>Pending</option>
+                                        <option value="Progress" {{ $ticket->status == "Progress" ? 'selected' : '' }}>Progress</option>
+                                        <option value="onhold" {{ $ticket->status == "onhold" ? 'selected' : '' }}>On Hold</option>
                                         <option value="Solved" {{ $ticket->status == "Solved" ? 'selected' : '' }}>Solved</option>
                                     </select>
                                 </div>

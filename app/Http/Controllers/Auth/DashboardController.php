@@ -40,6 +40,15 @@ class DashboardController extends Controller
     
         return response()->json(['html' => $html]);
     }
+
+    public function refreshTableOnHold()
+    {
+        $ticket = Ticket::where('status', 'onhold')->get();
+        $html = view('partials.table_onhold', compact('ticket'))->render();
+    
+        return response()->json(['html' => $html]);
+    }
+
     public function refreshAssignedTable(Ticket $ticket)
     {
         $users = User::where('role', 'tech_person')->get();
@@ -58,8 +67,10 @@ class DashboardController extends Controller
     $pendingTickets = $ticket->where('status', 'Pending')->count();
     $progressTickets = $ticket->where('status', 'Progress')->count();
     $solvedTickets = $ticket->where('status', 'Solved')->count();
+    $onholdTickets = $ticket->where('status', 'onhold')->count();
+    $allTickets = $ticket->count();
 
-    return response()->json(compact('openTickets', 'pendingTickets', 'progressTickets', 'solvedTickets'));
+    return response()->json(compact('openTickets', 'pendingTickets', 'progressTickets', 'solvedTickets', 'onholdTickets', 'allTickets'));
 }
 
     public function index()
@@ -74,6 +85,8 @@ class DashboardController extends Controller
         $pendingTickets = $ticket->where('status', 'Pending')->count();
         $progressTickets = $ticket->where('status', 'Progress')->count();
         $solvedTickets = $ticket->where('status', 'Solved')->count();
+        $onholdTickets = $ticket->where('status', 'onhold')->count();
+        $allTickets = $ticket->count();
     
         return view('auth.dashboard', [
             "ticket" => $ticket,
@@ -82,7 +95,9 @@ class DashboardController extends Controller
             "pendingTickets" => $pendingTickets,
             "progressTickets" => $progressTickets,
             "solvedTickets" => $solvedTickets,
-            "ticketCounts" => compact('openTickets', 'pendingTickets', 'progressTickets', 'solvedTickets'),
+            "onholdTickets" => $onholdTickets,
+            "allTickets" => $allTickets,
+            "ticketCounts" => compact('openTickets', 'pendingTickets', 'progressTickets', 'solvedTickets', 'onholdTickets', 'allTickets'),
             "orderBy" => $orderBy,
             "orderDirection" => $orderDirection,
         ]);

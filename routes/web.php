@@ -46,6 +46,10 @@ Route::get('/refresh-table-tech-person', [DashboarTechController::class, 'refres
     ->name('refresh.table_tech_person');
 Route::get('/refresh-ticket-counts', [DashboardController::class, 'refreshTicketCounts'])->name('refresh.ticket_counts');
 Route::get('/refresh-table-user-tech', 'DashboardController@refreshTableUserTech')->name('refresh.table_user_tech');
+Route::get('/refresh-table-user', [DashboardUserController::class, 'refreshTableUser'])
+    ->name('refresh.table_user');
+Route::get('/refresh-table-onhold', [DashboardController::class, 'refreshTableonhold'])
+    ->name('refresh.table_onhold');
 
 
 
@@ -64,6 +68,7 @@ Route::group(['middleware' => 'user'], function () {
     Route::get('/my_ticket', [DashboardUserController::class, 'myTickets'])->name('my_ticket');
     Route::get('/my_ticket/detail_ticket_user/{id}/edit', [DashboardUserController::class, 'edit'])->name('detail_ticket_user.edit');
     Route::get('/new_ticket/{user}', [DashboardUserController::class, 'showNewTicketForm'])->name('new_ticket');
+    Route::post('/submit_ticket', [DashboardUserController::class, 'submitTicket'])->name('submit_ticket');
 
     // Then add the resourceful route
     //Route::resource('dashboard-user', DashboardUserController::class);
