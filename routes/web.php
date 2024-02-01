@@ -8,6 +8,8 @@ use App\Http\Controllers\DashboarTechController;
 use App\Http\Controllers\DashboardUserController;
 use App\Http\Controllers\TaskController; // Import your TaskController
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\ChatController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -84,10 +86,42 @@ Route::get('admin_ticket_detail/{id}/edit', [DashboardController::class, 'edit']
 Route::put('/assign-ticket/{ticket}', [TicketController::class, 'assign'])->name('assign.ticket');
 
 
+// Route::prefix('chat')->group(function () {
+//     Route::get('/{ticketId}', 'ChatController@getMessages');
+//     Route::post('/{ticketId}', 'ChatController@sendMessage');
+// });
 
+// // Route to load chat messages
+// Route::get('/chat/{ticketId}', 'ChatController@index')->name('chat.index');
+
+// // Route to send chat messages
+// Route::post('/chat/{ticketId}', 'ChatController@store')->name('chat.store');
+
+
+
+Route::prefix('chat')->group(function () {
+    Route::get('/{ticketId}', [ChatController::class, 'getMessages']);
+    Route::post('/{ticketId}', [ChatController::class, 'sendMessage']);
+});
+
+// Route to load chat messages
+Route::get('/chat/{ticketId}', [ChatController::class, 'index'])->name('chat.index');
+
+// Route to send chat messages
+Route::post('/chat/{ticketId}', [ChatController::class, 'store'])->name('chat.store');
 
 
 Route::put('/tickets/{ticket}/assign/{user}', 'TicketController@assign')->name('tickets.assign');
 Route::get('/tickets/{id}/details', 'TicketController@getDetails');
 // Route::get('/auth/dashboard/{id}', 'DashboardController@showTicketDetails');
 Route::get('/auth/get-ticket-details/{id}', 'TicketController@getTicketDetails');
+
+// Route::get('/chat/{ticketId}', function ($ticketId) {
+//     // Test route to see if it's reachable
+//     return "Test Route for ChatController@index";
+// });
+
+// Route::post('/chat/{ticketId}', function ($ticketId) {
+//     // Test route to see if it's reachable
+//     return "Test Route for ChatController@store";
+// });

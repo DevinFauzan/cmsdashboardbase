@@ -1,4 +1,5 @@
 @extends('layouts.auth')
+<meta name="csrf-token" content="{{ csrf_token() }}">
 
 @section('content')
     <div class="main-panel">
@@ -108,15 +109,19 @@
                                     <select class="form-control" id="exampleSelectStatus" name="status"
                                         onchange="updateSubmitButton(this.value)">
                                         <option selected disabled>select product type</option>
-                                        <option value="Progress" {{ $ticket->status == "Progress" ? 'selected' : '' }}>Progress</option>
-                                        <option value="Pending" {{ $ticket->status == "Pending" ? 'selected' : '' }}>Pending</option>
-                                        <option value="Solved" {{ $ticket->status == "Solved" ? 'selected' : '' }}>Solved</option>
+                                        <option value="Progress" {{ $ticket->status == 'Progress' ? 'selected' : '' }}>
+                                            Progress</option>
+                                        <option value="Pending" {{ $ticket->status == 'Pending' ? 'selected' : '' }}>
+                                            Pending</option>
+                                        <option value="Solved" {{ $ticket->status == 'Solved' ? 'selected' : '' }}>Solved
+                                        </option>
                                     </select>
                                 </div>
-                                <button type="submit" class="btn btn-sm btn-primary" id="submitButton" {{ $ticket->status == 'Solved' ? 'disabled' : '' }}>
+                                <button type="submit" class="btn btn-sm btn-primary" id="submitButton"
+                                    {{ $ticket->status == 'Solved' ? 'disabled' : '' }}>
                                     Submit
                                 </button>
-                                
+
                             </form>
                         </div>
                     </div>
@@ -133,7 +138,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">Ticket #ID093209831</h4>
-                            <p class="card-description"> Complainant Name</p>
+                            <p class="card-description"> Complainant Name awawa</p>
                             <html>
 
                             <head>
@@ -149,72 +154,15 @@
                                     </div>
                                     <div class="chat-page">
                                         <div class="msg-inbox">
-                                            <div class="chats">
-                                                <!-- Message container -->
-                                                <div class="msg-page">
-                                                    <div class="received-chats">
-                                                        <div class="received-msg">
-                                                            <div class="received-msg-inbox">
-                                                                <p>
-                                                                    Hi !! This is message from Riya . Lorem ipsum, dolor sit
-                                                                    amet consectetur adipisicing elit. Non quas nemo eum,
-                                                                    earum sunt, nobis similique quisquam eveniet pariatur
-                                                                    commodi modi voluptatibus iusto omnis harum illum iste
-                                                                    distinctio expedita illo!
-                                                                </p>
-                                                                <span class="time">18:06 PM | July 24</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <!-- Outgoing messages -->
-                                                    <div class="outgoing-chats">
-                                                        <div class="outgoing-msg">
-                                                            <div class="outgoing-chats-msg">
-                                                                <p class="multi-msg">
-                                                                    Hi riya , Lorem ipsum dolor sit amet consectetur
-                                                                    adipisicing elit. Illo nobis deleniti earum magni
-                                                                    recusandae assumenda.
-                                                                </p>
-                                                                <p class="multi-msg">
-                                                                    Lorem ipsum dolor sit amet consectetur.
-                                                                </p>
-
-                                                                <span class="time">18:30 PM | July 24</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="received-chats">
-                                                        <div class="received-msg">
-                                                            <div class="received-msg-inbox">
-                                                                <p class="single-msg">
-                                                                    Hi !! This is message from John Lewis. Lorem ipsum,
-                                                                    dolor
-                                                                    sit amet consectetur adipisicing elit. iste distinctio
-                                                                    expedita illo!
-                                                                </p>
-                                                                <span class="time">18:31 PM | July 24</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="outgoing-chats">
-                                                        <div class="outgoing-msg">
-                                                            <div class="outgoing-chats-msg">
-                                                                <p>
-                                                                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                                                                    Velit, sequi.
-                                                                </p>
-                                                                <span class="time">18:34 PM | July 24</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                            <div class="chats" id="message-container">
+                                                <!-- Message container will be dynamically populated -->
                                             </div>
                                             <!-- msg-bottom section -->
                                             <div class="msg-bottom">
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control"
+                                                    <input type="text" class="form-control" id="message-input"
                                                         placeholder="Write message..." />
-                                                    <span class="input-group-text send-icon">
+                                                    <span class="input-group-text send-icon" onclick="sendMessage()">
                                                         <i class="bi bi-send"></i>
                                                     </span>
                                                 </div>
@@ -516,9 +464,90 @@
             }
         }
     </style>
-{{-- <script>
+    {{-- <script>
     function updateSubmitButton(selectedStatus) {
         var submitButton = document.getElementById('submitButton');
         submitButton.disabled = selectedStatus === 'Solved';
     }
 </script> --}}
+
+    <script>
+        const authUserId = {{ auth()->user()->id }};
+        loadMessages({{ $ticket->id }});
+
+        // Function to load messages
+        function loadMessages(ticketId) {
+            $.ajax({
+                url: `/chat/${ticketId}`,
+                method: 'GET',
+                success: function(data) {
+                    const messageContainer = $('#message-container');
+                    messageContainer.empty(); // Clear previous messages
+
+                    if (data.messages && Array.isArray(data.messages) && data.messages.length > 0) {
+                        // Messages exist, iterate over them
+                        data.messages.forEach(message => {
+                            const messageHTML = `
+                        <div class="msg-page">
+                            <div class="${message.sender_id === authUserId ? 'outgoing-chats' : 'received-chats'}">
+                                <div class="${message.sender_id === authUserId ? 'outgoing-msg' : 'received-msg'}">
+                                    <div class="${message.sender_id === authUserId ? 'outgoing-chats-msg' : 'received-msg-inbox'}">
+                                        <p>${message.message}</p>
+                                        <span class="time">${formatTime(message.created_at)}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+                            messageContainer.append(messageHTML);
+                        });
+                    } else {
+                        // No messages, display a placeholder message
+                        const placeholderHTML = `
+                    <div class="msg-page">
+                        <div class="info-msg">
+                            <p>Let's start a convo!!</p>
+                        </div>
+                    </div>`;
+                        messageContainer.append(placeholderHTML);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error loading messages:', error);
+                }
+            });
+        }
+
+
+
+        // Function to send a message
+        function sendMessage() {
+            const ticketId = {{ $ticket->id }}; // Replace with the actual ticket ID
+            const messageInput = $('#message-input');
+            const message = messageInput.val();
+
+            $.ajax({
+                url: `/chat/${ticketId}`,
+                method: 'POST',
+                data: {
+                    message: message,
+                    _token: $('meta[name="csrf-token"]').attr('content') // Include CSRF token
+                },
+                success: function(data) {
+                    // Handle success, maybe refresh the message container
+                    loadMessages(ticketId);
+                    // Clear the input field after sending
+                    messageInput.val('');
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error sending message:', error);
+                }
+            });
+        }
+
+        // Helper function to format time
+        function formatTime(timestamp) {
+            // Implement your own logic to format the timestamp
+            // For example, using Moment.js: return moment(timestamp).format('h:mm A | MMM D');
+            return timestamp; // Placeholder, replace with actual formatting
+        }
+    </script>

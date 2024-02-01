@@ -44,7 +44,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-    ];    
+    ];
 
     public function tickets()
     {
@@ -95,5 +95,15 @@ class User extends Authenticatable
     {
         // Assuming you have a 'role' column in your users table
         return $this->role === 'user';
+    }
+
+    public function sentMessages()
+    {
+        return $this->hasMany(Chat::class, 'sender_id');
+    }
+
+    public function receivedMessages()
+    {
+        return $this->hasMany(Chat::class, 'receiver_id');
     }
 }
