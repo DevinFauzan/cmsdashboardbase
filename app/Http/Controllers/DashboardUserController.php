@@ -102,6 +102,7 @@ class DashboardUserController extends Controller
             'name' => $request->input('name_user'),
             'email' => $request->input('email'),
             'password' => bcrypt($password),
+            'phone' => $request->input('phone'),
             'role' => 'user',
         ]);
 
@@ -124,27 +125,60 @@ class DashboardUserController extends Controller
             'product' => 'required|in:0,1,2,3',
         ]);
 
-        $user = Auth::user();
+        $product = $request->input('product');
+        $productPrefix = ''; // Initialize an empty prefix
 
-        $newTicketId = $this->generateTicketId($request->input('product'));
+        // Determine the prefix and counter based on the selected product
+        switch ($product) {
+            case 0:
+                $productPrefix = 'TS';
+                break;
+            case 1:
+                $productPrefix = 'TO';
+                break;
+            case 2:
+                $productPrefix = 'TD';
+                break;
+            case 3:
+                $productPrefix = 'TP';
+                break;
+        }
 
+        // Find the latest ticket with the same product prefix
+        $latestTicket = Ticket::where('ticket_id', 'like', $productPrefix . '%')->latest()->first();
+
+        // Generate the new ticket ID
+        if ($latestTicket) {
+            $ticketIdNumber = intval(substr($latestTicket->ticket_id, strlen($productPrefix))) + 1;
+        } else {
+            $ticketIdNumber = 1;
+        }
+
+        $newTicketId = $productPrefix . str_pad($ticketIdNumber, 5, '0', STR_PAD_LEFT);
+
+        // Create a new ticket using the Ticket model
         Ticket::create([
-            'name_user' => $user->name,
-            'email' => $user->email,
+            'name_user' => $request->input('name_user'),
+            'email' => $request->input('email'),
             'complained_date' => $request->input('complained_date'),
             'description' => $request->input('description'),
             'subject' => $request->input('subject'),
-            'product' => $request->input('product'),
-            'phone' => $user->phone,
+            'product' => $product,
+            'phone' => $request->input('phone'),
             'status' => 'Open',
             'ticket_id' => $newTicketId,
         ]);
 
         $request->session()->flash('newTicketInfo', [
             'ticket_id' => $newTicketId,
+            'name_user' => $request->input('name_user'),
+            'email' => $request->input('email'),
         ]);
 
-        return redirect()->route('my_ticket')->with('success', 'Ticket submitted successfully!');
+        $user = $request->user();
+
+        // Show Sweet Alert
+        return redirect()->route('new_ticket', ['user' => $user->id])->with('success', 'Ticket submitted successfully!');
     }
 
 
@@ -164,10 +198,10 @@ class DashboardUserController extends Controller
     public function showNewTicketForm(User $user)
     {
         $users = User::all();
-        $tickets = Ticket::all();
+        $ticket = Ticket::all();
 
         // Pass data to the view
-        return view('pages.user_complainant.new_ticket', compact('user', 'users', 'tickets'));
+        return view('pages.user_complainant.new_ticket', compact('user', 'ticket'));
     }
 
 

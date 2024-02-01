@@ -22,7 +22,9 @@
                         @case('Solved')
                             <label class="badge badge-success">Solved</label>
                         @break
-
+                        @case('onhold')
+                            <label class="badge badge-danger">On Hold</label>
+                        @break
                         @default
                             <label class="badge badge-secondary">Unknown</label>
                     @endswitch

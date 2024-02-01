@@ -5,7 +5,7 @@
         <div class="content-wrapper">
             <div class="page-header">
                 <h2 class="page-title">
-                    <a href="/dashboard-tech" class="page-title-icon bg-gradient-primary text-white me-2">
+                    <a href="/my_ticket" class="page-title-icon bg-gradient-primary text-white me-2">
                         <i class="mdi mdi-arrow-left"></i>
                     </a>
                     Ticket Details
@@ -21,7 +21,7 @@
                 <div class="col-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <h2 class="card-title">{{ $ticket->name_user }} | {{ $ticket->ticket_id }} | 
+                            <h2 class="card-title">{{ $ticket->name_user }} | {{ $ticket->ticket_id }} |
                                 <p class="card-description badge badge- text-black">
                                     @switch($ticket->status)
                                         @case('Open')
@@ -40,11 +40,15 @@
                                             <label class="badge badge-success">Solved</label>
                                         @break
 
+                                        @case('onhold')
+                                            <label class="badge badge-danger">On Hold</label>
+                                        @break
+
                                         @default
                                             <label class="badge badge-secondary">Unknown</label>
                                     @endswitch
                                 </p>
-                               | {{ $ticket->name_tech }}
+                                | {{ $ticket->name_tech }}
                             </h2>
 
                             <form class="forms-sample">
@@ -94,7 +98,7 @@
                             </form>
                         </div>
                     </div>
-                </div>                
+                </div>
             </div>
         </div>
 
@@ -490,7 +494,7 @@
             }
         }
     </style>
-{{-- <script>
+    {{-- <script>
     function updateSubmitButton(selectedStatus) {
         var submitButton = document.getElementById('submitButton');
         submitButton.disabled = selectedStatus === 'Solved';

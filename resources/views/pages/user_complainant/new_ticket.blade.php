@@ -1,11 +1,13 @@
 @extends('layouts.auth')
-
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 @section('content')
     <div class="main-panel">
         <div class="content-wrapper">
             <div class="page-header">
                 <h3 class="page-title">
+                    <a href="/my_ticket" class="page-title-icon bg-gradient-primary text-white me-2">
+                        <i class="mdi mdi-arrow-left"></i>
+                    </a>
                     New Ticket
                 </h3>
                 <nav aria-label="breadcrumb">
@@ -15,12 +17,13 @@
                 <div class="col-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <form class="forms-sample" action="{{ route('submit_ticket') }}" method="post">
+                            <form class="forms-sample" id="submitNewTicketForm" action="{{ route('submit_ticket') }}"
+                                method="post">
                                 @csrf
                                 <div class="form-group">
                                     <label for="exampleInputName1">Complainant Name</label>
                                     <input type="text" value="{{ $user->name }}" class="form-control"
-                                        id="exampleInputName1" placeholder="Name" readonly>
+                                        id="exampleInputName1" placeholder="Name" name="name_user" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputEmail3">Email address</label>
@@ -53,14 +56,32 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputName1">Telephone</label>
-                                    <input type="text" value="{{ $tickets->phone }}" class="form-control"
-                                        id="exampleInputSubject" placeholder="08">
+                                    <input type="text" value="{{ $user->phone }}" class="form-control"
+                                        id="exampleInputSubject" name="phone" readonly>
                                 </div>
                                 <div>
                                     <button type="submit" class="btn btn-primary">Submit</button>
                                 </div>
                             </form>
+
                         </div>
                     </div>
                 </div>
+
+                @if (session('newTicketInfo'))
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            // Show SweetAlert when the page is loaded
+                            const sweetAlert = Swal.fire({
+                                icon: 'success',
+                                title: 'Ticket submitted successfully!',
+                                html: `
+                        <p>Ticket ID: {{ session('newTicketInfo')['ticket_id'] }}</p>
+                        <p>Name: {{ session('newTicketInfo')['name_user'] }}</p>
+                        <p>Email: {{ session('newTicketInfo')['email'] }}</p>                        
+                    `,
+                            });
+                        });
+                    </script>
+                @endif
             @endsection

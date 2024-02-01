@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->boolean('status')->nullable()->default();
             $table->rememberToken();
             $table->timestamps();
+            $table->string('phone')->nullable();
         });
     }
 

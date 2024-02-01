@@ -24,7 +24,8 @@ class User extends Authenticatable
         'is_admin',
         'case_total',
         'password',
-        'role'
+        'role',
+        'phone'
     ];
 
     /**
