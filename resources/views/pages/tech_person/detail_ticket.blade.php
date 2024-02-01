@@ -40,9 +40,11 @@
                                         @case('Solved')
                                             <label class="badge badge-success">Solved</label>
                                         @break
+
                                         @case('onhold')
                                             <label class="badge badge-danger">On Hold</label>
                                         @break
+
                                         @default
                                             <label class="badge badge-secondary">Unknown</label>
                                     @endswitch
@@ -111,10 +113,14 @@
                                     <select class="form-control" id="exampleSelectStatus" name="status"
                                         onchange="updateSubmitButton(this.value)">
                                         <option selected disabled>select product type</option>
-                                        <option value="Pending" {{ $ticket->status == "Pending" ? 'selected' : '' }}>Pending</option>
-                                        <option value="Progress" {{ $ticket->status == "Progress" ? 'selected' : '' }}>Progress</option>
-                                        <option value="onhold" {{ $ticket->status == "onhold" ? 'selected' : '' }}>On Hold</option>
-                                        <option value="Solved" {{ $ticket->status == "Solved" ? 'selected' : '' }}>Solved</option>
+                                        <option value="Pending" {{ $ticket->status == 'Pending' ? 'selected' : '' }}>
+                                            Pending</option>
+                                        <option value="Progress" {{ $ticket->status == 'Progress' ? 'selected' : '' }}>
+                                            Progress</option>
+                                        <option value="onhold" {{ $ticket->status == 'onhold' ? 'selected' : '' }}>On Hold
+                                        </option>
+                                        <option value="Solved" {{ $ticket->status == 'Solved' ? 'selected' : '' }}>Solved
+                                        </option>
                                     </select>
                                 </div>
                                 <button type="submit" class="btn btn-sm btn-primary" id="submitButton"
@@ -473,7 +479,7 @@
 
     <script>
         const authUserId = {{ auth()->user()->id }};
-        loadMessages({{ $ticket->id }});
+        let ticketId = {{ $ticket->id }}; // Initial ticket ID
 
         // Function to load messages
         function loadMessages(ticketId) {
@@ -488,40 +494,41 @@
                         // Messages exist, iterate over them
                         data.messages.forEach(message => {
                             const messageHTML = `
-                        <div class="msg-page">
-                            <div class="${message.sender_id === authUserId ? 'outgoing-chats' : 'received-chats'}">
-                                <div class="${message.sender_id === authUserId ? 'outgoing-msg' : 'received-msg'}">
-                                    <div class="${message.sender_id === authUserId ? 'outgoing-chats-msg' : 'received-msg-inbox'}">
-                                        <p>${message.message}</p>
-                                        <span class="time">${formatTime(message.created_at)}</span>
+                            <div class="msg-page">
+                                <div class="${message.sender_id === authUserId ? 'outgoing-chats' : 'received-chats'}">
+                                    <div class="${message.sender_id === authUserId ? 'outgoing-msg' : 'received-msg'}">
+                                        <div class="${message.sender_id === authUserId ? 'outgoing-chats-msg' : 'received-msg-inbox'}">
+                                            <p>${message.message}</p>
+                                            <span class="time">${formatTime(message.created_at)}</span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>`;
+                            </div>`;
                             messageContainer.append(messageHTML);
                         });
                     } else {
                         // No messages, display a placeholder message
                         const placeholderHTML = `
-                    <div class="msg-page">
-                        <div class="info-msg">
-                            <p>Let's start a convo!!</p>
-                        </div>
-                    </div>`;
+                        <div class="msg-page">
+                            <div class="info-msg">
+                                <p>Let's start a convo!!</p>
+                            </div>
+                        </div>`;
                         messageContainer.append(placeholderHTML);
                     }
                 },
                 error: function(xhr, status, error) {
                     console.error('Error loading messages:', error);
+                },
+                complete: function() {
+                    // After loading messages, update the ticketId
+                    ticketId = {{ $ticket->id }};
                 }
             });
         }
 
-
-
         // Function to send a message
         function sendMessage() {
-            const ticketId = {{ $ticket->id }}; // Replace with the actual ticket ID
             const messageInput = $('#message-input');
             const message = messageInput.val();
 
@@ -530,7 +537,7 @@
                 method: 'POST',
                 data: {
                     message: message,
-                    _token: $('meta[name="csrf-token"]').attr('content') // Include CSRF token
+                    _token: $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function(data) {
                     // Handle success, maybe refresh the message container
@@ -546,8 +553,20 @@
 
         // Helper function to format time
         function formatTime(timestamp) {
-            // Implement your own logic to format the timestamp
-            // For example, using Moment.js: return moment(timestamp).format('h:mm A | MMM D');
-            return timestamp; // Placeholder, replace with actual formatting
+            const date = new Date(timestamp);
+
+            // Get day, month, hour, and minute components
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const hour = String(date.getHours()).padStart(2, '0');
+            const minute = String(date.getMinutes()).padStart(2, '0');
+
+            // Format as DD:MM hour:minute
+            const formattedTime = `${day}/${month} ${hour}:${minute}`;
+            return formattedTime;
         }
+
+        $(document).ready(function() {
+            loadMessages(ticketId);
+        });
     </script>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use App\Models\Chat;
 use Illuminate\Http\Request;
 use App\Models\Ticket;
 use App\Models\User;
@@ -160,7 +161,10 @@ class DashboarTechController extends Controller
     public function edit($id)
     {
         $ticket = Ticket::find($id);
+        $messages = Chat::where('ticket_id', $id)->orderBy('created_at', 'asc')->get();
 
-        return view('pages.tech_person.detail_ticket', compact('ticket'));
+        return view('pages.tech_person.detail_ticket', compact('ticket', 'messages'));
+
+        //return view('pages.tech_person.detail_ticket', compact('ticket'));
     }
 }
