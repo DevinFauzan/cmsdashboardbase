@@ -24,7 +24,8 @@ class User extends Authenticatable
         'is_admin',
         'case_total',
         'password',
-        'role'
+        'role',
+        'phone'
     ];
 
     /**
@@ -79,6 +80,7 @@ class User extends Authenticatable
             1 => 'badge-gradient-info',
             2 => 'badge-gradient-warning',
             3 => 'badge-gradient-danger',
+            4 => 'badge-gradient-danger',
         ];
 
         return $statusColors[$this->status] ?? 'badge-secondary';

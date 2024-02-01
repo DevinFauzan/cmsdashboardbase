@@ -5,7 +5,7 @@
         <div class="content-wrapper">
             <div class="page-header">
                 <h2 class="page-title">
-                    <a href="/dashboard-tech" class="page-title-icon bg-gradient-primary text-white me-2">
+                    <a href="/my_ticket" class="page-title-icon bg-gradient-primary text-white me-2">
                         <i class="mdi mdi-arrow-left"></i>
                     </a>
                     Ticket Details
@@ -38,6 +38,10 @@
 
                                         @case('Solved')
                                             <label class="badge badge-success">Solved</label>
+                                        @break
+
+                                        @case('onhold')
+                                            <label class="badge badge-danger">On Hold</label>
                                         @break
 
                                         @default

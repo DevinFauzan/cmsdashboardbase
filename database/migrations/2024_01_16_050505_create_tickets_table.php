@@ -20,7 +20,7 @@ class CreateTicketsTable extends Migration
             $table->string('subject');
             $table->string('description');
             $table->boolean('product');
-            $table->string('email')->unique();
+            $table->string('email');
             $table->string('phone');
             $table->string('status');
             $table->string('ticket_id');
