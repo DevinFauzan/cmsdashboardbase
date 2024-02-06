@@ -94,6 +94,9 @@
             <script>
                 $(document).ready(function() {
                     // Initialize DataTable only if it's not already initialized
+                    if ($.fn.DataTable.isDataTable('#techPersonTable')) {
+                        $('#techPersonTable').DataTable().destroy();
+                    }
                     var table = $('#techPersonTable').DataTable({
                         "order": [
                             [5, "desc"]

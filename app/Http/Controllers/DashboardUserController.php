@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
 class DashboardUserController extends Controller
 {
@@ -27,6 +30,141 @@ class DashboardUserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function updateProfile()
+    {
+        $user = Auth::user();
+        return view('pages.user_complainant.update_profile_user', compact('user'));
+    }
+
+    public function updatePassword(Request $request)
+    {
+        try {
+            $user = Auth::user();
+
+            // Validate the form data
+            $request->validate([
+                'password' => 'nullable|min:8', // Password is optional, can be null
+                'profile_photo' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Add file validation rules
+            ]);
+
+            // Update password if provided
+            if ($request->filled('password')) {
+                $user->password = Hash::make($request->password);
+            }
+
+            // Update profile photo if provided
+            if ($request->hasFile('profile_photo')) {
+                // Validate and upload the profile photo
+                $this->uploadProfilePhoto($request, $user);
+            }
+
+            // Save the user model
+            $user->save();
+
+            // Determine the success message based on the updated fields
+           // $successMessage = 'Profile Updated Successfully!';
+            if ($request->filled('password') && $request->hasFile('profile_photo')) {
+                $successMessage = 'Password and Profile Photo Updated Successfully!';
+            } elseif ($request->hasFile('profile_photo')) {
+                $successMessage = 'Profile Photo Updated Successfully!';
+            } elseif ($request->filled('password')) {
+                $successMessage = 'Password Updated Successfully!';
+            } 
+            
+            // Add SweetAlert notification
+            $sweetAlert = [
+                'icon' => 'success',
+                'title' => $successMessage,
+                'position' => 'center',
+            ];
+
+            return redirect()->route('user.profile.update')->with('sweetAlert', $sweetAlert);
+        } catch (ValidationException $e) {
+            // Handle validation errors
+            $errorMessages = $e->validator->getMessageBag()->all();
+            $sweetAlert = [
+                'icon' => 'error',
+                'title' => 'Validation Error',
+                'text' => implode('<br>', $errorMessages),
+                'position' => 'center',
+            ];
+
+            return redirect()->route('user.profile.update')->with('sweetAlert', $sweetAlert)->withErrors($e->validator);
+        } catch (\Exception $e) {
+            // Handle other exceptions
+            $sweetAlert = [
+                'icon' => 'error',
+                'title' => 'Error',
+                'text' => 'An error occurred during the update.',
+                'position' => 'center',
+            ];
+
+            return redirect()->route('user.profile.update')->with('sweetAlert', $sweetAlert);
+        }
+    }
+
+
+    private function uploadProfilePhoto(Request $request, $user)
+    {
+        // Validate the uploaded file
+        $request->validate([
+            'profile_photo' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Add appropriate file validation rules
+        ]);
+
+        // Get the uploaded file from the request
+        $profilePhoto = $request->file('profile_photo');
+
+        // Generate a unique name for the file
+        $photoName = 'profile_' . time() . '.' . $profilePhoto->getClientOriginalExtension();
+
+        // Move the uploaded file to the public disk
+        $profilePhoto->storeAs('public/profile_photos', $photoName);
+
+        // Check if the user already has a profile photo
+        if ($user->profile_photo) {
+            // If yes, delete the existing profile photo
+            Storage::delete('public/' . $user->profile_photo);
+        }
+
+        // Save the new profile photo path
+        $user->profile_photo = 'profile_photos/' . $photoName;
+
+        // Save the user model
+        $user->save();
+    }
+
+    public function redeemCode(Request $request)
+    {
+        $inputCode = $request->input('premiumCode');
+        $validCode = 'GwoYQiY23Jdma'; // Gantilah dengan kode yang valid
+
+        if ($inputCode == $validCode) {
+            // Kode valid, update status premium menjadi true
+            auth()->user()->update(['is_premium' => true]);
+
+            // Set pesan sukses untuk Sweet Alert dalam session
+            session()->flash('sweetAlert', [
+                'icon' => 'success',
+                'title' => 'Sukses!',
+                'text' => 'Kode berhasil diredeem. Status user anda menjadi premium.'
+            ]);
+
+            // Redirect kembali ke halaman profile/update
+            return redirect()->route('user.profile.update');
+        } else {
+            // Set pesan kesalahan untuk Sweet Alert dalam session
+            session()->flash('sweetAlert', [
+                'icon' => 'error',
+                'title' => 'Error!',
+                'text' => 'Kode tidak valid.'
+            ]);
+
+            // Redirect kembali ke halaman profile/update
+            return redirect()->route('user.profile.update');
+        }
+    }
+
     public function create()
     {
         //

@@ -59,7 +59,8 @@
                         <a class="nav-link dropdown-toggle" id="profileDropdown" href="#"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             <div class="nav-profile-img">
-                                <img src="{{ asset('assets/auth/images/faces/face1.jpg') }}" alt="image">
+                                <img src="{{ asset('default_profile_photo/default.jpg') }}"
+                                        alt="Default Profile Photo">
                                 <span class="availability-status online"></span>
                             </div>
                             <div class="nav-profile-text">
@@ -95,7 +96,8 @@
                     <li class="nav-item nav-profile">
                         <a href="#" class="nav-link">
                             <div class="nav-profile-image">
-                                <img src="{{ asset('assets/auth/images/faces/face1.jpg') }}" alt="profile">
+                                <img src="{{ asset('default_profile_photo/default.jpg') }}"
+                                        alt="Default Profile Photo">
                                 <span class="login-status online"></span>
                                 <!--change to offline or busy as needed-->
                             </div>

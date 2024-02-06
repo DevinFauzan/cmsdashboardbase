@@ -80,6 +80,9 @@ Route::group(['middleware' => 'user'], function () {
     Route::get('/my_ticket/detail_ticket_user/{id}/edit', [DashboardUserController::class, 'edit'])->name('detail_ticket_user.edit');
     Route::get('/new_ticket/{user}', [DashboardUserController::class, 'showNewTicketForm'])->name('new_ticket');
     Route::post('/submit_ticket', [DashboardUserController::class, 'submitTicket'])->name('submit_ticket');
+    Route::get('/profile/update', [DashboardUserController::class, 'updateProfile'])->name('user.profile.update');
+    Route::post('/profile/update-password', [DashboardUserController::class, 'updatePassword'])->name('user.update.password');
+    Route::post('/profile/redeem', [DashboardUserController::class, 'redeemCode'])->name('user.redeem_code');
     // Then add the resourceful route
     //Route::resource('dashboard-user', DashboardUserController::class);
 });
