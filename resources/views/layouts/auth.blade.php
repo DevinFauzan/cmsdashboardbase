@@ -19,8 +19,9 @@
     <!-- End layout styles -->
     <link rel="shortcut icon" href="{{ asset('assets/auth/images/favicon.ico') }}" />
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link rel="stylesheet" href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" />
 
     @yield('style')
 </head>
@@ -32,7 +33,7 @@
         <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
                 <a class="navbar-brand brand-logo" href="index.html"><img
-                        src="{{ asset('assets/auth/images/SDKLOGO260.png') }}" alt="logo"/></a>
+                        src="{{ asset('assets/auth/images/SDKLOGO260.png') }}" alt="logo" /></a>
                 <a class="navbar-brand brand-logo-mini" href="index.html"><img
                         src="{{ asset('assets/auth/images/logo-mini.svg') }}" alt="logo" /></a>
             </div>
@@ -52,7 +53,7 @@
                     </form>
                 </div> --}}
                 <ul class="navbar-nav navbar-nav-right">
-                    
+
                     <li class="nav-item d-none d-lg-block full-screen-link">
                         <a class="nav-link">
                             <i class="mdi mdi-fullscreen" id="fullscreen-button"></i>
@@ -167,7 +168,12 @@
                         <a class="nav-link dropdown-toggle" id="profileDropdown" href="#"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             <div class="nav-profile-img">
-                                <img src="{{ asset('assets/auth/images/faces/face1.jpg') }}" alt="image">
+                                @if (Auth::user()->profile_photo)
+                                    <img src="{{ url('storage/' . Auth::user()->profile_photo) }}" alt="image">
+                                @else
+                                    <img src="{{ asset('default_profile_photo/default.jpg') }}"
+                                        alt="Default Profile Photo">
+                                @endif
                                 <span class="availability-status online"></span>
                             </div>
                             <div class="nav-profile-text">
@@ -185,7 +191,12 @@
                                     {{-- <a id="logout-button" class="nav-link" href="#">
                                         <i class="mdi mdi-power"></i>
                                     </a> --}}
-                                </form> </a>
+                                </form>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a id="profile-button" class="dropdown-item" href="{{ route('user.profile.update') }}">
+                                <i class="mdi mdi-account me-2 text-primary"></i> Profile
+                            </a>
                         </div>
                     </li>
                 </ul>
@@ -203,7 +214,12 @@
                     <li class="nav-item nav-profile">
                         <a href="#" class="nav-link">
                             <div class="nav-profile-image">
-                                <img src="{{ asset('assets/auth/images/faces/face1.jpg') }}" alt="profile">
+                                @if (Auth::user()->profile_photo)
+                                    <img src="{{ url('storage/' . Auth::user()->profile_photo) }}" alt="image">
+                                @else
+                                    <img src="{{ asset('default_profile_photo/default.jpg') }}"
+                                        alt="Default Profile Photo">
+                                @endif
                                 <span class="login-status online"></span>
                                 <!--change to offline or busy as needed-->
                             </div>

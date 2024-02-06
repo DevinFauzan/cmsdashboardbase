@@ -87,11 +87,17 @@
         <script>
             $(document).ready(function() {
                 // Initialize DataTable only if it's not already initialized
+                if ($.fn.DataTable.isDataTable('#userTable')) {
+                    $('#userTable').DataTable().destroy();
+                }
+
+                // Initialize DataTable
                 var table = $('#userTable').DataTable({
                     "order": [
-                        [5, "desc"]
+                        [3, "asc"]
                     ]
                 });
+
 
                 // Add search functionality
                 $('#search-userticket').on('input', function() {

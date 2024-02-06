@@ -25,6 +25,8 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->timestamps();
             $table->string('phone')->nullable();
+            $table->string('profile_photo')->nullable();
+            $table->boolean('is_premium')->default(false);
         });
     }
 

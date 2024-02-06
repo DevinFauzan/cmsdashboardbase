@@ -25,7 +25,9 @@ class User extends Authenticatable
         'case_total',
         'password',
         'role',
-        'phone'
+        'phone',
+        'profile_photo',
+        'is_premium'
     ];
 
     /**
