@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Chat;
@@ -22,10 +23,14 @@ class DashboarTechController extends Controller
         $tickets = Ticket::all();
         $users = User::all();
         $user = Auth::user();
-        $tickets = Ticket::where('name_tech', $user->name)->get();
+        $techTickets = Ticket::where('name_tech', $user->name)->get(); // Change variable name to avoid conflict
 
-        return view('pages.tech_person.dashboard_techperson',["ticket"=> $tickets,"orderBy" => $orderBy,
-        "orderDirection" => $orderDirection,], compact('tickets', 'users'),);
+
+        return view('pages.tech_person.dashboard_techperson', [
+            "ticket" => $techTickets, // Update variable name
+            "orderBy" => $orderBy,
+            "orderDirection" => $orderDirection,
+        ], compact('tickets', 'users'));
     }
 
 
@@ -34,37 +39,37 @@ class DashboarTechController extends Controller
         $request->validate([
             'status' => 'required|in:Progress,Pending,Solved,onhold',
         ]);
-    
+
         $newStatus = $request->input('status');
-    
+
         // If the status is changed to "Solved"
         if ($newStatus == 'Solved') {
             // Decrement the case_total in the User model
             $user = User::where('name', $ticket->name_tech)->first();
             if ($user) {
                 $user->decrement('case_total');
-    
+
                 // Update user status based on case_total
                 $this->updateUserStatus($user);
             }
-        // } else {
-        //     // If the status is changed from "Solved"
-        //     // Increment the case_total in the User model
-        //     $user = User::where('name', $ticket->name_tech)->first();
-        //     if ($user) {
-        //         $user->increment('case_total');
-    
-        //         // Update user status based on case_total
-        //         $this->updateUserStatus($user);
-        //     }
+            // } else {
+            //     // If the status is changed from "Solved"
+            //     // Increment the case_total in the User model
+            //     $user = User::where('name', $ticket->name_tech)->first();
+            //     if ($user) {
+            //         $user->increment('case_total');
+
+            //         // Update user status based on case_total
+            //         $this->updateUserStatus($user);
+            //     }
         }
-    
+
         // Update ticket status
         $ticket->update(['status' => $newStatus]);
-    
+
         return redirect()->back()->with('success', 'Ticket status updated successfully');
     }
-    
+
     private function updateUserStatus(User $user)
     {
         if ($user->case_total === 0) {
@@ -76,10 +81,10 @@ class DashboarTechController extends Controller
         } elseif ($user->case_total > 5) {
             $user->status = 3; // Overload
         }
-    
+
         $user->save();
     }
-    
+
 
     public function refreshTableTechPerson()
     {

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Chat;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -179,6 +180,7 @@ class DashboardUserController extends Controller
      */
     public function store(Request $request)
     {
+        
         $request->validate([
             'name_user' => 'required|string|max:255',
             'email' => 'required|email|max:255',
@@ -376,8 +378,9 @@ class DashboardUserController extends Controller
     public function edit($id)
     {
         $ticket = Ticket::find($id);
+        $messages = Chat::where('ticket_id', $id)->orderBy('created_at', 'asc')->get();
 
-        return view('pages.user_complainant.detail_ticket_user', compact('ticket'));
+        return view('pages.user_complainant.detail_ticket_user', compact('ticket','messages'));
     }
 
     /**

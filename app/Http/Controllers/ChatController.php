@@ -29,11 +29,17 @@ class ChatController extends Controller
 
     public function index($ticketId)
     {
+        Log::info('Fetching messages for ticket ID: ' . $ticketId);
+    
         // Load messages for a specific ticket
         $messages = Chat::where('ticket_id', $ticketId)->orderBy('created_at', 'asc')->get();
-
+    
+        Log::info('Fetched messages: ' . json_encode($messages));
+    
         return response()->json(['messages' => $messages]);
     }
+    
+
 
     public function store(Request $request, $ticketId)
     {
