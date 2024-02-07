@@ -17,7 +17,6 @@ class CreateChat extends Migration
             $table->id();
             $table->unsignedBigInteger('sender_id');
             $table->unsignedBigInteger('receiver_id')->default(0); // Set a default value (e.g., 0)
-            $table->unsignedBigInteger('ticket_id');
             $table->text('message');
             $table->timestamps();
         });

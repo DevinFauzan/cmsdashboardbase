@@ -14,7 +14,9 @@
     @foreach ($ticket as $t)
         @if ($t->status == 'Open')
             <tr>
-                <td>{{ $t->name_user }}</td>
+                <td>
+                    {{ $t->user ? $t->user->name : 'N/A' }}
+                </td>
                 <td>{{ $t->subject }}</td>
                 <td>
                     <label class="badge badge-gradient-info">{{ $t->status }}</label>
@@ -31,7 +33,6 @@
         @endif
     @endforeach
 @endif
-
 
 {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 

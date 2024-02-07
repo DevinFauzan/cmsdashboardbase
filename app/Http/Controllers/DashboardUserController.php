@@ -220,19 +220,6 @@ class DashboardUserController extends Controller
 
         $newTicketId = $productPrefix . str_pad($ticketIdNumber, 5, '0', STR_PAD_LEFT);
 
-        // Create a new ticket using the Ticket model
-        Ticket::create([
-            'name_user' => $request->input('name_user'),
-            'email' => $request->input('email'),
-            'complained_date' => $request->input('complained_date'),
-            'description' => $request->input('description'),
-            'subject' => $request->input('subject'),
-            'product' => $product,
-            'phone' => $request->input('phone'),
-            'status' => 'Open',
-            'ticket_id' => $newTicketId,
-        ]);
-
         $password = Str::random(8);
 
         // Create a new user
@@ -242,6 +229,22 @@ class DashboardUserController extends Controller
             'password' => bcrypt($password),
             'phone' => $request->input('phone'),
             'role' => 'user',
+        ]);
+
+        $userId = $user->getKey();
+
+         // Create a new ticket using the Ticket model
+         Ticket::create([
+            'user_id' => $userId, // Set the user_id to the newly created user's ID
+            'name_user' => $request->input('name_user'),
+            'email' => $request->input('email'),
+            'complained_date' => $request->input('complained_date'),
+            'description' => $request->input('description'),
+            'subject' => $request->input('subject'),
+            'product' => $product,
+            'phone' => $request->input('phone'),
+            'status' => 'Open',
+            'ticket_id' => $newTicketId,
         ]);
 
         $request->session()->flash('newTicketInfo', [
@@ -316,7 +319,7 @@ class DashboardUserController extends Controller
         $user = $request->user();
 
         // Show Sweet Alert
-        return redirect()->route('new_ticket', ['user' => $user->id])->with('success', 'Ticket submitted successfully!');
+        return redirect()->route('dashboard-user.index')->with('success', 'Ticket submitted successfully!');
     }
 
 

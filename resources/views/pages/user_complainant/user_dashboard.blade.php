@@ -30,7 +30,7 @@
                                 <div class="form-group">
                                     <label for="exampleInputName1">Complained date</label>
                                     <input type="date" class="form-control" id="exampleInputName1" name="complained_date"
-                                        placeholder="date" required value="{{ now()->format('Y-m-d') }}">
+                                        placeholder="date" required value="{{ now()->format('Y-m-d') }}" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputName1">Subject</label>

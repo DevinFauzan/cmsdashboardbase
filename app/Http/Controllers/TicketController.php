@@ -48,7 +48,7 @@ class TicketController extends Controller
 
         // Update the ticket's name_tech with the user's name
         $ticket->update(['name_tech' => $user->name]);
-        $ticket->update(['status' => 'Progress']);
+        $ticket->update(['status' => 'Pending']);
 
 
         return redirect()->route('auth.dashboard')->with('success', 'Ticket assigned successfully');
