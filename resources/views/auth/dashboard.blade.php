@@ -477,35 +477,49 @@
     @endsection
 
     <script>
+         $(document).ready(function() {
+            // Initialize DataTable
+            var table = $('#openTable').DataTable({                
+                "order": [
+                    [0, "asc"]
+                ] 
+            });
+            
         $(document).ready(function() {
             // Initialize DataTable
             var table = $('#openTable').DataTable({
+                "stateSave": true,
                 "order": [
-                    [4, "desc"]
-                ] // Assuming 'created_at' is the fifth column (index 4)
-            });
-
-            // Add search functionality
-            $('#search-open').on('input', function() {
-                searchValue = this.value;
-                table.search(searchValue).draw();
-
-                // Clear the interval if searchValue is not empty
-                if (searchValue !== '' && intervalId !== null) {
-                    clearInterval(intervalId);
-                    intervalId = null;
-                }
-
-                // Start the interval if searchValue is empty and interval is not already running
-                if (searchValue === '' && intervalId === null) {
-                    intervalId = setInterval(function() {
-                        refreshTable("openTable", "{{ route('refresh.table') }}", searchValue);
-                    }, 10000);
+                    [0, "desc"]
+                ],
+                "orderFixed": {
+                    "pre": [1,
+                        'desc'] // Sort by 'is_premium' in descending order before applying the main sorting
                 }
             });
+        });
 
-            // Initial refresh
-            refreshTable("openTable", "{{ route('refresh.table') }}", searchValue);
+        // Add search functionality
+        $('#search-open').on('input', function() {
+            searchValue = this.value;
+            table.search(searchValue).draw();
+
+            // Clear the interval if searchValue is not empty
+            if (searchValue !== '' && intervalId !== null) {
+                clearInterval(intervalId);
+                intervalId = null;
+            }
+
+            // Start the interval if searchValue is empty and interval is not already running
+            if (searchValue === '' && intervalId === null) {
+                intervalId = setInterval(function() {
+                    refreshTable("openTable", "{{ route('refresh.table') }}", searchValue);
+                }, 10000);
+            }
+        });
+
+        // Initial refresh
+        refreshTable("openTable", "{{ route('refresh.table') }}", searchValue);
         });
     </script>
 

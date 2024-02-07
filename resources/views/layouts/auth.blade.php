@@ -183,10 +183,17 @@
                         <div class="dropdown-menu navbar-dropdown" aria-labelledby="profileDropdown">
                             {{-- <a class="dropdown-item" href="#">
                                 <i class="mdi mdi-cached me-2 text-success"></i> Activity Log </a> --}}
+<<<<<<< HEAD
                                 <a id="profile-button" class="dropdown-item" href="{{ route('user.profile.update') }}">
                                     <i class="mdi mdi-account me-2 text-primary"></i> Profile
                                 </a>
+=======
+                            <div class="dropdown-divider"></div>                            
+>>>>>>> 8244e1408b0d1bacca0765704e447863b3b0b522
                             <div class="dropdown-divider"></div>
+                            <a id="profile-button" class="dropdown-item" href="{{ route('user.profile.update') }}">
+                                <i class="mdi mdi-account me-2 text-primary"></i> Profile
+                            </a>
                             <a id="logout-button" class="dropdown-item" href="#">
                                 <i class="mdi mdi-logout me-2 text-primary"></i> Signout
                                 <form id="logout-form" method="post" action="{{ route('logout') }}">
@@ -196,8 +203,6 @@
                                     </a> --}}
                                 </form>
                             </a>
-                            <div class="dropdown-divider"></div>
-                            
                         </div>
                     </li>
                 </ul>
