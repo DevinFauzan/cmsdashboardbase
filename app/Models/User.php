@@ -51,7 +51,7 @@ class User extends Authenticatable
 
     public function tickets()
     {
-        return $this->hasMany(Ticket::class);
+        return $this->hasMany(Ticket::class, 'user_id');
     }
 
     public function updateCaseTotal()

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use \App\Models\Ticket;
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Models\Chat;
 use Illuminate\Http\Request;
@@ -18,37 +20,12 @@ class ChatController extends Controller
 
     public function getMessages($ticketId)
     {
-        $messages = Chat::with('sender', 'receiver')
-            ->where('ticket_id', $ticketId)
+        $messages = Chat::where('ticket_id', $ticketId)
             ->orderBy('created_at', 'asc')
             ->get();
 
         return response()->json(['messages' => $messages]);
     }
-
-    public function sendMessage(Request $request, $ticketId)
-    {
-        $ticket = Ticket::find($ticketId);
-
-        // Ensure the ticket and associated user exist
-        if ($ticket && $ticket->user) {
-            Log::info('User ID from ticket: ' . $ticket->user->id);
-
-
-            // Store the new message
-            Chat::create([
-                'sender_id' => auth()->user()->id,
-                'receiver_id' => $ticket->user->id, // Updated to use the user ID from the ticket
-                'ticket_id' => $ticketId,
-                'message' => $request->input('message'),
-            ]);
-
-            return response()->json(['success' => true]);
-        }
-
-        return response()->json(['success' => false, 'message' => 'Error sending message.']);
-    }
-
 
     public function index($ticketId)
     {
@@ -60,12 +37,45 @@ class ChatController extends Controller
 
     public function store(Request $request, $ticketId)
     {
+        DB::enableQueryLog();
+
+        // Find the ticket and load the associated user
+        $ticket = Ticket::with('user')->find($ticketId);
+
+        // Log the ticket ID and associated user ID
+        Log::info('Ticket ID: ' . $ticketId);
+        Log::info('Ticket User ID: ' . optional($ticket->user)->id);
+
+        // Ensure the ticket and associated user exist
+        if ($ticket && $ticket->user) {
+            // Use Eloquent relationship to save the new message
+            $ticket->messages()->create([
+                'sender_id' => auth()->user()->id,
+                'receiver_id' => $ticket->user->id,
+                'message' => $request->input('message'),
+            ]);
+
+            // Log successful message creation
+            Log::info('Message sent successfully');
+
+            return response()->json(['success' => true]);
+        }
+
+        // If ticket or user is not found, log an error
+        Log::error('Ticket or user not found');
+
+        // Fall back to the original store logic
         // Store a new message
         $message = new Chat();
         $message->ticket_id = $ticketId;
-        $message->sender_id = auth()->id(); // Assuming you have user authentication
+        $message->sender_id = auth()->id();
+        $message->receiver_id = optional($ticket->user)->id; // Use optional() to handle null case
+        Log::info('Receiver ID: ' . $message->receiver_id);
         $message->message = $request->input('message');
         $message->save();
+
+        // Log successful message creation
+        Log::info('Message sent successfully');
 
         return response()->json(['message' => 'Message sent successfully']);
     }

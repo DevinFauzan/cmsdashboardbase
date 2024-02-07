@@ -143,9 +143,8 @@
                 <div class="col-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Ticket #ID093209831</h4>
-                            <p class="card-description"> Complainant Name awawa</p>
-                            <html>
+                            <h4 class="card-title">{{ $ticket->name_user }} </h4>
+                            <p class="card-description">Ticket {{ $ticket->ticket_id }}</p>
 
                             <head>
                                 <title>Chat Box UI Design</title>
@@ -177,8 +176,6 @@
                                     </div>
                                 </div>
                             </body>
-
-                            </html>
                         </div>
                     </div>
                 </div>
@@ -566,6 +563,7 @@
             return formattedTime;
         }
 
+        // Load messages when the document is ready
         $(document).ready(function() {
             loadMessages(ticketId);
         });

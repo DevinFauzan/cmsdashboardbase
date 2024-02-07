@@ -16,9 +16,15 @@ class CreateChat extends Migration
         Schema::create('chat', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('sender_id');
-            $table->unsignedBigInteger('receiver_id')->default(0); // Set a default value (e.g., 0)
+            $table->unsignedBigInteger('receiver_id')->nullable(); // Set default to null
+            $table->unsignedBigInteger('ticket_id');
             $table->text('message');
             $table->timestamps();
+
+            // Add foreign key constraints
+            $table->foreign('sender_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('receiver_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('ticket_id')->references('id')->on('tickets')->onDelete('cascade');
         });
     }
 
