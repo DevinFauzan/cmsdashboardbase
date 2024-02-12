@@ -15,20 +15,20 @@
             <div class="row">
                 <div class="col-12 grid-margin">
                     <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">
-                                History Tickets
-                                <a href="{{ route('new_ticket', ['user' => Auth::user()->id]) }}"
-                                    class="btn btn-sm btn-primary mdi mdi-plus mdi-18px float-end text-center">
-                                    New Ticket
-                                </a>
-                            </h4>
-                            <div class="d-flex justify-content-end mb-3">
-                                <div class="col-3">
-                                    <input type="text" id="search-userticket" class="form-control"
-                                        placeholder="Type to search...">
+                        <div class="card-body ">
+                            <div class="card-header d-flex justify-content-between align-items-center mb-5">
+                                <h4 class="card-title mb-0">History Tickets</h4>
+                                <div class="d-flex">
+                                    <div class="col-6">
+                                        <input type="text" id="search-userticket" class="form-control" placeholder="Type to search...">
+                                    </div>
+                                    <a href="{{ route('new_ticket', ['user' => Auth::user()->id]) }}" class="btn btn-sm btn-primary ms-2">
+                                        <span class="mdi mdi-plus mdi-18px me-1"></span>
+                                        New Ticket
+                                    </a>
                                 </div>
                             </div>
+                            
                             <div class="table-responsive">
                                 <table id="userTable" class="table table-striped" style="width: 100%">
                                     <thead>
