@@ -143,7 +143,7 @@
                 <div class="col-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">{{ $ticket->name_user }}MMMMMM</h4>
+                            <h4 class="card-title">{{ $ticket->name_user }}</h4>
                             <p class="card-description">Ticket {{ $ticket->ticket_id }}</p>
                             <button id="refresh-button" name="refresh_button" class="btn btn-primary"
                                 onclick="refreshChat()" hidden>Refresh

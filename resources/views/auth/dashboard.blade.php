@@ -124,6 +124,11 @@
     .card-img-holder-all:hover h1 {
         color: white;
     }
+
+    .premium-row {
+        background-color: gold;
+        /* Set your desired background color for premium rows */
+    }
 </style>
 
 
@@ -481,8 +486,8 @@
             // Initialize DataTable
             var table = $('#openTable').DataTable({
                 "order": [
-                    [0, "asc"]
-                ]
+                    [5, "desc"]
+                ] // Assuming 'created_at' is the fifth column (index 4)
             });
 
             // Add search functionality
@@ -499,13 +504,64 @@
                 // Start the interval if searchValue is empty and interval is not already running
                 if (searchValue === '' && intervalId === null) {
                     intervalId = setInterval(function() {
-                        refreshTable("openTable", "{{ route('refresh.table') }}", searchValue);
+                        // Call your original refreshTable function without modifying it
+                        $.ajax({
+                            url: "{{ route('refresh.table') }}",
+                            method: "GET",
+                            data: {
+                                search: searchValue
+                            },
+                            success: function(data) {
+                                $("#" + tabId + " tbody").html(data.html);
+
+                                // Reinitialize DataTable after updating the table body
+                                table = $("#" + tabId).DataTable({
+                                    "order": [
+                                        [5, "desc"]
+                                    ] // Assuming 'created_at' is the fifth column (index 4)
+                                });
+
+                                // Add color to rows based on is_premium
+                                $("#" + tabId + " tbody tr").each(function() {
+                                    var isPremium = $(this).find("td:eq(0)")
+                                        .data("is-premium");
+
+                                    if (isPremium === 1) {
+                                        $(this).addClass("premium-row");
+                                    }
+                                });
+                            },
+                            error: function(xhr, status, error) {
+                                console.error("Error refreshing table: " + error);
+                            }
+                        });
                     }, 10000);
                 }
             });
 
             // Initial refresh
-            refreshTable("openTable", "{{ route('refresh.table') }}", searchValue);
+            $.ajax({
+                url: "{{ route('refresh.table') }}",
+                method: "GET",
+                data: {
+                    search: searchValue
+                },
+                success: function(data) {
+                    $("#" + tabId + " tbody").html(data.html);
+
+                    // Add color to rows based on is_premium
+                    $("#" + tabId + " tbody tr").each(function() {
+                        var isPremium = $(this).find("td:eq(0)").data("is-premium");
+
+                        if (isPremium === 1) {
+                            $(this).addClass("premium-row");
+                        }
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error refreshing table: " + error);
+                }
+            });
         });
     </script>
 

@@ -13,7 +13,7 @@
 @else
     @foreach ($ticket as $t)
         @if ($t->status == 'Open')
-            <tr>
+            <tr class="{{ $t->user && $t->user->is_premium ? 'premium-row' : '' }}">
                 <td>
                     {{ $t->user ? $t->user->name : 'N/A' }}
                 </td>
@@ -33,6 +33,7 @@
         @endif
     @endforeach
 @endif
+
 
 {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
