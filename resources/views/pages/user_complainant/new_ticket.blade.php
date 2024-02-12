@@ -68,7 +68,7 @@
                     </div>
                 </div>
 
-                @if (session('newTicketInfo'))
+                @if (session('newTicketInfoUser'))
                     <script>
                         document.addEventListener('DOMContentLoaded', function() {
                             // Show SweetAlert when the page is loaded
@@ -76,9 +76,9 @@
                                 icon: 'success',
                                 title: 'Ticket submitted successfully!',
                                 html: `
-                        <p>Ticket ID: {{ session('newTicketInfo')['ticket_id'] }}</p>
-                        <p>Name: {{ session('newTicketInfo')['name_user'] }}</p>
-                        <p>Email: {{ session('newTicketInfo')['email'] }}</p>                        
+                        <p>Ticket ID: {{ session('newTicketInfoUser')['ticket_id'] }}</p>
+                        <p>Name: {{ session('newTicketInfoUser')['name_user'] }}</p>
+                        <p>Email: {{ session('newTicketInfoUser')['email'] }}</p>                        
                     `,
                             });
                         });

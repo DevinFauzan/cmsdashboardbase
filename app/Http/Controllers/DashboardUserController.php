@@ -64,15 +64,15 @@ class DashboardUserController extends Controller
             $user->save();
 
             // Determine the success message based on the updated fields
-           // $successMessage = 'Profile Updated Successfully!';
+            // $successMessage = 'Profile Updated Successfully!';
             if ($request->filled('password') && $request->hasFile('profile_photo')) {
                 $successMessage = 'Password and Profile Photo Updated Successfully!';
             } elseif ($request->hasFile('profile_photo')) {
                 $successMessage = 'Profile Photo Updated Successfully!';
             } elseif ($request->filled('password')) {
                 $successMessage = 'Password Updated Successfully!';
-            } 
-            
+            }
+
             // Add SweetAlert notification
             $sweetAlert = [
                 'icon' => 'success',
@@ -180,7 +180,7 @@ class DashboardUserController extends Controller
      */
     public function store(Request $request)
     {
-        
+
         $request->validate([
             'name_user' => 'required|string|max:255',
             'email' => 'required|email|max:255',
@@ -235,8 +235,8 @@ class DashboardUserController extends Controller
 
         $userId = $user->getKey();
 
-         // Create a new ticket using the Ticket model
-         Ticket::create([
+        // Create a new ticket using the Ticket model
+        Ticket::create([
             'user_id' => $userId, // Set the user_id to the newly created user's ID
             'name_user' => $request->input('name_user'),
             'email' => $request->input('email'),
@@ -299,29 +299,31 @@ class DashboardUserController extends Controller
 
         $newTicketId = $productPrefix . str_pad($ticketIdNumber, 5, '0', STR_PAD_LEFT);
 
+        $user = $request->user();
+        $userId = $user->getKey();
+
         // Create a new ticket using the Ticket model
         Ticket::create([
-            'name_user' => $request->input('name_user'),
-            'email' => $request->input('email'),
+            'user_id' => $user->id, // Menggunakan ID pengguna saat ini
+            'name_user' => $user->name, // Menggunakan nama pengguna saat ini
+            'email' => $user->email, // Menggunakan email pengguna saat ini
             'complained_date' => $request->input('complained_date'),
             'description' => $request->input('description'),
             'subject' => $request->input('subject'),
             'product' => $product,
-            'phone' => $request->input('phone'),
+            'phone' => $user->phone, // Menggunakan nomor telepon pengguna saat ini
             'status' => 'Open',
             'ticket_id' => $newTicketId,
         ]);
 
-        $request->session()->flash('newTicketInfo', [
+        $request->session()->flash('newTicketInfoUser', [
             'ticket_id' => $newTicketId,
             'name_user' => $request->input('name_user'),
             'email' => $request->input('email'),
         ]);
 
-        $user = $request->user();
-
         // Show Sweet Alert
-        return redirect()->route('dashboard-user.index')->with('success', 'Ticket submitted successfully!');
+        return redirect()->back()->with('success', 'Ticket submitted successfully!');
     }
 
 
@@ -383,7 +385,7 @@ class DashboardUserController extends Controller
         $ticket = Ticket::find($id);
         $messages = Chat::where('ticket_id', $id)->orderBy('created_at', 'asc')->get();
 
-        return view('pages.user_complainant.detail_ticket_user', compact('ticket','messages'));
+        return view('pages.user_complainant.detail_ticket_user', compact('ticket', 'messages'));
     }
 
     /**
