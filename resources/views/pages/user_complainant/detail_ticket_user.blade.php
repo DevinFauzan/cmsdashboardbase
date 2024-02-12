@@ -112,7 +112,9 @@
                         <div class="card-body">
                             <h4 class="card-title">{{ $ticket->name_tech }} </h4>
                             <p class="card-description">Ticket {{ $ticket->ticket_id }}</p>
-                            <button id="refresh-button" class="btn btn-primary" onclick="refreshChat()">Refresh Chat</button>
+                            <button id="refresh-button" name="refresh_button" class="btn btn-primary"
+                                onclick="refreshChat()" hidden>Refresh
+                                Chat</button>
 
 
                             <head>
@@ -128,7 +130,7 @@
                                     </div>
                                     <div class="chat-page">
                                         <div class="msg-inbox">
-                                            <div class="chats" id="message-container">
+                                            <div class="chats" id="message-container" style="max-height: 300px; overflow-y: auto;">
                                                 <!-- Loop through messages and display them -->
                                                 @foreach($messages as $message)
                                                     <div class="msg-page">
@@ -146,8 +148,7 @@
                                             <!-- msg-bottom section -->
                                             <div class="msg-bottom">
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control" id="message-input"
-                                                        placeholder="Write message..." />
+                                                    <input type="text" class="form-control" id="message-input" placeholder="Write message..." />
                                                     <span class="input-group-text send-icon" onclick="sendMessage()">
                                                         <i class="bi bi-send"></i>
                                                     </span>
@@ -156,7 +157,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </body>
+                            </body>                            
                         </div>
                     </div>
                 </div>
@@ -472,26 +473,26 @@
                     // Messages exist, iterate over them
                     data.messages.forEach(message => {
                         const messageHTML = `
-                            <div class="msg-page">
-                                <div class="${message.sender_id === authUserId ? 'outgoing-chats' : 'received-chats'}">
-                                    <div class="${message.sender_id === authUserId ? 'outgoing-msg' : 'received-msg'}">
-                                        <div class="${message.sender_id === authUserId ? 'outgoing-chats-msg' : 'received-msg-inbox'}">
-                                            <p>${message.message}</p>
-                                            <span class="time">${formatTime(message.created_at)}</span>
-                                        </div>
+                        <div class="msg-page">
+                            <div class="${message.sender_id === authUserId ? 'outgoing-chats' : 'received-chats'}">
+                                <div class="${message.sender_id === authUserId ? 'outgoing-msg' : 'received-msg'}">
+                                    <div class="${message.sender_id === authUserId ? 'outgoing-chats-msg' : 'received-msg-inbox'}">
+                                        <p>${message.message}</p>
+                                        <span class="time">${formatTime(message.created_at)}</span>
                                     </div>
                                 </div>
-                            </div>`;
+                            </div>
+                        </div>`;
                         messageContainer.append(messageHTML);
                     });
                 } else {
                     // No messages, display a placeholder message
                     const placeholderHTML = `
-                        <div class="msg-page">
-                            <div class="info-msg">
-                                <p>Let's start a convo!!</p>
-                            </div>
-                        </div>`;
+                    <div class="msg-page">
+                        <div class="info-msg">
+                            <p>Let's start a convo!!</p>
+                        </div>
+                    </div>`;
                     messageContainer.append(placeholderHTML);
                 }
             },
@@ -540,19 +541,22 @@
         return formattedTime;
     }
 
-    // Function to refresh only the chat section
-    function refreshChat() {
-        loadMessages(ticketId);
-    }
-
-    // Load messages when the document is ready
-    $(document).ready(function() {
-        loadMessages({{ $ticket->id }});
+    document.addEventListener("DOMContentLoaded", function() {
+        // Get the reference to the refresh button by name attribute
+        var refreshButton = document.querySelector("[name='refresh_button']");
 
         // Automatically refresh the chat section every 5 seconds
         setInterval(function() {
-            refreshChat();
+            // Trigger click on the refresh button
+            refreshButton.click();
         }, 5000); // 5 seconds interval
-    }); 
+
+        // Handling of click event
+        refreshButton.onclick = function() {
+            console.log('Button clicked');
+            // Call the loadMessages function here
+            loadMessages(ticketId);
+        };
+    });
 </script>
 

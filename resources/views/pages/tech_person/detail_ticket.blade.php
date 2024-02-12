@@ -145,13 +145,16 @@
                         <div class="card-body">
                             <h4 class="card-title">{{ $ticket->name_user }}MMMMMM</h4>
                             <p class="card-description">Ticket {{ $ticket->ticket_id }}</p>
-                            <button id="refresh-button" class="btn btn-primary" onclick="refreshChat()">Refresh Chat</button>
+                            <button id="refresh-button" name="refresh_button" class="btn btn-primary"
+                                onclick="refreshChat()" hidden>Refresh
+                                Chat</button>
 
 
                             <head>
                                 <title>Chat Box UI Design</title>
                                 <link rel="stylesheet" href="styles.css" />
-                                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css" />
+                                <link rel="stylesheet"
+                                    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css" />
                                 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
                             </head>
 
@@ -161,13 +164,17 @@
                                     </div>
                                     <div class="chat-page">
                                         <div class="msg-inbox">
-                                            <div class="chats" id="message-container">
+                                            <div class="chats" id="message-container"
+                                                style="max-height: 300px; overflow-y: auto;">
                                                 <!-- Loop through messages and display them -->
-                                                @foreach($messages as $message)
+                                                @foreach ($messages as $message)
                                                     <div class="msg-page">
-                                                        <div class="{{ $message->sender_id === auth()->user()->id ? 'outgoing-chats' : 'received-chats' }}">
-                                                            <div class="{{ $message->sender_id === auth()->user()->id ? 'outgoing-msg' : 'received-msg' }}">
-                                                                <div class="{{ $message->sender_id === auth()->user()->id ? 'outgoing-chats-msg' : 'received-msg-inbox' }}">
+                                                        <div
+                                                            class="{{ $message->sender_id === auth()->user()->id ? 'outgoing-chats' : 'received-chats' }}">
+                                                            <div
+                                                                class="{{ $message->sender_id === auth()->user()->id ? 'outgoing-msg' : 'received-msg' }}">
+                                                                <div
+                                                                    class="{{ $message->sender_id === auth()->user()->id ? 'outgoing-chats-msg' : 'received-msg-inbox' }}">
                                                                     <p>{{ $message->message }}</p>
                                                                     {{-- <span class="time">{{ formatTime($message->created_at) }}</span> --}}
                                                                 </div>
@@ -190,6 +197,7 @@
                                     </div>
                                 </div>
                             </body>
+
                         </div>
                     </div>
                 </div>
@@ -488,23 +496,23 @@
     }
 </script> --}}
 
-<script>
-    const authUserId = {{ auth()->user()->id }};
-    let ticketId = {{ $ticket->id }}; // Initial ticket ID
+    <script>
+        const authUserId = {{ auth()->user()->id }};
+        let ticketId = {{ $ticket->id }}; // Initial ticket ID
 
-    // Function to load messages
-    function loadMessages(ticketId) {
-        $.ajax({
-            url: `/chat/${ticketId}`,
-            method: 'GET',
-            success: function(data) {
-                const messageContainer = $('#message-container');
-                messageContainer.empty(); // Clear previous messages
+        // Function to load messages
+        function loadMessages(ticketId) {
+            $.ajax({
+                url: `/chat/${ticketId}`,
+                method: 'GET',
+                success: function(data) {
+                    const messageContainer = $('#message-container');
+                    messageContainer.empty(); // Clear previous messages
 
-                if (data.messages && Array.isArray(data.messages) && data.messages.length > 0) {
-                    // Messages exist, iterate over them
-                    data.messages.forEach(message => {
-                        const messageHTML = `
+                    if (data.messages && Array.isArray(data.messages) && data.messages.length > 0) {
+                        // Messages exist, iterate over them
+                        data.messages.forEach(message => {
+                            const messageHTML = `
                             <div class="msg-page">
                                 <div class="${message.sender_id === authUserId ? 'outgoing-chats' : 'received-chats'}">
                                     <div class="${message.sender_id === authUserId ? 'outgoing-msg' : 'received-msg'}">
@@ -515,78 +523,79 @@
                                     </div>
                                 </div>
                             </div>`;
-                        messageContainer.append(messageHTML);
-                    });
-                } else {
-                    // No messages, display a placeholder message
-                    const placeholderHTML = `
+                            messageContainer.append(messageHTML);
+                        });
+                    } else {
+                        // No messages, display a placeholder message
+                        const placeholderHTML = `
                         <div class="msg-page">
                             <div class="info-msg">
                                 <p>Let's start a convo!!</p>
                             </div>
                         </div>`;
-                    messageContainer.append(placeholderHTML);
+                        messageContainer.append(placeholderHTML);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error loading messages:', error);
+                },
+            });
+        }
+
+        // Function to send a message
+        function sendMessage() {
+            const messageInput = $('#message-input');
+            const message = messageInput.val();
+
+            $.ajax({
+                url: `/chat/${ticketId}`,
+                method: 'POST',
+                data: {
+                    message: message,
+                    _token: $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(data) {
+                    // Handle success, maybe refresh the message container
+                    loadMessages(ticketId);
+                    // Clear the input field after sending
+                    messageInput.val('');
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error sending message:', error);
                 }
-            },
-            error: function(xhr, status, error) {
-                console.error('Error loading messages:', error);
-            },
-        });
-    }
+            });
+        }
 
-    // Function to send a message
-    function sendMessage() {
-        const messageInput = $('#message-input');
-        const message = messageInput.val();
+        // Helper function to format time
+        function formatTime(timestamp) {
+            const date = new Date(timestamp);
 
-        $.ajax({
-            url: `/chat/${ticketId}`,
-            method: 'POST',
-            data: {
-                message: message,
-                _token: $('meta[name="csrf-token"]').attr('content')
-            },
-            success: function(data) {
-                // Handle success, maybe refresh the message container
+            // Get day, month, hour, and minute components
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const hour = String(date.getHours()).padStart(2, '0');
+            const minute = String(date.getMinutes()).padStart(2, '0');
+
+            // Format as DD/MM hour:minute
+            const formattedTime = `${day}/${month} ${hour}:${minute}`;
+            return formattedTime;
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            // Get the reference to the refresh button by name attribute
+            var refreshButton = document.querySelector("[name='refresh_button']");
+
+            // Automatically refresh the chat section every 5 seconds
+            setInterval(function() {
+                // Trigger click on the refresh button
+                refreshButton.click();
+            }, 5000); // 5 seconds interval
+
+            // Handling of click event
+            refreshButton.onclick = function() {
+                console.log('Button clicked');
+                // Call the loadMessages function here
                 loadMessages(ticketId);
-                // Clear the input field after sending
-                messageInput.val('');
-            },
-            error: function(xhr, status, error) {
-                console.error('Error sending message:', error);
-            }
+            };
         });
-    }
-
-    // Helper function to format time
-    function formatTime(timestamp) {
-        const date = new Date(timestamp);
-
-        // Get day, month, hour, and minute components
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const hour = String(date.getHours()).padStart(2, '0');
-        const minute = String(date.getMinutes()).padStart(2, '0');
-
-        // Format as DD/MM hour:minute
-        const formattedTime = `${day}/${month} ${hour}:${minute}`;
-        return formattedTime;
-    }
-
-    // Function to refresh only the chat section
-    function refreshChat() {
-        loadMessages(ticketId);
-    }
-
-    // Load messages when the document is ready
-    $(document).ready(function() {
-        loadMessages({{ $ticket->id }});
-
-        // Automatically refresh the chat section every 5 seconds
-        setInterval(function() {
-            refreshChat();
-        }, 5000); // 5 seconds interval
-    });
-</script>
-
-
+    </script>
