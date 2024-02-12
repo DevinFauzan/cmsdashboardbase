@@ -1,9 +1,9 @@
-@if ($ticket->where('status', 'Solved')->isEmpty())
+@if ($ticketSolved->where('status', 'Solved')->isEmpty())
     <tr>
         <td colspan="6" class="text-center">There is no progress data</td>
     </tr>
 @else
-    @foreach ($ticket as $t)
+    @foreach ($ticketSolved as $t)
         @if ($t->status == 'Solved')
             <tr>
                 <td>{{ $t->name_user }}</td>

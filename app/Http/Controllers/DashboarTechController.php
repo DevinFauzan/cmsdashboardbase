@@ -27,7 +27,7 @@ class DashboarTechController extends Controller
 
 
         return view('pages.tech_person.dashboard_techperson', [
-            "ticket" => $techTickets, // Update variable name
+            "tickets" => $techTickets, // Update variable name
             "orderBy" => $orderBy,
             "orderDirection" => $orderDirection,
         ], compact('tickets', 'users'));

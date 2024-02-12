@@ -1,9 +1,9 @@
-@if ($ticket->where('status', 'onhold')->isEmpty())
+@if ($ticketOnhold->where('status', 'onhold')->isEmpty())
 <tr>
     <td colspan="6" class="text-center">There is no progress data</td>
 </tr>
 @else
-    @foreach ($ticket as $t)
+    @foreach ($ticketOnhold as $t)
         @if ($t->status == 'onhold')
             <tr>
                 <td>{{ $t->name_user }}</td>

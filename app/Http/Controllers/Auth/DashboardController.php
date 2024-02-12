@@ -22,32 +22,32 @@ class DashboardController extends Controller
 
     public function refreshTableSolved()
     {
-        $ticket = Ticket::where('status', 'Solved')->get();
-        $html = view('partials.table_solved', compact('ticket'))->render();
+        $ticketSolved = Ticket::where('status', 'Solved')->get();
+        $html = view('partials.table_solved', compact('ticketSolved'))->render();
 
         return response()->json(['html' => $html]);
     }
 
     public function refreshTablePending()
     {
-        $ticket = Ticket::where('status', 'Pending')->get();
-        $html = view('partials.table_pending', compact('ticket'))->render();
+        $ticketPending = Ticket::where('status', 'Pending')->get();
+        $html = view('partials.table_pending', compact('ticketPending'))->render();
 
         return response()->json(['html' => $html]);
     }
 
     public function refreshTableProgress()
     {
-        $ticket = Ticket::where('status', 'Progress')->get();
-        $html = view('partials.table_progress', compact('ticket'))->render();
+        $ticketProgress = Ticket::where('status', 'Progress')->get();
+        $html = view('partials.table_progress', compact('ticketProgress'))->render();
 
         return response()->json(['html' => $html]);
     }
 
     public function refreshTableOnHold()
     {
-        $ticket = Ticket::where('status', 'onhold')->get();
-        $html = view('partials.table_onhold', compact('ticket'))->render();
+        $ticketOnhold = Ticket::where('status', 'onhold')->get();
+        $html = view('partials.table_onhold', compact('ticketOnhold'))->render();
 
         return response()->json(['html' => $html]);
     }
@@ -82,8 +82,15 @@ class DashboardController extends Controller
         $orderDirection = 'desc'; // default order direction
 
         $ticket = Ticket::where('status', 'Open')->get();
+        $ticketPending = Ticket::where('status', 'Pending')->get();
+        $ticketProgress = Ticket::where('status', 'Progress')->get();
+        $ticketOnhold = Ticket::where('status', 'onhold')->get();
+        $ticketSolved = Ticket::where('status', 'Solved')->get();
         $user = User::where('is_premium', 1)->whereIn('id', $ticket->pluck('user_id'))->get();
-
+        $user = User::where('is_premium', 1)->whereIn('id', $ticketPending->pluck('user_id'))->get();
+        $user = User::where('is_premium', 1)->whereIn('id', $ticketProgress->pluck('user_id'))->get();
+        $user = User::where('is_premium', 1)->whereIn('id', $ticketOnhold->pluck('user_id'))->get();
+        $user = User::where('is_premium', 1)->whereIn('id', $ticketSolved->pluck('user_id'))->get();
         $user = $user->sortByDesc('is_premium');
 
         $openTickets = $ticket->where('status', 'Open')->count();
@@ -95,6 +102,10 @@ class DashboardController extends Controller
 
         return view('auth.dashboard', [
             "ticket" => $ticket,
+            "ticketPending" => $ticketPending,
+            "ticketProgress" => $ticketProgress,
+            "ticketOnhold" => $ticketOnhold,
+            "ticketSolved" => $ticketSolved,
             "Users" => $user,
             "openTickets" => $openTickets,
             "pendingTickets" => $pendingTickets,
