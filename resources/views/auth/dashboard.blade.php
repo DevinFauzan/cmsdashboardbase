@@ -8,10 +8,6 @@
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </head>
 <style>
-    .dataTables_filter {
-        display: none;
-    }
-
     body {
         font-family: Arial;
     }
@@ -213,11 +209,6 @@
                 <div class="card tabcontent" id="open">
                     <div class="card-body">
                         <h4 class="card-title">Open Ticket</h4>
-                        <div class="d-flex justify-content-end mb-3">
-                            <div class="col-3">
-                                <input type="text" id="search-open" class="form-control" placeholder="Type to search...">
-                            </div>
-                        </div>
                         <div class="table-responsive">
                             <table id="openTable" class="table table-striped" style="width:100%">
                                 <thead>
@@ -240,12 +231,6 @@
                 <div class="card tabcontent" id="pending">
                     <div class="card-body">
                         <h4 class="card-title">Pending Ticket</h4>
-                        <div class="d-flex justify-content-end mb-3">
-                            <div class="col-3">
-                                <input type="text" id="search-pending" class="form-control"
-                                    placeholder="Type to search...">
-                            </div>
-                        </div>
                         <div class="table-responsive">
                             <table id="pendingTable" class="table table-striped" style="width:100%">
                                 <thead>
@@ -266,12 +251,6 @@
                 <div class="card tabcontent" id="Progress">
                     <div class="card-body">
                         <h4 class="card-title">Progress Ticket</h4>
-                        <div class="d-flex justify-content-end mb-3">
-                            <div class="col-3">
-                                <input type="text" id="search-progress" class="form-control"
-                                    placeholder="Type to search...">
-                            </div>
-                        </div>
                         <div class="table-responsive">
                             <table id="progressTable" class="table table-striped" style="width:100%">
                                 <thead>
@@ -292,12 +271,6 @@
                 <div class="card tabcontent" id="onhold">
                     <div class="card-body">
                         <h4 class="card-title">On Hold Ticket</h4>
-                        <div class="d-flex justify-content-end mb-3">
-                            <div class="col-3">
-                                <input type="text" id="search-onhold" class="form-control"
-                                    placeholder="Type to search...">
-                            </div>
-                        </div>
                         <div class="table-responsive">
                             <table id="onholdTable" class="table table-striped" style="width:100%">
                                 <thead>
@@ -318,12 +291,7 @@
                 <div class="card tabcontent" id="solved">
                     <div class="card-body ">
                         <h4 class="card-title">Solved Ticket</h4>
-                        <div class="d-flex justify-content-end mb-3">
-                            <div class="col-3">
-                                <input type="text" id="search-solved" class="form-control"
-                                    placeholder="Type to search...">
-                            </div>
-                        </div>
+
                         <div class="table-responsive">
                             <table id="solvedTable" class="table table-striped" style="width:100%">
                                 <thead>
@@ -394,17 +362,32 @@
         var searchValue = '';
         var intervalId = null; // Store interval ID
 
-        function refreshTable(tabId, routeName, search) {
+        function refreshTable(tabId, routeName, search, defaultOrder) {
             $.ajax({
                 url: routeName,
                 method: "GET",
                 data: {
-                    search: search,
-                    orderBy: orderBy,
-                    orderDirection: orderDirection,
-                }, // Pass search value to the server
+                    search: search
+                },
                 success: function(data) {
+                    // Reinitialize DataTable after updating the table body
+                    var table = $("#" + tabId).DataTable();
+                    table.clear().destroy(); // Clear and destroy the DataTable
                     $("#" + tabId + " tbody").html(data.html);
+
+                    table = $("#" + tabId).DataTable({
+                        "stateSave": true,
+                        "order": defaultOrder // Set order default sesuai parameter
+                    });
+
+                    // Add color to rows based on is_premium
+                    $("#" + tabId + " tbody tr").each(function() {
+                        var isPremium = $(this).find("td:eq(0)").data("is-premium");
+
+                        if (isPremium === 1) {
+                            $(this).addClass("premium-row");
+                        }
+                    });
                 },
                 error: function(xhr, status, error) {
                     console.error("Error refreshing table: " + error);
@@ -486,7 +469,8 @@
             // Initialize DataTable
             var table = $('#openTable').DataTable({
                 "order": [
-                    [5, "desc"]
+                    [3, "desc"],
+                    "stateSave": true
                 ] // Assuming 'created_at' is the fifth column (index 4)
             });
 
@@ -504,64 +488,14 @@
                 // Start the interval if searchValue is empty and interval is not already running
                 if (searchValue === '' && intervalId === null) {
                     intervalId = setInterval(function() {
-                        // Call your original refreshTable function without modifying it
-                        $.ajax({
-                            url: "{{ route('refresh.table') }}",
-                            method: "GET",
-                            data: {
-                                search: searchValue
-                            },
-                            success: function(data) {
-                                $("#" + tabId + " tbody").html(data.html);
-
-                                // Reinitialize DataTable after updating the table body
-                                table = $("#" + tabId).DataTable({
-                                    "order": [
-                                        [5, "desc"]
-                                    ] // Assuming 'created_at' is the fifth column (index 4)
-                                });
-
-                                // Add color to rows based on is_premium
-                                $("#" + tabId + " tbody tr").each(function() {
-                                    var isPremium = $(this).find("td:eq(0)")
-                                        .data("is-premium");
-
-                                    if (isPremium === 1) {
-                                        $(this).addClass("premium-row");
-                                    }
-                                });
-                            },
-                            error: function(xhr, status, error) {
-                                console.error("Error refreshing table: " + error);
-                            }
-                        });
+                        refreshTable("openTable", "{{ route('refresh.table') }}",
+                            searchValue);
                     }, 10000);
                 }
             });
 
             // Initial refresh
-            $.ajax({
-                url: "{{ route('refresh.table') }}",
-                method: "GET",
-                data: {
-                    search: searchValue
-                },
-                success: function(data) {
-                    $("#" + tabId + " tbody").html(data.html);
-
-                    // Add color to rows based on is_premium
-                    $("#" + tabId + " tbody tr").each(function() {
-                        var isPremium = $(this).find("td:eq(0)").data("is-premium");
-
-                        if (isPremium === 1) {
-                            $(this).addClass("premium-row");
-                        }
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error("Error refreshing table: " + error);
-                }
-            });
+            refreshTable("openTable", "{{ route('refresh.table') }}", searchValue);
         });
     </script>
 
@@ -570,7 +504,8 @@
             // Initialize DataTable
             var table = $('#progressTable').DataTable({
                 "order": [
-                    [5, "desc"]
+                    [5, "desc"],
+                    "stateSave": true
                 ] // Assuming 'created_at' is the fifth column (index 4)
             });
 
@@ -604,8 +539,9 @@
             // Initialize DataTable
             var table = $('#pendingTable').DataTable({
                 "order": [
-                    [5, "desc"]
-                ] // Assuming 'created_at' is the fifth column (index 4)
+                    [4, "desc"],
+                    "stateSave": true
+                ], // Assuming 'created_at' is the fifth column (index 4)
             });
 
             // Add search functionality
@@ -638,7 +574,8 @@
             // Initialize DataTable
             var table = $('#solvedTable').DataTable({
                 "order": [
-                    [5, "desc"]
+                    [5, "desc"],
+                    "stateSave": true
                 ] // Assuming 'created_at' is the fifth column (index 4)
             });
 
@@ -672,7 +609,8 @@
             // Initialize DataTable
             var table = $('#onholdTable').DataTable({
                 "order": [
-                    [5, "desc"]
+                    [5, "desc"],
+                    "stateSave": true
                 ] // Assuming 'created_at' is the fifth column (index 4)
             });
 

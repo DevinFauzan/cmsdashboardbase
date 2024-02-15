@@ -10,22 +10,13 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
-    // public function refreshTable()
-    // {
-    //     $ticket = DB::table('tickets')->where('status', 'Open')->get();
+    public function refreshTable()
+    {
+        $ticket = Ticket::where('status', 'Open')->get();
+        $html = view('partials.table', compact('ticket'))->render();
 
-    //     // Get premium user IDs
-    //     $premiumUserIds = User::where('is_premium', 1)->pluck('id')->toArray();
-
-    //     $user = User::whereIn('id', $ticket->pluck('user_id'))->get();
-
-    //     // Pass information about premium users to the view
-    //     $isPremiumArray = $user->pluck('is_premium')->toArray();
-
-    //     $html = view('auth.dashboard', compact('ticket', 'isPremiumArray'))->render();
-
-    //     return response()->json(['html' => $html]);
-    // }
+        return response()->json(['html' => $html]);
+    }
 
     public function refreshTableSolved()
     {
