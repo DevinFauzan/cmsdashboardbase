@@ -14,6 +14,9 @@
     @foreach ($ticket as $t)
         @if ($t->status == 'Open')
             <tr class="{{ $t->user && $t->user->is_premium ? 'premium-row' : '' }}">
+                <td>    
+                    {{ $t->user ? ($t->user->is_premium ? 'Yes' : 'No') : 'N/A' }}
+                </td>                
                 <td>
                     {{ $t->user ? $t->user->name : 'N/A' }}
                 </td>

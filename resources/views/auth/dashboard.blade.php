@@ -213,6 +213,7 @@
                             <table id="openTable" class="table table-striped" style="width:100%">
                                 <thead>
                                     <tr>
+                                        <th> Premium </th>
                                         <th> Assignee </th>
                                         <th> Subject </th>
                                         <th> Status </th>
@@ -399,33 +400,33 @@
             if (searchValue === '') {
                 refreshTable("openTable", "{{ route('refresh.table') }}", searchValue);
             }
-        }, 10000);
+        }, 1000);
 
         setInterval(function() {
             // Only refresh if there's no active search
             if (searchValue === '') {
                 refreshTable("progressTable", "{{ route('refresh.table_progress') }}", searchValue);
             }
-        }, 10000);
+        }, 1000);
 
 
         setInterval(function() {
             if (searchValue === '') {
                 refreshTable("pendingTable", "{{ route('refresh.table_pending') }}", searchValue);
             }
-        }, 10000);
+        }, 1000);
 
         setInterval(function() {
             if (searchValue === '') {
                 refreshTable("solvedTable", "{{ route('refresh.table_solved') }}", searchValue);
             }
-        }, 10000);
+        }, 1000);
 
         setInterval(function() {
             if (searchValue === '') {
                 refreshTable("onholdTable", "{{ route('refresh.table_onhold') }}", searchValue);
             }
-        }, 10000);
+        }, 1000);
 
 
 
