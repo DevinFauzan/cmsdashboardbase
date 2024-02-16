@@ -4,6 +4,7 @@
         display: none;
     }
 </style>
+
 <head>
     <link rel="stylesheet" href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -17,7 +18,9 @@
                     <a href="javascript:history.back()" class="page-title-icon bg-gradient-primary text-white me-2">
                         <i class="mdi mdi-arrow-left"></i>
                     </a>
-                    {{ $ticket->ticket_id }} | {{ $ticket->name_user }} | {{ $ticket->name_tech }}
+                    {{ $ticket->ticket_id }} | {{ $ticket->name_user }} |
+                    {{ !empty($ticket->name_tech) ? $ticket->name_tech : 'No Technical Person Yet' }}
+                    | {{ $ticket->user->is_premium ? 'Premium' : 'Not Premium' }}
                 </h2>
             </div>
             <div class="row">
@@ -89,7 +92,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    @include('partials.table_user_tech')
+                                        @include('partials.table_user_tech')
                                     </tbody>
                                 </table>
                             </div>
@@ -119,7 +122,7 @@
 
         setInterval(function() {
             if (searchValue === '') {
-            refreshAssignedTable({{ $ticket->id }}, searchValue);
+                refreshAssignedTable({{ $ticket->id }}, searchValue);
             }
         }, 10000);
     </script>
@@ -132,18 +135,18 @@
             $(document).ready(function() {
                 // Initialize DataTable
                 var table = $('#assignedTable').DataTable();
-    
+
                 // Add search functionality
                 $('#search-assigned').on('input', function() {
                     searchValue = this.value;
                     table.search(searchValue).draw();
-    
+
                     // Clear the interval if searchValue is not empty
                     if (searchValue !== '' && intervalId !== null) {
                         clearInterval(intervalId);
                         intervalId = null;
                     }
-    
+
                     // Start the interval if searchValue is empty and interval is not already running
                     if (searchValue === '' && intervalId === null) {
                         intervalId = setInterval(function() {
@@ -152,7 +155,7 @@
                         }, 10000);
                     }
                 });
-    
+
                 // Initial refresh
                 refreshTable("assignedTable", "{{ route('refresh.table_user_tech') }}", searchValue);
             });
