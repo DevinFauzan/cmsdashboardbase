@@ -1,9 +1,5 @@
 @extends('layouts.auth')
-<style>
-    .dataTables_filter {
-        display: none;
-    }
-</style>
+
 @section('content')
     <div class="main-panel">
         <div class="content-wrapper">
@@ -19,16 +15,14 @@
                             <div class="card-header d-flex justify-content-between align-items-center mb-5">
                                 <h4 class="card-title mb-0">History Tickets</h4>
                                 <div class="d-flex">
-                                    <div class="col-6">
-                                        <input type="text" id="search-userticket" class="form-control" placeholder="Type to search...">
-                                    </div>
-                                    <a href="{{ route('new_ticket', ['user' => Auth::user()->id]) }}" class="btn btn-sm btn-primary ms-2">
+                                    <a href="{{ route('new_ticket', ['user' => Auth::user()->id]) }}"
+                                        class="btn btn-sm btn-primary ms-2">
                                         <span class="mdi mdi-plus mdi-18px me-1"></span>
                                         New Ticket
                                     </a>
                                 </div>
                             </div>
-                            
+
                             <div class="table-responsive">
                                 <table id="userTable" class="table table-striped" style="width: 100%">
                                     <thead>
@@ -59,12 +53,25 @@
             function refreshTableUser(tabId, routeName, search) {
                 $.ajax({
                     url: routeName,
-                    data: {
-                        search: search
-                    },
                     method: "GET",
+                    data: {
+                        search: search,                    
+                    },
                     success: function(data) {
+                        // Destroy the existing DataTable instance
+                        var table = $("#" + tabId).DataTable();
+                        if ($.fn.DataTable.isDataTable("#" + tabId)) {
+                            table.clear().destroy();
+                        }
+
+                        // Update the table body with the new HTML content
                         $("#" + tabId + " tbody").html(data.html);
+
+                        // Reinitialize DataTable with stateSave option
+                        $("#" + tabId).DataTable({
+                            "stateSave": true,
+                            // Add other DataTable options if needed
+                        });
                     },
                     error: function(xhr, status, error) {
                         console.error("Error refreshing table: " + error);
@@ -73,11 +80,10 @@
             }
 
             setInterval(function() {
-                console.log('Interval function running');
                 if (searchValue === '') {
                     refreshTableUser("userTable", "{{ route('refresh.table_user') }}", searchValue);
                 }
-            }, 10000);
+            }, 20000);
         </script>
 
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"
@@ -95,7 +101,8 @@
                 var table = $('#userTable').DataTable({
                     "order": [
                         [3, "asc"]
-                    ]
+                    ],
+                    "stateSave": true
                 });
 
 
@@ -118,7 +125,7 @@
                                 refreshTableUser("userTable", "{{ route('refresh.table_user') }}",
                                     searchValue);
                             }
-                        }, 10000);
+                        }, 1000);
                     }
                 });
 

@@ -6,6 +6,9 @@
     @foreach ($ticketSolved as $t)
         @if ($t->status == 'Solved')
             <tr>
+                <td>    
+                    {{ $t->user ? ($t->user->is_premium ? 'Yes' : 'No') : 'N/A' }}
+                </td>   
                 <td>{{ $t->name_user }}</td>
                 <td>{{ $t->name_tech }}</td>
                 <td>{{ $t->subject }}</td>

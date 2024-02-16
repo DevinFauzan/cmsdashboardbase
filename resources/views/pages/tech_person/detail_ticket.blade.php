@@ -49,6 +49,9 @@
                                             <label class="badge badge-secondary">Unknown</label>
                                     @endswitch
                                 </p>
+                                |
+                                <label class="badge badge-warning"
+                                    style="color: black">{{ $ticket->user->is_premium ? 'Premium' : 'Not Premium' }}</label>
                             </h2>
 
                             <form class="forms-sample">

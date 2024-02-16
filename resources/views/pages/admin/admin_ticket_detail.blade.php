@@ -20,7 +20,8 @@
                     </a>
                     {{ $ticket->ticket_id }} | {{ $ticket->name_user }} |
                     {{ !empty($ticket->name_tech) ? $ticket->name_tech : 'No Technical Person Yet' }}
-                    | {{ $ticket->user->is_premium ? 'Premium' : 'Not Premium' }}
+                    | <label class="badge badge-warning"
+                        style="color: black">{{ $ticket->user->is_premium ? 'Premium' : 'Not Premium' }}</label>
                 </h2>
             </div>
             <div class="row">

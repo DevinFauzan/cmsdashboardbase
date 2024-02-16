@@ -5,11 +5,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </head>
-<style>
-    .dataTables_filter {
-        display: none;
-    }
-</style>
+
 @section('content')
     <!-- partial -->
     <div class="main-panel">
@@ -26,18 +22,11 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">Tickets List</h4>
-                            <div class="d-flex justify-content-end mb-3">
-                                <div class="col-3">
-                                    <input type="text" id="search-techperson" class="form-control"
-                                        placeholder="Type to search...">
-                                </div>
-                            </div>
                             <div class="table-responsive">
-
                                 <table id="techPersonTable" class="table table-striped" style="width:100%">
-
                                     <thead>
                                         <tr>
+                                            <th> Premium </th>
                                             <th> Assignee </th>
                                             <th> Subject </th>
                                             <th> Status </th>
@@ -63,15 +52,31 @@
                 var orderDirection = '{{ $orderDirection }}';
                 var searchValue = '';
                 var intervalId = null; // Store interval ID
-                function refreshTableTechPerson(tabId, routeName, search) {
+
+                function refreshTableTechPerson(tabId, routeName, search, orderBy, orderDirection) {
                     $.ajax({
                         url: routeName,
-                        search: search,
-                        orderBy: orderBy,
-                        orderDirection: orderDirection,
                         method: "GET",
+                        data: {
+                            search: search,
+                            orderBy: orderBy,
+                            orderDirection: orderDirection,
+                        },
                         success: function(data) {
+                            // Destroy the existing DataTable instance
+                            var table = $("#" + tabId).DataTable();
+                            if ($.fn.DataTable.isDataTable("#" + tabId)) {
+                                table.clear().destroy();
+                            }
+
+                            // Update the table body with the new HTML content
                             $("#" + tabId + " tbody").html(data.html);
+
+                            // Reinitialize DataTable with stateSave option
+                            $("#" + tabId).DataTable({
+                                "stateSave": true,
+                                // Add other DataTable options if needed
+                            });
                         },
                         error: function(xhr, status, error) {
                             console.error("Error refreshing table: " + error);
@@ -83,7 +88,7 @@
                     if (searchValue === '') {
                         refreshTableTechPerson("techPersonTable", "{{ route('refresh.table_tech_person') }}", searchValue);
                     }
-                }, 10000);
+                }, 20000);
             </script>
 
 
@@ -97,10 +102,12 @@
                     if ($.fn.DataTable.isDataTable('#techPersonTable')) {
                         $('#techPersonTable').DataTable().destroy();
                     }
+
                     var table = $('#techPersonTable').DataTable({
                         "order": [
                             [5, "desc"]
-                        ]
+                        ],
+                        "stateSave": true // Add stateSave option
                     });
 
                     // Add search functionality
@@ -122,7 +129,7 @@
                                     refreshTable("techPersonTable",
                                         "{{ route('refresh.table_tech_person') }}", searchValue);
                                 }
-                            }, 10000);
+                            }, 1000);
                         }
                     });
 

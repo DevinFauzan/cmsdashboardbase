@@ -236,6 +236,7 @@
                             <table id="pendingTable" class="table table-striped" style="width:100%">
                                 <thead>
                                     <tr>
+                                        <th> Premium </th>
                                         <th> Assignee </th>
                                         <th> Assigned To </th>
                                         <th> Subject </th>
@@ -256,6 +257,7 @@
                             <table id="progressTable" class="table table-striped" style="width:100%">
                                 <thead>
                                     <tr>
+                                        <th> Premium </th>
                                         <th> Assignee </th>
                                         <th> Assigned To </th>
                                         <th> Subject </th>
@@ -276,6 +278,7 @@
                             <table id="onholdTable" class="table table-striped" style="width:100%">
                                 <thead>
                                     <tr>
+                                        <th> Premium </th>
                                         <th> Assignee </th>
                                         <th> Assigned To </th>
                                         <th> Subject </th>
@@ -297,6 +300,7 @@
                             <table id="solvedTable" class="table table-striped" style="width:100%">
                                 <thead>
                                     <tr>
+                                        <th> Premium </th>
                                         <th> Assignee </th>
                                         <th> Assigned To </th>
                                         <th> Subject </th>
@@ -400,33 +404,33 @@
             if (searchValue === '') {
                 refreshTable("openTable", "{{ route('refresh.table') }}", searchValue);
             }
-        }, 1000);
+        }, 20000);
 
         setInterval(function() {
             // Only refresh if there's no active search
             if (searchValue === '') {
                 refreshTable("progressTable", "{{ route('refresh.table_progress') }}", searchValue);
             }
-        }, 1000);
+        }, 20000);
 
 
         setInterval(function() {
             if (searchValue === '') {
                 refreshTable("pendingTable", "{{ route('refresh.table_pending') }}", searchValue);
             }
-        }, 1000);
+        }, 20000);
 
         setInterval(function() {
             if (searchValue === '') {
                 refreshTable("solvedTable", "{{ route('refresh.table_solved') }}", searchValue);
             }
-        }, 1000);
+        }, 20000);
 
         setInterval(function() {
             if (searchValue === '') {
                 refreshTable("onholdTable", "{{ route('refresh.table_onhold') }}", searchValue);
             }
-        }, 1000);
+        }, 20000);
 
 
 
