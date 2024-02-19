@@ -55,7 +55,7 @@
                             <i class="mdi mdi-fullscreen" id="fullscreen-button"></i>
                         </a>
                     </li>                    
-                    <li class="nav-item nav-profile dropdown">
+                    {{-- <li class="nav-item nav-profile dropdown">
                         <a class="nav-link dropdown-toggle" id="profileDropdown" href="#"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             <div class="nav-profile-img">
@@ -64,23 +64,23 @@
                                 <span class="availability-status online"></span>
                             </div>
                             <div class="nav-profile-text">
-                                {{-- <p class="mb-1 text-black">{{ auth()->user()->name }}</p> --}}
+                                 <p class="mb-1 text-black">{{ auth()->user()->name }}</p> 
                             </div>
                         </a>
                         <div class="dropdown-menu navbar-dropdown" aria-labelledby="profileDropdown">
-                            {{-- <a class="dropdown-item" href="#">
-                                <i class="mdi mdi-cached me-2 text-success"></i> Activity Log </a> --}}
+                            <a class="dropdown-item" href="#">
+                                <i class="mdi mdi-cached me-2 text-success"></i> Activity Log </a> 
                             <div class="dropdown-divider"></div>
                             <a id="logout-button" class="dropdown-item" href="#">
                                 <i class="mdi mdi-logout me-2 text-primary"></i> Signout
                                 <form id="logout-form" method="post" action="{{ route('logout') }}">
                                     @csrf
-                                    {{-- <a id="logout-button" class="nav-link" href="#">
+                                     <a id="logout-button" class="nav-link" href="#">
                                         <i class="mdi mdi-power"></i>
-                                    </a> --}}
+                                    </a> 
                                 </form> </a>
                         </div>
-                    </li>
+                    </li> --}}
                 </ul>
                 <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
                     data-toggle="offcanvas">
@@ -95,15 +95,15 @@
                 <ul class="nav">
                     <li class="nav-item nav-profile">
                         <a href="#" class="nav-link">
-                            <div class="nav-profile-image">
+                            {{-- <div class="nav-profile-image">
                                 <img src="{{ asset('default_profile_photo/default.jpg') }}"
                                         alt="Default Profile Photo">
                                 <span class="login-status online"></span>
                                 <!--change to offline or busy as needed-->
-                            </div>
-                            <div class="nav-profile-text d-flex flex-column">
-                                {{-- <span class="font-weight-bold mb-2">{{ auth()->user()->name }}</span>
-                                <span class="text-secondary text-small">{{ auth()->user()->role }}</span> --}}
+                            </div> --}}
+                            {{-- <div class="nav-profile-text d-flex flex-column">
+                                <span class="font-weight-bold mb-2">{{ auth()->user()->name }}</span>
+                                <span class="text-secondary text-small">{{ auth()->user()->role }}</span>
                             </div>
                             <i class="mdi mdi-bookmark-check text-success nav-profile-badge"></i>
                         </a>
@@ -113,7 +113,7 @@
                             <span class="menu-title">Dashboard</span>
                             <i class="mdi mdi-home menu-icon"></i>
                         </a>
-                    </li>
+                    </li> --}}
                     {{-- <li class="nav-item">
                         <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false"
                             aria-controls="ui-basic">
@@ -130,12 +130,12 @@
                             </ul>
                         </div>
                     </li> --}}
-                    <li class="nav-item">
+                    {{-- <li class="nav-item">
                         <a class="nav-link" href="pages/icons/mdi.html">
                             <span class="menu-title">Tracking</span>
                             <i class="mdi mdi-contacts menu-icon"></i>
                         </a>
-                    </li>
+                    </li> --}}
                     {{-- <li class="nav-item">
                         <a class="nav-link" href="pages/forms/basic_elements.html">
                             <span class="menu-title">Forms</span>
@@ -155,12 +155,12 @@
                         </a>
                     </li> --}}
                     <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="collapse" href="#general-pages" aria-expanded="false"
+                        {{-- <a class="nav-link" data-bs-toggle="collapse" href="#general-pages" aria-expanded="false"
                             aria-controls="general-pages">
                             <span class="menu-title">Sample Pages</span>
                             <i class="menu-arrow"></i>
                             <i class="mdi mdi-medical-bag menu-icon"></i>
-                        </a>
+                        </a> --}}
                         <div class="collapse" id="general-pages">
                             <ul class="nav flex-column sub-menu">
                                 <li class="nav-item"> <a class="nav-link" href="pages/samples/blank-page.html"> Blank

@@ -97,7 +97,7 @@ class DashboardUserController extends Controller
             $sweetAlert = [
                 'icon' => 'error',
                 'title' => 'Error',
-                'text' => 'An error occurred during the update.',
+                'text' => 'Nothing has been updated.',
                 'position' => 'center',
             ];
 

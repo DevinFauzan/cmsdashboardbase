@@ -50,10 +50,12 @@
                                     @endswitch
                                 </p>
                                 |
-                                <label class="badge badge-warning"
-                                    style="color: black">{{ $ticket->user->is_premium ? 'Premium' : 'Not Premium' }}</label>
+                                @if ($ticket->user->is_premium)
+                                    <label class="badge badge-warning" style="color: black" >{{ 'Premium' }}</label>
+                                @else
+                                    {{ 'Not Premium' }}
+                                @endif
                             </h2>
-
                             <form class="forms-sample">
                                 <div class="form-group">
                                     <label for="exampleInputName1">Complainant Name</label>
@@ -77,7 +79,8 @@
                                         </option>
                                         <option value="1" {{ $ticket->product == 1 ? 'selected' : '' }}>Tableau Online
                                         </option>
-                                        <option value="2" {{ $ticket->product == 2 ? 'selected' : '' }}>Tableau Desktop
+                                        <option value="2" {{ $ticket->product == 2 ? 'selected' : '' }}>Tableau
+                                            Desktop
                                         </option>
                                         <option value="3" {{ $ticket->product == 3 ? 'selected' : '' }}>Tableau Prep
                                             Builder</option>

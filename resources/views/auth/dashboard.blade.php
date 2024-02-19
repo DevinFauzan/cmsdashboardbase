@@ -474,7 +474,7 @@
             // Initialize DataTable
             var table = $('#openTable').DataTable({
                 "order": [
-                    [3, "desc"],
+                    [0, "desc"],
                     "stateSave": true
                 ] // Assuming 'created_at' is the fifth column (index 4)
             });
@@ -509,7 +509,7 @@
             // Initialize DataTable
             var table = $('#progressTable').DataTable({
                 "order": [
-                    [5, "desc"],
+                    [0, "desc"],
                     "stateSave": true
                 ] // Assuming 'created_at' is the fifth column (index 4)
             });
@@ -544,7 +544,7 @@
             // Initialize DataTable
             var table = $('#pendingTable').DataTable({
                 "order": [
-                    [4, "desc"],
+                    [0, "desc"],
                     "stateSave": true
                 ], // Assuming 'created_at' is the fifth column (index 4)
             });
@@ -579,7 +579,7 @@
             // Initialize DataTable
             var table = $('#solvedTable').DataTable({
                 "order": [
-                    [5, "desc"],
+                    [0, "desc"],
                     "stateSave": true
                 ] // Assuming 'created_at' is the fifth column (index 4)
             });
@@ -614,7 +614,7 @@
             // Initialize DataTable
             var table = $('#onholdTable').DataTable({
                 "order": [
-                    [5, "desc"],
+                    [0, "desc"],
                     "stateSave": true
                 ] // Assuming 'created_at' is the fifth column (index 4)
             });

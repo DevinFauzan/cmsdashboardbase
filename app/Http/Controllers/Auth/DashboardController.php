@@ -86,8 +86,8 @@ class DashboardController extends Controller
         // Pass information about premium users to the view
         $isPremiumArray = $user->pluck('is_premium')->toArray();
         
-        $orderBy = 'user'; // default order by created_at
-        $orderDirection = 'desc'; // default order direction
+        $orderBy = 'is_premium'; // default order by created_at
+        $orderDirection = 'asc'; // default order direction
 
         $ticket = Ticket::where('status', 'Open')->get();
         $ticketPending = Ticket::where('status', 'Pending')->get();
