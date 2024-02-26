@@ -6,36 +6,31 @@
 </head> --}}
 
 
-@if ($ticket->where('status', 'Open')->isEmpty())
-    <tr>
-        <td colspan="6" class="text-center">There is no progress data</td>
-    </tr>
-@else
-    @foreach ($ticket as $t)
-        @if ($t->status == 'Open')
-            <tr class="{{ $t->user && $t->user->is_premium ? 'premium-row' : '' }}">
-                <td>    
-                    {{ $t->user ? ($t->user->is_premium ? 'Yes' : 'No') : 'N/A' }}
-                </td>                
-                <td>
-                    {{ $t->user ? $t->user->name : 'N/A' }}
-                </td>
-                <td>{{ $t->subject }}</td>
-                <td>
-                    <label class="badge badge-gradient-info">{{ $t->status }}</label>
-                </td>
-                <td>{{ $t->created_at->format('Y-m-d') }}</td>
-                <td>{{ $t->ticket_id }}</td>
-                <td>
-                    <button class="btn btn-primary btn-sm mdi-24px text-white"
-                        onclick="window.location.href='{{ route('admin_ticket_detail.edit', ['id' => $t->id]) }}'">
-                        Info
-                    </button>
-                </td>
-            </tr>
-        @endif
-    @endforeach
-@endif
+@foreach ($ticket as $t)
+    @if ($t->status == 'Open')
+        <tr class="{{ $t->user && $t->user->is_premium ? 'premium-row' : '' }}">
+            <td>
+                {{ $t->user ? ($t->user->is_premium ? 'Yes' : 'No') : 'N/A' }}
+            </td>
+            <td>
+                {{ $t->user ? $t->user->name : 'N/A' }}
+            </td>
+            <td>{{ $t->subject }}</td>
+            <td>
+                <label class="badge badge-gradient-info">{{ $t->status }}</label>
+            </td>
+            <td>{{ $t->created_at->format('Y-m-d') }}</td>
+            <td>{{ $t->ticket_id }}</td>
+            <td>
+                <button class="btn btn-primary btn-sm mdi-24px text-white"
+                    onclick="window.location.href='{{ route('admin_ticket_detail.edit', ['id' => $t->id]) }}'">
+                    Info
+                </button>
+            </td>
+        </tr>
+    @endif
+@endforeach
+
 
 
 {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

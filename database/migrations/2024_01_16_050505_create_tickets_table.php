@@ -25,8 +25,7 @@ class CreateTicketsTable extends Migration
             $table->string('email');
             $table->string('phone');
             $table->string('status');
-            $table->string('ticket_id');
-            $table->foreignId('user_id')->constrained();
+            $table->string('ticket_id');            
             $table->timestamps();
         });
     }

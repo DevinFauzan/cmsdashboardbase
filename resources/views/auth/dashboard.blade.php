@@ -368,7 +368,7 @@
             var searchValue = '';
             var intervalId = null; // Store interval ID
 
-            function refreshTable(tabId, routeName, search, defaultOrder) {
+            function refreshTable(tabId, routeName, search, orderBy, orderDirection, defaultOrder) {
                 $.ajax({
                     url: routeName,
                     method: "GET",
@@ -380,12 +380,19 @@
                     success: function(data) {
                         // Reinitialize DataTable after updating the table body
                         var table = $("#" + tabId).DataTable();
-                        table.clear().destroy(); // Clear and destroy the DataTable
+
+                        // Clear and destroy the DataTable only if it has been initialized
+                        if ($.fn.DataTable.isDataTable("#" + tabId)) {
+                            table.clear().destroy();
+                        }
+
+                        // Update the table body
                         $("#" + tabId + " tbody").html(data.html);
 
+                        // Reinitialize DataTable
                         table = $("#" + tabId).DataTable({
                             "stateSave": true,
-                            "order": defaultOrder // Set order default sesuai parameter
+                            "order": defaultOrder // Set default order according to the parameter
                         });
 
                         // Add color to rows based on is_premium
@@ -402,6 +409,7 @@
                     }
                 });
             }
+
 
             setInterval(function() {
                 if (searchValue === '') {
