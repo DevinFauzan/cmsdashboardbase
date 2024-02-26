@@ -319,327 +319,350 @@
         <!-- content-wrapper ends -->
     @endsection
 
-
-    <script>
-        function openCity(evt, cityName) {
-            var i, tabcontent, tablinks;
-            tabcontent = document.getElementsByClassName("tabcontent");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
-            }
-            tablinks = document.getElementsByClassName("tablinks");
-            for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].className = tablinks[i].className.replace(" active", "");
-                // Reset background color and text color for all tablinks
-                tablinks[i].style.background = "";
-                tablinks[i].style.color = "";
-            }
-            if (cityName === 'all') {
-                // If 'All' is clicked, hide all tables and display the selected one
-                for (i = 0; i < tabcontent.length; i++) {
-                    tabcontent[i].style.display = "block";
-                }
-            } else {
-                // Display the selected table
-                document.getElementById(cityName).style.display = "block";
-            }
-
-            // Define a mapping of card types to background colors
-            var cardColors = {
-                'open': '#54B4D3',
-                'pending': '#DC4C64',
-                'Progress': '#E4A11B',
-                'onhold': '#ce52de',
-                'solved': '#14A44D',
-                'all': '#605dad'
-            };
-
-            // Set background color and text color for the clicked card based on its type
-            var clickedCard = evt.currentTarget;
-            clickedCard.style.background = cardColors[cityName];
-            clickedCard.style.color = "white";
-            clickedCard.className += " active";
-        }
-
-
-        var orderBy = '{{ $orderBy }}';
-        var orderDirection = '{{ $orderDirection }}';
-        var searchValue = '';
-        var intervalId = null; // Store interval ID
-
-        function refreshTable(tabId, routeName, search, defaultOrder) {
-            $.ajax({
-                url: routeName,
-                method: "GET",
-                data: {
-                    search: search
-                },
-                success: function(data) {
-                    // Reinitialize DataTable after updating the table body
-                    var table = $("#" + tabId).DataTable();
-                    table.clear().destroy(); // Clear and destroy the DataTable
-                    $("#" + tabId + " tbody").html(data.html);
-
-                    table = $("#" + tabId).DataTable({
-                        "stateSave": true,
-                        "order": defaultOrder // Set order default sesuai parameter
-                    });
-
-                    // Add color to rows based on is_premium
-                    $("#" + tabId + " tbody tr").each(function() {
-                        var isPremium = $(this).find("td:eq(0)").data("is-premium");
-
-                        if (isPremium === 1) {
-                            $(this).addClass("premium-row");
-                        }
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error("Error refreshing table: " + error);
-                }
-            });
-        }
-
-        setInterval(function() {
-            if (searchValue === '') {
-                refreshTable("openTable", "{{ route('refresh.table') }}", searchValue);
-            }
-        }, 20000);
-
-        setInterval(function() {
-            // Only refresh if there's no active search
-            if (searchValue === '') {
-                refreshTable("progressTable", "{{ route('refresh.table_progress') }}", searchValue);
-            }
-        }, 20000);
-
-
-        setInterval(function() {
-            if (searchValue === '') {
-                refreshTable("pendingTable", "{{ route('refresh.table_pending') }}", searchValue);
-            }
-        }, 20000);
-
-        setInterval(function() {
-            if (searchValue === '') {
-                refreshTable("solvedTable", "{{ route('refresh.table_solved') }}", searchValue);
-            }
-        }, 20000);
-
-        setInterval(function() {
-            if (searchValue === '') {
-                refreshTable("onholdTable", "{{ route('refresh.table_onhold') }}", searchValue);
-            }
-        }, 20000);
-
-
-
-        // Function to update ticket counts
-        function updateTicketCounts() {
-            $.ajax({
-                url: "{{ route('refresh.ticket_counts') }}",
-                method: "GET",
-                dataType: 'json',
-                success: function(data) {
-                    $('#openTickets').text(data.openTickets);
-                    $('#pendingTickets').text(data.pendingTickets);
-                    $('#progressTickets').text(data.progressTickets);
-                    $('#solvedTickets').text(data.solvedTickets);
-                    $('#onholdTickets').text(data.onholdTickets);
-                    $('#allTickets').text(data.allTickets);
-                },
-                error: function(xhr, status, error) {
-                    console.error("Error updating ticket counts: " + error);
-                }
-            });
-        }
-
-        // Refresh ticket counts every 60 seconds (adjust as needed)
-        setInterval(function() {
-            updateTicketCounts();
-        }, 1000);
-
-        // Initial update
-        updateTicketCounts();
-    </script>
-
     @section('scripts')
+        <script>
+            function openCity(evt, cityName) {
+                var i, tabcontent, tablinks;
+                tabcontent = document.getElementsByClassName("tabcontent");
+                for (i = 0; i < tabcontent.length; i++) {
+                    tabcontent[i].style.display = "none";
+                }
+                tablinks = document.getElementsByClassName("tablinks");
+                for (i = 0; i < tablinks.length; i++) {
+                    tablinks[i].className = tablinks[i].className.replace(" active", "");
+                    // Reset background color and text color for all tablinks
+                    tablinks[i].style.background = "";
+                    tablinks[i].style.color = "";
+                }
+                if (cityName === 'all') {
+                    // If 'All' is clicked, hide all tables and display the selected one
+                    for (i = 0; i < tabcontent.length; i++) {
+                        tabcontent[i].style.display = "block";
+                    }
+                } else {
+                    // Display the selected table
+                    document.getElementById(cityName).style.display = "block";
+                }
+
+                // Define a mapping of card types to background colors
+                var cardColors = {
+                    'open': '#54B4D3',
+                    'pending': '#DC4C64',
+                    'Progress': '#E4A11B',
+                    'onhold': '#ce52de',
+                    'solved': '#14A44D',
+                    'all': '#605dad'
+                };
+
+                // Set background color and text color for the clicked card based on its type
+                var clickedCard = evt.currentTarget;
+                clickedCard.style.background = cardColors[cityName];
+                clickedCard.style.color = "white";
+                clickedCard.className += " active";
+            }
+        </script>
+
+        <script>
+            var orderBy = '{{ $orderBy }}';
+            var orderDirection = '{{ $orderDirection }}';
+            var searchValue = '';
+            var intervalId = null; // Store interval ID
+
+            function refreshTable(tabId, routeName, search, defaultOrder) {
+                $.ajax({
+                    url: routeName,
+                    method: "GET",
+                    data: {
+                        search: search,
+                        orderBy: orderBy,
+                        orderDirection: orderDirection,
+                    },
+                    success: function(data) {
+                        // Reinitialize DataTable after updating the table body
+                        var table = $("#" + tabId).DataTable();
+                        table.clear().destroy(); // Clear and destroy the DataTable
+                        $("#" + tabId + " tbody").html(data.html);
+
+                        table = $("#" + tabId).DataTable({
+                            "stateSave": true,
+                            "order": defaultOrder // Set order default sesuai parameter
+                        });
+
+                        // Add color to rows based on is_premium
+                        $("#" + tabId + " tbody tr").each(function() {
+                            var isPremium = $(this).find("td:eq(0)").data("is-premium");
+
+                            if (isPremium === 1) {
+                                $(this).addClass("premium-row");
+                            }
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error refreshing table: " + error);
+                    }
+                });
+            }
+
+            setInterval(function() {
+                if (searchValue === '') {
+                    refreshTable("openTable", "{{ route('refresh.table') }}", searchValue);
+                }
+            }, 20000);
+
+            setInterval(function() {
+                // Only refresh if there's no active search
+                if (searchValue === '') {
+                    refreshTable("progressTable", "{{ route('refresh.table_progress') }}", searchValue);
+                }
+            }, 20000);
+
+
+            setInterval(function() {
+                if (searchValue === '') {
+                    refreshTable("pendingTable", "{{ route('refresh.table_pending') }}", searchValue);
+                }
+            }, 20000);
+
+            setInterval(function() {
+                if (searchValue === '') {
+                    refreshTable("solvedTable", "{{ route('refresh.table_solved') }}", searchValue);
+                }
+            }, 20000);
+
+            setInterval(function() {
+                if (searchValue === '') {
+                    refreshTable("onholdTable", "{{ route('refresh.table_onhold') }}", searchValue);
+                }
+            }, 20000);
+
+
+
+            // Function to update ticket counts
+            function updateTicketCounts() {
+                $.ajax({
+                    url: "{{ route('refresh.ticket_counts') }}",
+                    method: "GET",
+                    dataType: 'json',
+                    success: function(data) {
+                        $('#openTickets').text(data.openTickets);
+                        $('#pendingTickets').text(data.pendingTickets);
+                        $('#progressTickets').text(data.progressTickets);
+                        $('#solvedTickets').text(data.solvedTickets);
+                        $('#onholdTickets').text(data.onholdTickets);
+                        $('#allTickets').text(data.allTickets);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error updating ticket counts: " + error);
+                    }
+                });
+            }
+
+            // Refresh ticket counts every 60 seconds (adjust as needed)
+            setInterval(function() {
+                updateTicketCounts();
+            }, 1000);
+
+            // Initial update
+            updateTicketCounts();
+        </script>
+
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"
             integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
         <script src="//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+
+        <script>
+            $(document).ready(function() {
+                // Initialize DataTable only if it's not already initialized
+                if ($.fn.DataTable.isDataTable('#openTable')) {
+                    $('#openTable').DataTable().destroy();
+                }
+
+                var table = $('#openTable').DataTable({
+                    "order": [
+                        [5, "desc"]
+                    ],
+                    "stateSave": true // Add stateSave option
+                });
+
+
+                // Add search functionality
+                $('#search-open').on('input', function() {
+                    searchValue = this.value;
+                    table.search(searchValue).draw();
+
+                    // Clear the interval if searchValue is not empty
+                    if (searchValue !== '' && intervalId !== null) {
+                        clearInterval(intervalId);
+                        intervalId = null;
+                    }
+
+                    // Start the interval if searchValue is empty and interval is not already running
+                    if (searchValue === '' && intervalId === null) {
+                        intervalId = setInterval(function() {
+                            refreshTable("openTable", "{{ route('refresh.table') }}",
+                                searchValue);
+                        }, 10000);
+                    }
+                });
+
+                // Initial refresh
+                refreshTable("openTable", "{{ route('refresh.table') }}", searchValue);
+            });
+        </script>
+
+        <script>
+            $(document).ready(function() {
+                // Initialize DataTable only if it's not already initialized
+                if ($.fn.DataTable.isDataTable('#progressTable')) {
+                    $('#progressTable').DataTable().destroy();
+                }
+
+                var table = $('#progressTable').DataTable({
+                    "order": [
+                        [5, "desc"]
+                    ],
+                    "stateSave": true // Add stateSave option
+                });
+
+                // Add search functionality
+                $('#search-progress').on('input', function() {
+                    searchValue = this.value;
+                    table.search(searchValue).draw();
+
+                    // Clear the interval if searchValue is not empty
+                    if (searchValue !== '' && intervalId !== null) {
+                        clearInterval(intervalId);
+                        intervalId = null;
+                    }
+
+                    // Start the interval if searchValue is empty and interval is not already running
+                    if (searchValue === '' && intervalId === null) {
+                        intervalId = setInterval(function() {
+                            refreshTable("progressTable", "{{ route('refresh.table_progress') }}",
+                                searchValue);
+                        }, 10000);
+                    }
+                });
+
+                // Initial refresh
+                refreshTable("progressTable", "{{ route('refresh.table_progress') }}", searchValue);
+            });
+        </script>
+
+        <script>
+            $(document).ready(function() {
+                // Initialize DataTable only if it's not already initialized
+                if ($.fn.DataTable.isDataTable('#pendingTable')) {
+                    $('#pendingTable').DataTable().destroy();
+                }
+
+                var table = $('#pendingTable').DataTable({
+                    "order": [
+                        [5, "desc"]
+                    ],
+                    "stateSave": true // Add stateSave option
+                });
+
+                // Add search functionality
+                $('#search-pending').on('input', function() {
+                    searchValue = this.value;
+                    table.search(searchValue).draw();
+
+                    // Clear the interval if searchValue is not empty
+                    if (searchValue !== '' && intervalId !== null) {
+                        clearInterval(intervalId);
+                        intervalId = null;
+                    }
+
+                    // Start the interval if searchValue is empty and interval is not already running
+                    if (searchValue === '' && intervalId === null) {
+                        intervalId = setInterval(function() {
+                            refreshTable("pendingTable", "{{ route('refresh.table_pending') }}",
+                                searchValue);
+                        }, 10000);
+                    }
+                });
+
+                // Initial refresh
+                refreshTable("pendingTable", "{{ route('refresh.table_pending') }}", searchValue);
+            });
+        </script>
+
+        <script>
+            $(document).ready(function() {
+                // Initialize DataTable only if it's not already initialized
+                if ($.fn.DataTable.isDataTable('#solvedTable')) {
+                    $('#solvedTable').DataTable().destroy();
+                }
+
+                var table = $('#solvedTable').DataTable({
+                    "order": [
+                        [5, "desc"]
+                    ],
+                    "stateSave": true // Add stateSave option
+                });
+
+                // Add search functionality
+                $('#search-solved').on('input', function() {
+                    searchValue = this.value;
+                    table.search(searchValue).draw();
+
+                    // Clear the interval if searchValue is not empty
+                    if (searchValue !== '' && intervalId !== null) {
+                        clearInterval(intervalId);
+                        intervalId = null;
+                    }
+
+                    // Start the interval if searchValue is empty and interval is not already running
+                    if (searchValue === '' && intervalId === null) {
+                        intervalId = setInterval(function() {
+                            refreshTable("solvedTable", "{{ route('refresh.table_solved') }}",
+                                searchValue);
+                        }, 10000);
+                    }
+                });
+
+                // Initial refresh
+                refreshTable("solvedTable", "{{ route('refresh.table_solved') }}", searchValue);
+            });
+        </script>
+
+        <script>
+            $(document).ready(function() {
+                // Initialize DataTable only if it's not already initialized
+                if ($.fn.DataTable.isDataTable('#onholdTable')) {
+                    $('#onholdTable').DataTable().destroy();
+                }
+
+                var table = $('#onholdTable').DataTable({
+                    "order": [
+                        [5, "desc"]
+                    ],
+                    "stateSave": true // Add stateSave option
+                });
+
+                // Add search functionality
+                $('#search-onhold').on('input', function() {
+                    searchValue = this.value;
+                    table.search(searchValue).draw();
+
+                    // Clear the interval if searchValue is not empty
+                    if (searchValue !== '' && intervalId !== null) {
+                        clearInterval(intervalId);
+                        intervalId = null;
+                    }
+
+                    // Start the interval if searchValue is empty and interval is not already running
+                    if (searchValue === '' && intervalId === null) {
+                        intervalId = setInterval(function() {
+                            refreshTable("onholdTable", "{{ route('refresh.table_onhold') }}",
+                                searchValue);
+                        }, 10000);
+                    }
+                });
+
+                // Initial refresh
+                refreshTable("onholdTable", "{{ route('refresh.table_onhold') }}", searchValue);
+            });
+        </script>
     @endsection
-
-    <script>
-        $(document).ready(function() {
-            // Initialize DataTable
-            var table = $('#openTable').DataTable({
-                "order": [
-                    [0, "desc"],
-                    "stateSave": true
-                ] // Assuming 'created_at' is the fifth column (index 4)
-            });
-
-            // Add search functionality
-            $('#search-open').on('input', function() {
-                searchValue = this.value;
-                table.search(searchValue).draw();
-
-                // Clear the interval if searchValue is not empty
-                if (searchValue !== '' && intervalId !== null) {
-                    clearInterval(intervalId);
-                    intervalId = null;
-                }
-
-                // Start the interval if searchValue is empty and interval is not already running
-                if (searchValue === '' && intervalId === null) {
-                    intervalId = setInterval(function() {
-                        refreshTable("openTable", "{{ route('refresh.table') }}",
-                            searchValue);
-                    }, 10000);
-                }
-            });
-
-            // Initial refresh
-            refreshTable("openTable", "{{ route('refresh.table') }}", searchValue);
-        });
-    </script>
-
-    <script>
-        $(document).ready(function() {
-            // Initialize DataTable
-            var table = $('#progressTable').DataTable({
-                "order": [
-                    [0, "desc"],
-                    "stateSave": true
-                ] // Assuming 'created_at' is the fifth column (index 4)
-            });
-
-            // Add search functionality
-            $('#search-progress').on('input', function() {
-                searchValue = this.value;
-                table.search(searchValue).draw();
-
-                // Clear the interval if searchValue is not empty
-                if (searchValue !== '' && intervalId !== null) {
-                    clearInterval(intervalId);
-                    intervalId = null;
-                }
-
-                // Start the interval if searchValue is empty and interval is not already running
-                if (searchValue === '' && intervalId === null) {
-                    intervalId = setInterval(function() {
-                        refreshTable("progressTable", "{{ route('refresh.table_progress') }}",
-                            searchValue);
-                    }, 10000);
-                }
-            });
-
-            // Initial refresh
-            refreshTable("progressTable", "{{ route('refresh.table_progress') }}", searchValue);
-        });
-    </script>
-
-    <script>
-        $(document).ready(function() {
-            // Initialize DataTable
-            var table = $('#pendingTable').DataTable({
-                "order": [
-                    [0, "desc"],
-                    "stateSave": true
-                ], // Assuming 'created_at' is the fifth column (index 4)
-            });
-
-            // Add search functionality
-            $('#search-pending').on('input', function() {
-                searchValue = this.value;
-                table.search(searchValue).draw();
-
-                // Clear the interval if searchValue is not empty
-                if (searchValue !== '' && intervalId !== null) {
-                    clearInterval(intervalId);
-                    intervalId = null;
-                }
-
-                // Start the interval if searchValue is empty and interval is not already running
-                if (searchValue === '' && intervalId === null) {
-                    intervalId = setInterval(function() {
-                        refreshTable("pendingTable", "{{ route('refresh.table_pending') }}",
-                            searchValue);
-                    }, 10000);
-                }
-            });
-
-            // Initial refresh
-            refreshTable("pendingTable", "{{ route('refresh.table_pending') }}", searchValue);
-        });
-    </script>
-
-    <script>
-        $(document).ready(function() {
-            // Initialize DataTable
-            var table = $('#solvedTable').DataTable({
-                "order": [
-                    [0, "desc"],
-                    "stateSave": true
-                ] // Assuming 'created_at' is the fifth column (index 4)
-            });
-
-            // Add search functionality
-            $('#search-solved').on('input', function() {
-                searchValue = this.value;
-                table.search(searchValue).draw();
-
-                // Clear the interval if searchValue is not empty
-                if (searchValue !== '' && intervalId !== null) {
-                    clearInterval(intervalId);
-                    intervalId = null;
-                }
-
-                // Start the interval if searchValue is empty and interval is not already running
-                if (searchValue === '' && intervalId === null) {
-                    intervalId = setInterval(function() {
-                        refreshTable("solvedTable", "{{ route('refresh.table_solved') }}",
-                            searchValue);
-                    }, 10000);
-                }
-            });
-
-            // Initial refresh
-            refreshTable("solvedTable", "{{ route('refresh.table_solved') }}", searchValue);
-        });
-    </script>
-
-    <script>
-        $(document).ready(function() {
-            // Initialize DataTable
-            var table = $('#onholdTable').DataTable({
-                "order": [
-                    [0, "desc"],
-                    "stateSave": true
-                ] // Assuming 'created_at' is the fifth column (index 4)
-            });
-
-            // Add search functionality
-            $('#search-onhold').on('input', function() {
-                searchValue = this.value;
-                table.search(searchValue).draw();
-
-                // Clear the interval if searchValue is not empty
-                if (searchValue !== '' && intervalId !== null) {
-                    clearInterval(intervalId);
-                    intervalId = null;
-                }
-
-                // Start the interval if searchValue is empty and interval is not already running
-                if (searchValue === '' && intervalId === null) {
-                    intervalId = setInterval(function() {
-                        refreshTable("onholdTable", "{{ route('refresh.table_onhold') }}",
-                            searchValue);
-                    }, 10000);
-                }
-            });
-
-            // Initial refresh
-            refreshTable("onholdTable", "{{ route('refresh.table_onhold') }}", searchValue);
-        });
-    </script>
