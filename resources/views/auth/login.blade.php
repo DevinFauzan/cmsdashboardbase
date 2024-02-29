@@ -13,7 +13,7 @@
                         <form method="POST" action="{{ route('login') }}" class="log-in" autocomplete="off">
                             @csrf
                             <h4>Ticket Help Desk <span>SDK</span></h4>
-                            <p>Welcome back! Log in to your account to view today's ticket</p>
+                            <p>Welcome back! Log in to your account to view ticket</p>
 
                             <div class="floating-label">
                                 <input id="email" type="email" class="@error('email') is-invalid @enderror"
