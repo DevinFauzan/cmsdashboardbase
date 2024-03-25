@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 @section('content')
     <div class="container">
         <div class="row tengah">
@@ -74,9 +74,9 @@
                                 </div>
                             </div>
                             @if (Route::has('password.request'))
-                            <a class="btn btn-link" href="{{ route('password.request') }}">
-                                {{ __('Forgot Password?') }}
-                            </a>
+                                <a class="btn btn-link" href="{{ route('password.request') }}">
+                                    {{ __('Forgot Password?') }}
+                                </a>
                             @endif
                             <button type="submit" class="col-4">
                                 {{ __('Login') }}
@@ -87,6 +87,18 @@
             </div>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    @if (Session::has('success'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: '{{ Session::get('success') }}'
+                });
+            });
+        </script>
+    @endif
 @endsection
 <style>
     * {

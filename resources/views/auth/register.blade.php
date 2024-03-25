@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 @section('content')
     <div class="container">
         <div class="row tengah">
@@ -69,9 +69,21 @@
                                 <input id="password" type="password" @error('password') is-invalid @enderror
                                     name="password" required autocomplete="new-password">
                                 @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
+                                    @if ($message == 'Password must be at least 8 characters long.')
+                                        <script>
+                                            document.addEventListener('DOMContentLoaded', function() {
+                                                Swal.fire({
+                                                    icon: 'error',
+                                                    title: 'Error',
+                                                    text: '{{ $message }}'
+                                                });
+                                            });
+                                        </script>
+                                    @else
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @endif
                                 @enderror
                                 <label for="password">{{ __('Password') }}</label>
                                 <div class="icon">
@@ -132,6 +144,26 @@
         </div>
     </div>
 @endsection
+
+<script>
+    @if ($errors->any())
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: '{{ $errors->first() }}'
+            });
+        });
+    @elseif (session('success'))
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: '{{ session('success') }}'
+            });
+        });
+    @endif
+</script>
 
 <style>
     * {
