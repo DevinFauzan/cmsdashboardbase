@@ -22,7 +22,7 @@
                                 @csrf
                                 <div class="form-group">
                                     <label for="exampleInputName1">Complainant Name</label>
-                                    <input type="text" value="{{ $user->name }}" class="form-control"
+                                    <input type="text" value="{{ $user->name }}" class="form-control "
                                         id="exampleInputName1" placeholder="Name" name="name_user" readonly>
                                 </div>
                                 <div class="form-group">
@@ -36,24 +36,61 @@
                                         placeholder="date" required value="{{ now()->format('Y-m-d') }}">
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleInputName1">Subject</label>
-                                    <input type="text" class="form-control" id="exampleInputSubject"
-                                        placeholder="Subject" name="subject" required>
+                                    <label for="exampleInputSubject">Subject</label>
+                                    <input type="text" class="form-control @error('subject') is-invalid @enderror"
+                                        id="exampleInputSubject" placeholder="Subject" name="subject" required
+                                        value="{{ old('subject') }}">
+                                    @error('subject')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleTextarea1">Description</label>
-                                    <textarea class="form-control" id="exampleTextarea1" rows="4" name="description" required></textarea>
+                                    <textarea class="form-control @error('description') is-invalid @enderror" id="exampleTextarea1" rows="4"
+                                        name="description" required>{{ old('description') }}</textarea>
+                                    @error('description')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleSelectProduct">Product</label>
-                                    <select class="form-control" id="exampleSelectProduct" name="product" required>
+                                    <select class="form-control @error('product') is-invalid @enderror"
+                                        id="exampleSelectProduct" name="product" required>
                                         <option disabled selected>Select product type</option>
-                                        <option value="0">Tableau Server</option>
-                                        <option value="1">Tableau Online</option>
-                                        <option value="2">Tableau Desktop</option>
-                                        <option value="3">Tableau Prep Builder</option>
+                                        <option value="0" {{ old('product') == '0' ? 'selected' : '' }}>Tableau Server
+                                        </option>
+                                        <option value="1" {{ old('product') == '1' ? 'selected' : '' }}>Tableau Online
+                                        </option>
+                                        <option value="2" {{ old('product') == '2' ? 'selected' : '' }}>Tableau
+                                            Desktop</option>
+                                        <option value="3" {{ old('product') == '3' ? 'selected' : '' }}>Tableau Prep
+                                            Builder</option>
                                     </select>
+                                    @error('product')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
+                                <div class="form-group">
+                                    <label for="exampleInputTableauVersion">Tableau Version</label>
+                                    <input type="text"
+                                        class="form-control @error('tableau_version') is-invalid @enderror"
+                                        id="exampleInputTableauVersion" name="tableau_version"
+                                        placeholder="Type Your Tableau Version" required
+                                        value="{{ old('tableau_version') }}">
+                                    @error('tableau_version')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputOs">Operating System</label>
+                                    <input type="text" class="form-control @error('os') is-invalid @enderror"
+                                        id="exampleInputOs" name="os" placeholder="Type your Operating System" required
+                                        value="{{ old('os') }}">
+                                    @error('os')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
                                 <div class="form-group">
                                     <label for="exampleInputName1">Telephone</label>
                                     <input type="text" value="{{ $user->phone }}" class="form-control"
@@ -63,11 +100,9 @@
                                     <button type="submit" class="btn btn-primary">Submit</button>
                                 </div>
                             </form>
-
                         </div>
                     </div>
                 </div>
-
                 @if (session('newTicketInfoUser'))
                     <script>
                         document.addEventListener('DOMContentLoaded', function() {
@@ -81,6 +116,15 @@
                         <p>Email: {{ session('newTicketInfoUser')['email'] }}</p>                        
                     `,
                             });
+                        });
+                    </script>
+                @endif
+                @if (session('error'))
+                    <script>
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: '{{ session('error') }}',
                         });
                     </script>
                 @endif

@@ -183,12 +183,14 @@ class DashboardUserController extends Controller
 
         $request->validate([
             'name_user' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
+            'email' => 'required|email|max:255|unique:users,email',
             'complained_date' => 'required|date',
             'description' => 'required|string',
             'subject' => 'required|string|max:255',
             'product' => 'required|in:0,1,2,3',
             'phone' => 'required|numeric',
+            'os' => 'required|string|max:255',
+            'tableau_version' => 'required|string|max:255',
         ]);
 
         $product = $request->input('product');
@@ -244,6 +246,8 @@ class DashboardUserController extends Controller
             'description' => $request->input('description'),
             'subject' => $request->input('subject'),
             'product' => $product,
+            'os' => $request->input('os'),
+            'tableau_version' => $request->input('tableau_version'),
             'phone' => $request->input('phone'),
             'status' => 'Open',
             'ticket_id' => $newTicketId,
@@ -266,6 +270,8 @@ class DashboardUserController extends Controller
             'description' => 'required|string',
             'subject' => 'required|string|max:255',
             'product' => 'required|in:0,1,2,3',
+            'os' => 'required|string',
+            'tableau_version' => 'required|string',
         ]);
 
         $product = $request->input('product');
@@ -314,6 +320,8 @@ class DashboardUserController extends Controller
             'phone' => $user->phone, // Menggunakan nomor telepon pengguna saat ini
             'status' => 'Open',
             'ticket_id' => $newTicketId,
+            'os' => $request->input('os'),
+            'tableau_version' => $request->input('tableau_version'),
         ]);
 
         $request->session()->flash('newTicketInfoUser', [

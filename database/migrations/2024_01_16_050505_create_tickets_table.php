@@ -25,7 +25,9 @@ class CreateTicketsTable extends Migration
             $table->string('email');
             $table->string('phone');
             $table->string('status');
-            $table->string('ticket_id');            
+            $table->string('ticket_id');   
+            $table->string('os');
+            $table->string('tableau_version');         
             $table->timestamps();
         });
     }

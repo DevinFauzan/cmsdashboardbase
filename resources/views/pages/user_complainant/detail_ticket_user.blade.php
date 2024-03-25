@@ -81,6 +81,18 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
+                                    <label for="exampleInputName1">Tableau Version</label>
+                                    <input type="text" class="form-control "
+                                        id="exampleInputName1" name="tableau_version" placeholder="Type Your Tableau Version"
+                                        value="{{$ticket->tableau_version}}" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputName1">Operating System</label>
+                                    <input type="text" class="form-control"
+                                        id="exampleInputName1" name="os" placeholder="Type your Operating System"
+                                        value="{{$ticket->os}}" readonly>
+                                </div>
+                                <div class="form-group">
                                     <label for="exampleInputEmail3">Email address</label>
                                     <input type="email" value="{{ $ticket->email }}" class="form-control"
                                         id="exampleInputEmail3" placeholder="Email" readonly>
