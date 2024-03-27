@@ -8,6 +8,7 @@ use App\Models\Ticket;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Chat;
+use App\Models\TicketImages;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -131,7 +132,7 @@ class DashboardUserController extends Controller
         // Save the new profile photo path
         $user->profile_photo = 'profile_photos/' . $photoName;
 
-        // Save the user model
+        // Save the user model 
         $user->save();
     }
 
@@ -191,6 +192,8 @@ class DashboardUserController extends Controller
             'phone' => 'required|numeric',
             'os' => 'required|string|max:255',
             'tableau_version' => 'required|string|max:255',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:20480',
+            'images' => 'required|array|min:1|max:3',
         ]);
 
         $product = $request->input('product');
@@ -226,6 +229,20 @@ class DashboardUserController extends Controller
 
         $password = Str::random(8);
 
+        $imagePaths = [];
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                // Generate a unique name for the file
+                $imageName = 'ticket_' . time() . '_' . $image->getClientOriginalName();
+
+                // Move the uploaded file to the public disk
+                $image->storeAs('public/ticket_images', $imageName);
+
+                // Save the new image path to the array
+                $imagePaths[] = 'ticket_images/' . $imageName;
+            }
+        }
+
         // Create a new user
         $user = User::create([
             'name' => $request->input('name_user'),
@@ -238,7 +255,7 @@ class DashboardUserController extends Controller
         $userId = $user->getKey();
 
         // Create a new ticket using the Ticket model
-        Ticket::create([
+        $ticket = Ticket::create([
             'user_id' => $userId, // Set the user_id to the newly created user's ID
             'name_user' => $request->input('name_user'),
             'email' => $request->input('email'),
@@ -252,6 +269,13 @@ class DashboardUserController extends Controller
             'status' => 'Open',
             'ticket_id' => $newTicketId,
         ]);
+        // Create new records in the ticket_images table for all images
+        foreach ($imagePaths as $imagePath) {
+            TicketImages::create([
+                'ticket_id' => $ticket->id,
+                'image_path' => $imagePath,
+            ]);
+        }
 
         $request->session()->flash('newTicketInfo', [
             'ticket_id' => $newTicketId,
@@ -272,6 +296,8 @@ class DashboardUserController extends Controller
             'product' => 'required|in:0,1,2,3',
             'os' => 'required|string',
             'tableau_version' => 'required|string',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:20480',
+            'images' => 'required|array|min:1|max:3',
         ]);
 
         $product = $request->input('product');
@@ -305,11 +331,25 @@ class DashboardUserController extends Controller
 
         $newTicketId = $productPrefix . str_pad($ticketIdNumber, 5, '0', STR_PAD_LEFT);
 
+        $imagePaths = [];
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                // Generate a unique name for the file
+                $imageName = 'ticket_' . time() . '_' . $image->getClientOriginalName();
+
+                // Move the uploaded file to the public disk
+                $image->storeAs('public/ticket_images', $imageName);
+
+                // Save the new image path to the array
+                $imagePaths[] = 'ticket_images/' . $imageName;
+            }
+        }
+
         $user = $request->user();
         $userId = $user->getKey();
 
         // Create a new ticket using the Ticket model
-        Ticket::create([
+        $ticket = Ticket::create([
             'user_id' => $user->id, // Menggunakan ID pengguna saat ini
             'name_user' => $user->name, // Menggunakan nama pengguna saat ini
             'email' => $user->email, // Menggunakan email pengguna saat ini
@@ -323,6 +363,14 @@ class DashboardUserController extends Controller
             'os' => $request->input('os'),
             'tableau_version' => $request->input('tableau_version'),
         ]);
+
+         // Create new records in the ticket_images table for all images
+         foreach ($imagePaths as $imagePath) {
+            TicketImages::create([
+                'ticket_id' => $ticket->id,
+                'image_path' => $imagePath,
+            ]);
+        }
 
         $request->session()->flash('newTicketInfoUser', [
             'ticket_id' => $newTicketId,

@@ -21,4 +21,9 @@ class Ticket extends Model
     {
         return $this->hasMany(Chat::class, 'ticket_id');
     }
+
+    public function images()
+    {
+        return $this->hasMany(TicketImages::class, 'ticket_id');
+    }
 }

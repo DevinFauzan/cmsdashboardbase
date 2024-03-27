@@ -1,5 +1,19 @@
 @extends('layouts.auth')
 <meta name="csrf-token" content="{{ csrf_token() }}">
+<style>
+    .ticket-image-container {
+        display: inline-block;
+        margin-right: 10px;
+        /* Atur jarak antar gambar jika diperlukan */
+    }
+
+    .ticket-image {
+        max-width: 300px;
+        /* Atur lebar maksimum gambar */
+        max-height: 300px;
+        /* Atur tinggi maksimum gambar */
+    }
+</style>
 @section('content')
     <div class="main-panel">
         <div class="content-wrapper">
@@ -47,7 +61,7 @@
                                         @default
                                             <label class="badge badge-secondary">Unknown</label>
                                     @endswitch
-                                </p>
+                                </p>|
                                 {{ !empty($ticket->name_tech) ? $ticket->name_tech : 'No Technical Person Yet' }}
                             </h2>
 
@@ -82,15 +96,14 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputName1">Tableau Version</label>
-                                    <input type="text" class="form-control "
-                                        id="exampleInputName1" name="tableau_version" placeholder="Type Your Tableau Version"
-                                        value="{{$ticket->tableau_version}}" readonly>
+                                    <input type="text" class="form-control " id="exampleInputName1"
+                                        name="tableau_version" placeholder="Type Your Tableau Version"
+                                        value="{{ $ticket->tableau_version }}" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputName1">Operating System</label>
-                                    <input type="text" class="form-control"
-                                        id="exampleInputName1" name="os" placeholder="Type your Operating System"
-                                        value="{{$ticket->os}}" readonly>
+                                    <input type="text" class="form-control" id="exampleInputName1" name="os"
+                                        placeholder="Type your Operating System" value="{{ $ticket->os }}" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputEmail3">Email address</label>
@@ -106,6 +119,18 @@
                                     <label for="exampleInputName1">Complained date</label>
                                     <input type="date" value="{{ $ticket->created_at->format('Y-m-d') }}"
                                         class="form-control" id="exampleInputName1" placeholder="date" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputName1">Photos</label>
+                                    <br>
+                                    @foreach ($ticket->images as $image)
+                                        <div class="ticket-image-container">
+                                            <a href="{{ asset('storage/' . $image->image_path) }}" target="_blank">
+                                                <img src="{{ asset('storage/' . $image->image_path) }}" alt="Ticket Image"
+                                                    class="ticket-image">
+                                            </a>
+                                        </div>
+                                    @endforeach
                                 </div>
                             </form>
                         </div>

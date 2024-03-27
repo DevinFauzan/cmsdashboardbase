@@ -15,9 +15,8 @@
                 <div class="col-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <form class="forms-sample" action="{{ route('dashboard-user.store') }}" method="post">
+                            <form class="forms-sample" action="{{ route('dashboard-user.store') }}" method="post" enctype="multipart/form-data">
                                 @csrf
-
                                 <div class="form-group">
                                     <label for="exampleInputName1">User Name</label>
                                     <input type="text" class="form-control @error('name_user') is-invalid @enderror"
@@ -27,7 +26,6 @@
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
-
                                 <div class="form-group">
                                     <label for="exampleInputEmail3">Email address</label>
                                     <input type="email" class="form-control @error('email') is-invalid @enderror"
@@ -67,7 +65,14 @@
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
-
+                                <div class="form-group">
+                                    <label for="images">Photos</label>
+                                    <input type="file" class="form-control @error('images') is-invalid @enderror"
+                                        id="exampleInputName1" name="images[]" id="images" multiple accept="image/*" required>
+                                    @error('images')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
                                 <div class="form-group">
                                     <label for="exampleSelectProduct">Product</label>
                                     <select class="form-control @error('product') is-invalid @enderror"
@@ -131,12 +136,12 @@
                                 icon: 'success',
                                 title: 'Ticket submitted successfully!',
                                 html: `
-                        <p>Ticket ID: {{ session('newTicketInfo')['ticket_id'] }}</p>
-                        <p>Name: {{ session('newTicketInfo')['name_user'] }}</p>
-                        <p>Email: {{ session('newTicketInfo')['email'] }}</p>
-                        <p>Password: {{ session('newTicketInfo')['password'] }}</p>
-                        <h5 id="goToLogin" class="btn btn-link"> <b> Click here to go to the Login Page</h5>
-                    `,
+                <p>Ticket ID: {{ session('newTicketInfo')['ticket_id'] }}</p>
+                <p>Name: {{ session('newTicketInfo')['name_user'] }}</p>
+                <p>Email: {{ session('newTicketInfo')['email'] }}</p>
+                <p>Password: {{ session('newTicketInfo')['password'] }}</p>
+                <h5 id="goToLogin" class="btn btn-link"> <b> Click here to go to the Login Page</h5>
+            `,
                                 showCancelButton: false,
                                 confirmButtonText: 'Close',
                                 closeOnClickOutside: false, // Do not close on click outside the alert
@@ -152,15 +157,6 @@
                                     window.open('{{ route('login') }}');
                                 });
                             }
-                        });
-                    </script>
-                @endif
-                @if (session('error'))
-                    <script>
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error!',
-                            text: '{{ session('error') }}',
                         });
                     </script>
                 @endif

@@ -18,7 +18,7 @@
                     <div class="card">
                         <div class="card-body">
                             <form class="forms-sample" id="submitNewTicketForm" action="{{ route('submit_ticket') }}"
-                                method="post">
+                                method="post" enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-group">
                                     <label for="exampleInputName1">Complainant Name</label>
@@ -49,6 +49,15 @@
                                     <textarea class="form-control @error('description') is-invalid @enderror" id="exampleTextarea1" rows="4"
                                         name="description" required>{{ old('description') }}</textarea>
                                     @error('description')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="images">Photos</label>
+                                    <input type="file" class="form-control @error('images') is-invalid @enderror"
+                                        id="exampleInputName1" name="images[]" id="images" multiple accept="image/*"
+                                        required>
+                                    @error('images')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>

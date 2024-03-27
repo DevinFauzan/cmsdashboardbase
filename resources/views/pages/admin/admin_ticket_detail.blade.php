@@ -3,6 +3,19 @@
     .dataTables_filter {
         display: none;
     }
+
+    .ticket-image-container {
+        display: inline-block;
+        margin-right: 10px;
+        /* Atur jarak antar gambar jika diperlukan */
+    }
+
+    .ticket-image {
+        max-width: 100px;
+        /* Atur lebar maksimum gambar */
+        max-height: 100px;
+        /* Atur tinggi maksimum gambar */
+    }
 </style>
 
 <head>
@@ -57,15 +70,14 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputName1">Tableau Version</label>
-                                    <input type="text" class="form-control "
-                                        id="exampleInputName1" name="tableau_version" placeholder="Type Your Tableau Version"
-                                        value="{{$ticket->tableau_version}}" readonly>
+                                    <input type="text" class="form-control " id="exampleInputName1"
+                                        name="tableau_version" placeholder="Type Your Tableau Version"
+                                        value="{{ $ticket->tableau_version }}" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputName1">Operating System</label>
-                                    <input type="text" class="form-control"
-                                        id="exampleInputName1" name="os" placeholder="Type your Operating System"
-                                        value="{{$ticket->os}}" readonly>
+                                    <input type="text" class="form-control" id="exampleInputName1" name="os"
+                                        placeholder="Type your Operating System" value="{{ $ticket->os }}" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputEmail3">Email address</label>
@@ -81,6 +93,18 @@
                                     <label for="exampleInputName1">Complained date</label>
                                     <input type="date" value="{{ $ticket->created_at->format('Y-m-d') }}"
                                         class="form-control" id="exampleInputName1" placeholder="date" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputName1">Photos</label>
+                                    <br>
+                                    @foreach ($ticket->images as $image)
+                                        <div class="ticket-image-container">
+                                            <a href="{{ asset('storage/' . $image->image_path) }}" target="_blank">
+                                                <img src="{{ asset('storage/' . $image->image_path) }}" alt="Ticket Image"
+                                                    class="ticket-image">
+                                            </a>
+                                        </div>
+                                    @endforeach
                                 </div>
                             </form>
                         </div>

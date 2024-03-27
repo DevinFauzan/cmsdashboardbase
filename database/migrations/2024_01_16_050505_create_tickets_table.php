@@ -20,14 +20,14 @@ class CreateTicketsTable extends Migration
             $table->string('name_user');
             $table->string('name_tech')->nullable();
             $table->string('subject');
-            $table->string('description');
+            $table->text('description');
             $table->boolean('product');
             $table->string('email');
             $table->string('phone');
             $table->string('status');
             $table->string('ticket_id');   
             $table->string('os');
-            $table->string('tableau_version');         
+            $table->string('tableau_version');     
             $table->timestamps();
         });
     }
